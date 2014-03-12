@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: skeleton
+# Cookbook Name:: base
 # Attributes:: default
 #
-# Copyright (C) YEAR YOUR_NAME <YOUR_EMAIL>
+# Copyright (C) 2014 NewMedia! Denver support@newmediadenver.com
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
