@@ -11,5 +11,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[nmd-base::default]
+      - recipe[base::default]
     attributes:

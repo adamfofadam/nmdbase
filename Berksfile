@@ -1,3 +1,3 @@
 site :opscode
 
-metadata
+cookbook 'chef-client', '= 2.2.3'
