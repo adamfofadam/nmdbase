@@ -12,10 +12,6 @@ platforms:
       box_url: https://nmd-virtualbox.s3-us-west-2.amazonaws.com/nmd-ubunutu-12.04-i386-base-latest.box
 
 suites:
-  - name: default
-    run_list:
-      - recipe[base::default]
-    attributes:
   - name: chefclient
     run_list:
       - recipe[chef-client::delete_validation]
