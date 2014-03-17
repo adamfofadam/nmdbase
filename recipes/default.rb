@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: skeleton
+# Cookbook Name:: base
 # Recipe:: default
 #
-# Copyright (C) YEAR YOUR_NAME <YOUR_EMAIL>
+# Copyright (C) 2014 NewMedia! Denver support@newmediadenver.com
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,3 +19,13 @@
 
 # Install/configure something here
 log "replace this with a meaningful resource"
+
+# Include recipes
+include_recipe 'chef-client::delete_validation'
+#include_recipe 'chef-client::config'
+#include_recipe 'chef-client::service'
+#include_recipe 'fail2ban'
+#include_recipe 'newmedia::users'
+#include_recipe 'sudo'
+#include_recipe 'openssh'
+#include_recipe 'hostname'
