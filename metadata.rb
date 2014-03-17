@@ -7,7 +7,7 @@ version          "0.0.1"
 recipe           "base::default", "Installs/configures something"
 
 depends 'chef-client'
-depends 'fail2ban'
-depends 'sudo'
-depends 'openssh'
+#depends 'fail2ban'
+#depends 'sudo'
+#depends 'openssh'
 #depends 'hostname'
