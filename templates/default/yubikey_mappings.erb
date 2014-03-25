@@ -1,0 +1,4 @@
+<% node['base']['yubico']['users'].each do |username, yubikey| -%>
+<%= "#{username}:#{yubikey}" %>
+<% end -%>
+

@@ -14,5 +14,5 @@
 /.vagrant/
 
 # Test Kitchen
-/.kitchen/
+.kitchen
 /.kitchen.local.yml

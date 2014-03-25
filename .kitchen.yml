@@ -18,3 +18,22 @@ suites:
       - recipe[chef-client::config]
       - recipe[chef-client::service]
     attributes:
+  - name: yubico
+    run_list:
+      - recipe[base::yubico]
+    attributes: {
+      "base": {
+        "yubico": {
+          "users": {
+            "vagrant": "ccccccdivlul"
+          }
+        }
+      },
+      "openssh": {
+        "server": {
+          "use_p_a_m": "yes",
+          "challenge_response_authentication": "yes",
+          "password_authentication": "yes"
+        }
+      }
+    }

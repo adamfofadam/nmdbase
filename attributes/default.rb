@@ -18,3 +18,6 @@
 #
 
 # Set meaningful node attributes here
+default['base']['yubico']['users'] = {
+  'vagrant' => 'ccccccdivlul'
+}
