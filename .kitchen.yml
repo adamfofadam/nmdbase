@@ -24,8 +24,11 @@ suites:
     attributes: {
       "base": {
         "yubico": {
+          "id": "test_id",
+          "key": "test_key",
+          "authfile": '/etc/yubikey_test_authfile',
           "users": {
-            "vagrant": "ccccccdivlul"
+            "test_user": "test_yubikey"
           }
         }
       },

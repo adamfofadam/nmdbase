@@ -27,7 +27,7 @@ describe file('/etc/pam.d/sshd') do
   it { should be_mode 644 }
   it { should be_owned_by 'root' }
   it { should be_grouped_into 'root' }
-  its(:content) { should match '^auth required pam_yubico.so mode=client try_first_pass id=15916 key=iqXJ1Moo70WCI4wrxBpniqvPDiw= authfile=/etc/yubikey_mappings debug$' }
+  its(:content) { should match '^auth required pam_yubico.so mode=client try_first_pass id=test_id key=test_key authfile=/etc/yubikey_test_authfile$' }
 end
 
 describe file('/etc/ssh/sshd_config') do
@@ -40,10 +40,10 @@ describe file('/etc/ssh/sshd_config') do
   its(:content) { should match '^PasswordAuthentication yes$' }
 end
 
-describe file('/etc/yubikey_mappings') do
+describe file('/etc/yubikey_test_authfile') do
   it { should be_file }
   it { should be_mode 644 }
   it { should be_owned_by 'root' }
   it { should be_grouped_into 'root' }
-  its(:content) { should match '^vagrant:ccccccdivlul$' }
+  its(:content) { should match '^test_user:test_yubikey$' }
 end
