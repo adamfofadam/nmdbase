@@ -9,4 +9,3 @@ recipe           "base::default", "Installs/configures something"
 depends 'chef-client'
 depends 'apt'
 depends 'openssh'
-

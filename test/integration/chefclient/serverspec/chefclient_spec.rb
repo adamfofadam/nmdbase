@@ -19,4 +19,3 @@ describe file('/etc/chef/client.rb') do
   its(:content) { should match 'validation_client_name "chef-validator"' }
   its(:content) { should match 'node_name "chefclient-ubuntu-1204"' }
 end
-

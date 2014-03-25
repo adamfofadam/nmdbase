@@ -19,7 +19,7 @@
 
 # See http://opensource.yubico.com/yubico-pam/
 
-default['base']['yubico']['id'] = 15916
+default['base']['yubico']['id'] = "15916"
 default['base']['yubico']['key'] = 'iqXJ1Moo70WCI4wrxBpniqvPDiw='
 default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
 # @TODO: Use LDAP for this data
