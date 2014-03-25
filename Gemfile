@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 
-gem "test-kitchen", "~> 1.0"
-gem "kitchen-vagrant"
-gem "berkshelf", "~> 2.0"
-gem "vagrant-wrapper"
-gem "rake", "~> 10.1.1"
-gem "foodcritic", "~> 0.2.0"
+gem "foodcritic", "~> 3.0"
+gem "rake"
 gem "rubocop"
-gem "rspec"
+
+group :integration do
+  gem "test-kitchen", "~> 1.0"
+  gem "kitchen-vagrant"
+end

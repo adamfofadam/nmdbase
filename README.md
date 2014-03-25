@@ -30,8 +30,8 @@ Recipes
 
 Testing
 -------
+[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
 
-[![Build Status](https://travis-ci.org/mlafeldt/skeleton-cookbook.png?branch=master)](https://travis-ci.org/mlafeldt/skeleton-cookbook)
 
 The cookbook provides the following Rake tasks for testing:
 
