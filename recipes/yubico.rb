@@ -1,7 +1,9 @@
 include_recipe 'openssh'
 
-package "python-software-properties" do
-  action :install
+%w{python-software-properties}.each do |pkg|
+  package pkg do
+    action :upgrade
+  end
 end
 
 case node['platform']
@@ -16,8 +18,10 @@ when 'debian', 'ubuntu'
     command "apt-get update"
     action :nothing
   end
-  package "libpam-yubico" do
-    action :install
+  %w{libpam-yubico}.each do |pkg|
+    package pkg do
+      action :upgrade
+    end
   end
 end
 
