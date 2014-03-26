@@ -15,7 +15,8 @@ Requirements
 
 ### Cookbooks:
 
-```depends 'chef-client'
+```
+depends 'chef-client'
 depends 'apt'
 depends 'openssh'
 ```
@@ -23,7 +24,8 @@ depends 'openssh'
 
 Attributes
 ----------
-```default['base']['yubico']['id'] = "123456"
+```
+default['base']['yubico']['id'] = "123456"
 default['base']['yubico']['key'] = 'iqXJ1M4o70WCI2wrxBpn9qvGDiw='
 default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
 default['base']['yubico']['users'] = {
@@ -55,6 +57,7 @@ Testing
 
 The cookbook provides the following Rake tasks for testing:
 
+```
 rake foodcritic                      # Lint Chef cookbooks
 rake integration                     # Alias for kitchen:all
 rake kitchen:all                     # Run all test instances
@@ -63,6 +66,7 @@ rake kitchen:yubico-ubuntu-1204      # Run yubico-ubuntu-1204 test instance
 rake rubocop                         # Run RuboCop style and lint checks
 rake spec                            # Run ChefSpec examples
 rake test                            # Run all tests
+```
 
 License and Author
 ------------------
