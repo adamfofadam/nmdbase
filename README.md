@@ -1,7 +1,7 @@
+[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
+
 NewMedia Denver Base Cookbook
 =================
-
-[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
 
 This is the base recipe for all NewMedia servers. It contains core functionality
 necessary for standardized integration into our broader systems.
