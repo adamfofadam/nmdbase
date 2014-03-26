@@ -2,7 +2,7 @@ include_recipe 'openssh'
 
 %w(python-software-properties).each do |pkg|
   package pkg do
-    action :upgrade
+    action :install
   end
 end
 
@@ -13,6 +13,7 @@ when 'debian', 'ubuntu'
     command "add-apt-repository ppa:yubico/stable"
     not_if { ::File.exists?("/etc/apt/sources.list.d/yubico-stable-precise.list") }
     notifies :run, "execute[apt-get-update]", :immediately
+    action :run
   end
   execute "apt-get-update" do
     command "apt-get update"
@@ -20,7 +21,7 @@ when 'debian', 'ubuntu'
   end
   %w(libpam-yubico).each do |pkg|
     package pkg do
-      action :upgrade
+      action :install
     end
   end
 end
@@ -32,8 +33,9 @@ template node['base']['yubico']['authfile'] do
   group "root"
 end
 
-bash "Enable pam_yubico" do
+bash "enable-yubico-pam" do
   user "root"
+  action :run
   cmd = "echo -e \"auth required pam_yubico.so mode=client try_first_pass id=#{node['base']['yubico']['id']} key=#{node['base']['yubico']['key']} authfile=#{node['base']['yubico']['authfile']}\n$(cat /etc/pam.d/sshd)\" > /etc/pam.d/sshd"
   not_if "grep 'auth required pam_yubico.so' /etc/pam.d/sshd"
   code <<-EOH
