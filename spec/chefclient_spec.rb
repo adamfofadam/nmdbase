@@ -8,10 +8,8 @@ describe "base::default" do
     expect(:chef_run).to write_log "replace this with a meaningful resource"
   end
 
-  it 'does something' do
+  it 'includes chef-client::delete_validation' do
     expect(chef_run).to include_recipe('chef-client::delete_validation')
-    expect(chef_run).to include_recipe('chef-client::config')
-    expect(chef_run).to include_recipe('chef-client::service')
   end
 
 end
