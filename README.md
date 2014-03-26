@@ -1,55 +1,75 @@
-Skeleton Cookbook
+NewMedia Denver Base Cookbook
 =================
 
-This is a testable skeleton cookbook designed for you or your organization to
-fork and modify appropriately. The cookbook comes with everything you need to
-develop infrastructure code with Chef and feel confident about it.
+[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
+
+This is the base recipe for all NewMedia servers. It contains core functionality
+necessary for standardized integration into our broader systems.
 
 Requirements
 ------------
 
 ### Platform:
 
-*List supported platforms here*
+`ubuntu-12.04`
 
 ### Cookbooks:
 
-*List cookbook dependencies here*
+```depends 'chef-client'
+depends 'apt'
+depends 'openssh'
+```
+
 
 Attributes
 ----------
-
-*List attributes here*
-
+```default['base']['yubico']['id'] = "123456"
+default['base']['yubico']['key'] = 'iqXJ1M4o70WCI2wrxBpn9qvGDiw='
+default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
+default['base']['yubico']['users'] = {
+  'username' => 'ccccccritlul'
+}
+```
 Recipes
 -------
 
-### skeleton::default
+### base::default
 
-*Explain what the recipe does here*
+Finishes establishing a server as a chef client by cleaning up residual
+certificates and enabling the chef-client service to execute periodically.
+
+### base::yubico
+
+Requires yubikey authentication and password authentication to ssh into a
+machine running this recipe.
+
+We have implemented a basic set of functionality to meet our tests. The full
+documentation, including how to generate values for the yubico attributes is
+located at http://opensource.yubico.com/yubico-pam/.
+
+At present, users yubikeys are recorded in a single file. The roadmap involves
+switching this to LDAP.
 
 Testing
 -------
-[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
-
 
 The cookbook provides the following Rake tasks for testing:
 
-    rake foodcritic                   # Lint Chef cookbooks
-    rake integration                  # Alias for kitchen:all
-    rake kitchen:all                  # Run all test instances
-    rake kitchen:default-centos-64    # Run default-centos-64 test instance
-    rake kitchen:default-ubuntu-1204  # Run default-ubuntu-1204 test instance
-    rake rubocop                      # Run RuboCop style and lint checks
-    rake spec                         # Run ChefSpec examples
-    rake test                         # Run all tests
+rake foodcritic                      # Lint Chef cookbooks
+rake integration                     # Alias for kitchen:all
+rake kitchen:all                     # Run all test instances
+rake kitchen:chefclient-ubuntu-1204  # Run chefclient-ubuntu-1204 test instance
+rake kitchen:yubico-ubuntu-1204      # Run yubico-ubuntu-1204 test instance
+rake rubocop                         # Run RuboCop style and lint checks
+rake spec                            # Run ChefSpec examples
+rake test                            # Run all tests
 
 License and Author
 ------------------
 
-Author:: YOUR_NAME (YOUR_EMAIL)
+Author:: Kevin Bridges kevin@newmediadenver.com
 
-Copyright:: YEAR, YOUR_NAME
+Copyright:: 2014, NewMedia! Denver
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

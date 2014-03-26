@@ -17,9 +17,6 @@
 # limitations under the License.
 #
 
-# Install/configure something here
-log "replace this with a meaningful resource"
-
 # Include recipes
 include_recipe 'chef-client::delete_validation'
 include_recipe 'chef-client::config'
