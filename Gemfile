@@ -6,7 +6,6 @@ gem "rubocop"
 gem "rspec"
 gem "chefspec"
 gem "berkshelf"
-gem "serverspec"
 
 group :integration do
   gem "test-kitchen", "~> 1.0"

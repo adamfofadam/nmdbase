@@ -1,21 +1,10 @@
-require 'serverspec'
+require "spec_helper"
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+# Write unit tests with ChefSpec - https://github.com/sethvargo/chefspec#readme
+describe "base::chefclient" do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
-RSpec.configure do |c|
-  c.before :all do
-    c.path = '/usr/bin'
+  it "logs a sample message" do
+    expect(chef_run).to write_log "replace this with a meaningful resource"
   end
-end
-
-describe service('chef-client') do
-  it { should be_enabled }
-end
-
-describe file('/etc/chef/client.rb') do
-  it { should be_file }
-  its(:content) { should match 'chef_server_url' }
-  its(:content) { should match 'validation_client_name "chef-validator"' }
-  its(:content) { should match 'node_name "chefclient-ubuntu-1204"' }
 end
