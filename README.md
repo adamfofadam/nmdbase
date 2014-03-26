@@ -51,6 +51,22 @@ located at http://opensource.yubico.com/yubico-pam/.
 
 At present, users yubikeys are recorded in a single file. The roadmap involves
 switching this to LDAP.
+````
+base::yubico
+  Includes the openssh recipe.
+  Installs the openssh-client.
+  Installs the openssh-server.
+  Enables the ssh service.
+  Starts the ssh service.
+  Creates the ssh configuration.
+  Creates the sshd configuration.
+  Installs python-software-properties.
+  Adds the yubico repositories.
+  Notifies apt-get update when adding yubico repositories.
+  Installs the libpam-yubico package from the yubico repositories.
+  Creates a global yubico auth file.
+  Enables the yubico pam module.
+````
 
 Testing
 -------
