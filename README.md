@@ -42,15 +42,6 @@ certificates and enabling the chef-client service to execute periodically.
 
 ### base::yubico
 
-Requires yubikey authentication and password authentication to ssh into a
-machine running this recipe.
-
-We have implemented a basic set of functionality to meet our tests. The full
-documentation, including how to generate values for the yubico attributes is
-located at http://opensource.yubico.com/yubico-pam/.
-
-At present, users yubikeys are recorded in a single file. The roadmap involves
-switching this to LDAP.
 ````
 base::yubico
   Includes the openssh recipe.
@@ -67,6 +58,16 @@ base::yubico
   Creates a global yubico auth file.
   Enables the yubico pam module.
 ````
+
+Requires yubikey authentication and password authentication to ssh into a
+machine running this recipe.
+
+We have implemented a basic set of functionality to meet our tests. The full
+documentation, including how to generate values for the yubico attributes is
+located at http://opensource.yubico.com/yubico-pam/.
+
+At present, users yubikeys are recorded in a single file. The roadmap involves
+switching this to LDAP.
 
 Testing
 -------
