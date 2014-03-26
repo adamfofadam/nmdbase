@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'chefspec'
 
 # Write unit tests with ChefSpec - https://github.com/sethvargo/chefspec#readme
 describe "base::default" do
