@@ -1,4 +1,5 @@
 require 'chefspec'
+require 'chefspec/berkshelf'
 
 # Write unit tests with ChefSpec - https://github.com/sethvargo/chefspec#readme
 describe "base::default" do
