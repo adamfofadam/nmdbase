@@ -13,3 +13,7 @@ script: bundle exec rake test
 branches:
   only:
     - 0.0.1
+
+addons:
+    code_climate:
+        repo_token: 61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
