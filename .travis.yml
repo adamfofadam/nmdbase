@@ -12,7 +12,7 @@ script: CODECLIMATE_REPO_TOKEN=61a0d4eb07d7694fc74c8098020a724884bc8425c89d30768
 
 branches:
   only:
-    - 0.0.1
+    - master
 
 addons:
     code_climate:
