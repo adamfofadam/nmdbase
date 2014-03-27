@@ -1,19 +1,16 @@
 language: ruby
-
 rvm:
-  - 1.9.3
-  - 2.0.0
-
+- 1.9.3
+- 2.0.0
 before_install: 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
-
 install: bundle install --without=integration
-
-script: CODECLIMATE_REPO_TOKEN=61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d bundle exec rake test
-
+script: CODECLIMATE_REPO_TOKEN=61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
+  bundle exec rake test
 branches:
   only:
-    - master
-
+  - master
 addons:
-    code_climate:
-        repo_token: 61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
+  code_climate:
+    repo_token: 61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
+notifications:
+  hipchat: 1YlO3fh50sKLbpm39Zd2AlDmsIN6hOQuYKaEZTCldTnj0wO60X3R4ygRON1fJZoSzHg0vwsbrZO4xicO0opJCDGVTbcEhf84aMXZ3jzLMdOikQvuHRdPyaRM4nXzKiysgirUMowBOlvf+PbSkyS7R2rVpDjKtkfLuYucdPtP7Yg=
