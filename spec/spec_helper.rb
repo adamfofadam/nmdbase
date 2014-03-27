@@ -1,8 +1,5 @@
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
 require "chefspec"
 require "chefspec/berkshelf"
-require "codeclimate-test-reporter"
 
 RSpec.configure do |config|
   # Specify the path for Chef Solo to find cookbooks
