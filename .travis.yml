@@ -13,4 +13,7 @@ addons:
   code_climate:
     repo_token: 61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
 notifications:
-  hipchat: 1YlO3fh50sKLbpm39Zd2AlDmsIN6hOQuYKaEZTCldTnj0wO60X3R4ygRON1fJZoSzHg0vwsbrZO4xicO0opJCDGVTbcEhf84aMXZ3jzLMdOikQvuHRdPyaRM4nXzKiysgirUMowBOlvf+PbSkyS7R2rVpDjKtkfLuYucdPtP7Yg=
+  hipchat:
+env:
+  global:
+    secure: HpSDH+KIhtHADEpU5F7spgtkL7NXMfOcd5oFusnpKC/l3bvJeP5nytl2yxQ7kxhHrjU2jpUUomZD1JFP1vb8zTyAn2ll0tWAqhB2rarcPhAchEnVB6a1ryG+kRIQKrIy+/AH/P/jdq2L+HKWYos85nVCCMkKzp4HsmSVKJgjcqQ=
