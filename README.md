@@ -1,4 +1,4 @@
-[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base) [![Code Climate](https://codeclimate.com/repos/53333b9b6956805631002d65/badges/c5e6a3c5d7b1aeb78992/gpa.png)](https://codeclimate.com/repos/53333b9b6956805631002d65/feed)
+[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=master)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
 
 NewMedia Denver Base Cookbook
 =================
