@@ -8,7 +8,7 @@ before_install: 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
 
 install: bundle install --without=integration
 
-script: bundle exec rake test
+script: CODECLIMATE_REPO_TOKEN=61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d bundle exec rake test
 
 branches:
   only:
