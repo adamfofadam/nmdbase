@@ -3,7 +3,6 @@ rvm:
 - 1.9.3
 - 2.0.0
 before_install: 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
-install: bundle install --path vendor/bundle --without=integration
 script: bundle exec rake test
 branches:
   only:
@@ -13,4 +12,7 @@ notifications:
     rooms:
       secure: "gmI8Dmv3pA49PkTi+1LjwyLZCCb58hKAADKkD/pA+VJQsljAd2uN4Pu2Vy85pCpMvTvQX4dwZa5S57hQGarLeXebxkAdo1fiSdYd9npB+Teabjfnydhu6Mj/ghmtRTV0By0oQ5Vnxo1MjFlHTbMw9/FU+UeqN5sC950ELf+5eTI="
 language: ruby
-cache: bundler
+install: bundle install --without development --deployment
+cache:
+  directories:
+  - vendor/bundle
