@@ -14,6 +14,5 @@ addons:
     repo_token: 61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
 notifications:
   hipchat:
-env:
-  global:
-    secure: HpSDH+KIhtHADEpU5F7spgtkL7NXMfOcd5oFusnpKC/l3bvJeP5nytl2yxQ7kxhHrjU2jpUUomZD1JFP1vb8zTyAn2ll0tWAqhB2rarcPhAchEnVB6a1ryG+kRIQKrIy+/AH/P/jdq2L+HKWYos85nVCCMkKzp4HsmSVKJgjcqQ=
+    rooms:
+      secure: "gmI8Dmv3pA49PkTi+1LjwyLZCCb58hKAADKkD/pA+VJQsljAd2uN4Pu2Vy85pCpMvTvQX4dwZa5S57hQGarLeXebxkAdo1fiSdYd9npB+Teabjfnydhu6Mj/ghmtRTV0By0oQ5Vnxo1MjFlHTbMw9/FU+UeqN5sC950ELf+5eTI="
