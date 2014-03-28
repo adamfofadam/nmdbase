@@ -26,3 +26,37 @@ default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
 default['base']['yubico']['users'] = {
   'vagrant' => 'ccccccdivlul'
 }
+
+default['base']['ldap'] = '/etc/ldap.conf'
+default['base']['ldap_secret'] = '/etc/ldap.secret'
+default['base']['ldap_debug'] = true
+default['base']['ldap_config'] = [
+  ['base', 'dc=ldap,dc=newmediadenver,dc=com'],
+  ['uri', 'ldap://ldap.newmediadenver.com/'],
+  ['ldap_version', '3'],
+  ['rootbinddn', 'cn=admin,dc=ldap,dc=newmediadenver,dc=com'],
+  ['pam_password', 'md5']
+]
+default['base']['nsswitch_config'] = [
+  ['passwd', 'ldap compat'],
+  ['group', 'ldap compat'],
+  ['shadow', 'ldap compat'],
+  ['hosts', 'files dns'],
+  ['networks', 'files'],
+  ['protocols', 'db files'],
+  ['services', 'db files'],
+  ['ethers', 'db files'],
+  ['rpc', 'db files'],
+  ['netgroup', 'nis']
+]
+default['base']['common_session_confg'] = [
+  ['session [default=1]', 'pam_permit.so'],
+  ['session requisite', 'pam_deny.so'],
+  ['session required', 'pam_permit.so'],
+  ['session optional', 'pam_umask.so'],
+  ['session required', 'pam_unix.so'],
+  ['session optional', 'pam_ldap.so'],
+  ['session required', 'pam_mkhomedir.so skel=/etc/skel umask=0022']
+]
+default['base']['nsswitch'] = '/etc/nsswitch.conf'
+default['base']['common_session'] = '/etc/pam.d/common-session'

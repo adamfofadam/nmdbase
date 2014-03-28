@@ -18,6 +18,11 @@ suites:
       - recipe[chef-client::config]
       - recipe[chef-client::service]
     attributes:
+  - name: ldap
+    run_list:
+      - recipe[base::ldap]
+    data_bags_path: "~/nmd-chef/data_bags"
+    attributes:
   - name: yubico
     run_list:
       - recipe[base::yubico]

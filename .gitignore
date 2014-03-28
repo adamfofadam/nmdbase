@@ -16,3 +16,6 @@
 # Test Kitchen
 .kitchen
 /.kitchen.local.yml
+
+# Macs
+.DS_Store
