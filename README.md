@@ -21,16 +21,50 @@ depends 'apt'
 depends 'openssh'
 ```
 
-
 Attributes
 ----------
 ```
-default['base']['yubico']['id'] = "123456"
-default['base']['yubico']['key'] = 'iqXJ1M4o70WCI2wrxBpn9qvGDiw='
+default['base']['yubico']['id'] = "15916"
+default['base']['yubico']['key'] = 'iqXJ1Moo70WCI4wrxBpniqvPDiw='
 default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
+# @TODO: Use LDAP for this data
 default['base']['yubico']['users'] = {
-  'username' => 'ccccccritlul'
+  'vagrant' => 'ccccccdivlul'
 }
+
+default['base']['ldap'] = '/etc/ldap.conf'
+default['base']['ldap_secret'] = '/etc/ldap.secret'
+default['base']['ldap_debug'] = true
+default['base']['ldap_config'] = [
+  %W(base dc=ldap,dc=newmediadenver,dc=com),
+  %W(uri ldap://ldap.newmediadenver.com/),
+  %W(ldap_version 3),
+  %W(rootbinddn cn=admin,dc=ldap,dc=newmediadenver,dc=com),
+  %W(pam_password md5)
+]
+default['base']['nsswitch_config'] = [
+  ['passwd', 'ldap compat'],
+  ['group', 'ldap compat'],
+  ['shadow', 'ldap compat'],
+  ['hosts', 'files dns'],
+  %W(networks files),
+  ['protocols', 'db files'],
+  ['services', 'db files'],
+  ['ethers', 'db files'],
+  ['rpc', 'db files'],
+  %W(netgroup nis)
+]
+default['base']['common_session_confg'] = [
+  ['session [default=1]', 'pam_permit.so'],
+  ['session requisite', 'pam_deny.so'],
+  ['session required', 'pam_permit.so'],
+  ['session optional', 'pam_umask.so'],
+  ['session required', 'pam_unix.so'],
+  ['session optional', 'pam_ldap.so'],
+  ['session required', 'pam_mkhomedir.so skel=/etc/skel umask=0022']
+]
+default['base']['nsswitch'] = '/etc/nsswitch.conf'
+default['base']['common_session'] = '/etc/pam.d/common-session'
 ```
 Recipes
 -------
@@ -39,6 +73,17 @@ Recipes
 
 Finishes establishing a server as a chef client by cleaning up residual
 certificates and enabling the chef-client service to execute periodically.
+
+### base::ldap
+
+````
+base::ldap
+  Installs the LDAP package to set this instance up as a client.
+  Configures the LDAP connection for this client.
+  Installs the LDAP secret authentication content.
+  Modifies the Name Service Switch to use LDAP.
+  It configures the PAM common session to create users from LDAP.
+````
 
 ### base::yubico
 
@@ -79,6 +124,7 @@ rake foodcritic                   # Lint Chef cookbooks
 rake integration                  # Alias for kitchen:all
 rake kitchen:all                  # Run all test instances
 rake kitchen:default-ubuntu-1204  # Run default-ubuntu-1204 test instance
+rake kitchen:ldap-ubuntu-1204     # Run ldap-ubuntu-1204 test instance
 rake kitchen:yubico-ubuntu-1204   # Run yubico-ubuntu-1204 test instance
 rake rubocop                      # Run RuboCop style and lint checks
 rake spec                         # Run ChefSpec examples
@@ -88,7 +134,7 @@ rake test                         # Run all tests
 License and Author
 ------------------
 
-Author:: Kevin Bridges kevin@newmediadenver.com
+Author:: NewMedia! Denver support@newmediadenver.com
 
 Copyright:: 2014, NewMedia Denver
 
