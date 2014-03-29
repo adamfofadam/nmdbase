@@ -31,23 +31,23 @@ default['base']['ldap'] = '/etc/ldap.conf'
 default['base']['ldap_secret'] = '/etc/ldap.secret'
 default['base']['ldap_debug'] = true
 default['base']['ldap_config'] = [
-  ['base', 'dc=ldap,dc=newmediadenver,dc=com'],
-  ['uri', 'ldap://ldap.newmediadenver.com/'],
-  ['ldap_version', '3'],
-  ['rootbinddn', 'cn=admin,dc=ldap,dc=newmediadenver,dc=com'],
-  ['pam_password', 'md5']
+  %W(base dc=ldap,dc=newmediadenver,dc=com),
+  %W(uri ldap://ldap.newmediadenver.com/),
+  %W(ldap_version 3),
+  %W(rootbinddn cn=admin,dc=ldap,dc=newmediadenver,dc=com),
+  %W(pam_password md5)
 ]
 default['base']['nsswitch_config'] = [
   ['passwd', 'ldap compat'],
   ['group', 'ldap compat'],
   ['shadow', 'ldap compat'],
   ['hosts', 'files dns'],
-  ['networks', 'files'],
+  %W(networks files),
   ['protocols', 'db files'],
   ['services', 'db files'],
   ['ethers', 'db files'],
   ['rpc', 'db files'],
-  ['netgroup', 'nis']
+  %W(netgroup nis)
 ]
 default['base']['common_session_confg'] = [
   ['session [default=1]', 'pam_permit.so'],

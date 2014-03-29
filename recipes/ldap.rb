@@ -28,10 +28,7 @@ template node['base']['ldap'] do
   mode 0644
   owner "root"
   group "root"
-  variables({
-    :data => node['base']['ldap_config'],
-    :delimiter => " "
-  })
+  variables(:data => node['base']['ldap_config'], :delimiter => " ")
 end
 
 ldap_data = data_bag_item('users', 'ldap')[node.chef_environment]
@@ -40,9 +37,7 @@ template node['base']['ldap_secret'] do
   mode 0600
   owner "root"
   group "root"
-  variables({
-     :secret => ldap_data['secret']
-  })
+  variables(:secret => ldap_data['secret'])
 end
 
 template node['base']['nsswitch'] do
@@ -50,10 +45,7 @@ template node['base']['nsswitch'] do
   mode 0644
   owner "root"
   group "root"
-  variables({
-    :data => node['base']['nsswitch_config'],
-    :delimiter => ": "
-  })
+  variables(:data => node['base']['nsswitch_config'], :delimiter => ": ")
 end
 
 template node['base']['common_session'] do
@@ -61,9 +53,5 @@ template node['base']['common_session'] do
   mode 0644
   owner "root"
   group "root"
-  variables({
-    :data => node['base']['common_session_confg'],
-    :delimiter => " "
-  })
-
+  variables(:data => node['base']['common_session_confg'], :delimiter => " ")
 end

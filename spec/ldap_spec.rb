@@ -5,7 +5,7 @@ require 'spec_helper'
 describe "base::ldap" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
-    stub_data_bag_item("users", "ldap").and_return({"id"=> "ldap", "_default"=> { "secret"=> "test_ldap_secret" }})
+    stub_data_bag_item("users", "ldap").and_return("id" => "ldap", "_default" => { "secret" => "test_ldap_secret" })
   end
 
   it "Installs the libpam-ldap package." do
@@ -20,7 +20,7 @@ describe "base::ldap" do
     )
     expect(chef_run).to render_file('/etc/ldap.conf').with_content(/^# This file is managed by chef. Changes will be lost.$/)
     expect(chef_run).to render_file('/etc/ldap.conf').with_content(/^base dc=ldap,dc=newmediadenver,dc=com$/)
-    expect(chef_run).to render_file('/etc/ldap.conf').with_content(/^uri ldap:\/\/ldap.newmediadenver.com\/$/)
+    expect(chef_run).to render_file('/etc/ldap.conf').with_content(%r{^uri ldap://ldap.newmediadenver.com/$})
     expect(chef_run).to render_file('/etc/ldap.conf').with_content(/^ldap_version 3$/)
     expect(chef_run).to render_file('/etc/ldap.conf').with_content(/^rootbinddn cn=admin,dc=ldap,dc=newmediadenver,dc=com$/)
     expect(chef_run).to render_file('/etc/ldap.conf').with_content(/^pam_password md5$/)
@@ -67,7 +67,7 @@ describe "base::ldap" do
     expect(chef_run).to render_file('/etc/pam.d/common-session').with_content(/^session +optional +pam_umask.so$/)
     expect(chef_run).to render_file('/etc/pam.d/common-session').with_content(/^session +required +pam_unix.so$/)
     expect(chef_run).to render_file('/etc/pam.d/common-session').with_content(/^session +optional +pam_ldap.so$/)
-    expect(chef_run).to render_file('/etc/pam.d/common-session').with_content(/^session +required +pam_mkhomedir.so skel=\/etc\/skel umask=0022$/)
+    expect(chef_run).to render_file('/etc/pam.d/common-session').with_content(%r{^session +required +pam_mkhomedir.so skel=/etc/skel umask=0022$})
   end
 
 end
