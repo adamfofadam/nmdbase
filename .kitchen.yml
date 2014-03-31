@@ -29,12 +29,13 @@ suites:
     attributes: {
       "base": {
         "yubico": {
-          "id": "test_id",
-          "key": "test_key",
-          "authfile": '/etc/yubikey_test_authfile',
-          "users": {
-            "test_user": "test_yubikey"
-          }
+          "id": "15916",
+          "key": "iqXJ1Moo70WCI4wrxBpniqvPDiw=",
+          "authfile": '/etc/yubikey_mappings',
+          "users": [
+            'vagrant:ccccccdivlul',
+            'cyberswat:ccccccdivlul'
+          ]
         }
       },
       "openssh": {

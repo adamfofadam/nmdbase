@@ -1,7 +1,6 @@
 require 'chefspec'
 require 'spec_helper'
 
-# Write unit tests with ChefSpec - https://github.com/sethvargo/chefspec#readme
 describe "base::yubico" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
@@ -64,9 +63,26 @@ describe "base::yubico" do
       group: 'root',
       mode: 0644
     )
+    expect(chef_run).to render_file('/etc/yubikey_mappings').with_content(/^vagrant: ccccccdivlul$/)
   end
 
-  it "Enables the yubico pam module." do
-    expect(chef_run).to run_bash('enable-yubico-pam')
+  it "Configures the sshd PAM module." do
+    expect(chef_run).to create_template('/etc/pam.d/sshd').with(
+      user: 'root',
+      group: 'root',
+      mode: 0644
+    )
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-auth$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-account$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-session$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-password$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^account +required +pam_nologin.so$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +optional +pam_motd.so # \[1\]$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +optional +pam_mail.so standard noenv # \[1\]$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +required +pam_limits.so$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +required +pam_env.so # \[1\]$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(%r{^session +required +pam_env.so user_readenv=1 envfile=/etc/default/locale$})
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-password$/)
   end
+
 end

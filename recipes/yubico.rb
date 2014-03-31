@@ -46,19 +46,18 @@ when 'debian', 'ubuntu'
 end
 
 template node['base']['yubico']['authfile'] do
-  source "yubikey_mappings.erb"
+  source "generic.erb"
   mode 0644
   owner "root"
   group "root"
+  variables(:data => node['base']['yubico']['users'])
 end
 
-bash "enable-yubico-pam" do
-  user "root"
-  action :run
-  cmd = "echo -e \"auth required pam_yubico.so mode=client try_first_pass id=#{node['base']['yubico']['id']} key=#{node['base']['yubico']['key']} authfile=#{node['base']['yubico']['authfile']}\n$(cat /etc/pam.d/sshd)\" > /etc/pam.d/sshd"
-  not_if "grep 'auth required pam_yubico.so' /etc/pam.d/sshd"
-  code <<-EOH
-    #{cmd}
-  EOH
+template node['base']['pam']['sshd']['path'] do
+  source "generic.erb"
+  mode 0644
+  owner "root"
+  group "root"
+  variables(:data => node['base']['pam']['sshd']['conf'])
   notifies :restart, "service[ssh]", :delayed
 end

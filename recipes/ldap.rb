@@ -23,16 +23,16 @@
   end
 end
 
-template node['base']['ldap'] do
-  source "key_value.erb"
+template node['base']['ldap']['path'] do
+  source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => node['base']['ldap_config'], :delimiter => " ")
+  variables(:data => node['base']['ldap']['conf'])
 end
 
 ldap_data = data_bag_item('users', 'ldap')[node.chef_environment]
-template node['base']['ldap_secret'] do
+template node['base']['ldap']['secret'] do
   source "ldap.secret.erb"
   mode 0600
   owner "root"
@@ -41,17 +41,17 @@ template node['base']['ldap_secret'] do
 end
 
 template node['base']['nsswitch'] do
-  source "key_value.erb"
+  source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => node['base']['nsswitch_config'], :delimiter => ": ")
+  variables(:data => node['base']['nsswitch_config'])
 end
 
 template node['base']['common_session'] do
-  source "key_value.erb"
+  source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => node['base']['common_session_confg'], :delimiter => " ")
+  variables(:data => node['base']['common_session_confg'])
 end
