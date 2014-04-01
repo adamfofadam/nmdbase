@@ -53,7 +53,7 @@ template node['base']['yubico']['authfile'] do
 end
 
 yubico_data = data_bag_item('users', 'yubico')[node.chef_environment]
-unless yubico_data['id'].nil? || yubico_data['key'].nil?
+if !yubico_data['id'].nil? && !yubico_data['key'].nil?
   # Need to make a deep copy of the original array because ruby is weird.
   sshd_conf = []
   node['base']['pam']['sshd']['conf'].each do |x|

@@ -5,6 +5,8 @@ describe "base::yubico" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
     stub_command("grep 'auth required pam_yubico.so' /etc/pam.d/sshd").and_return(false)
+    stub_data_bag_item("users", "yubico").and_return("id" => "yubico", "_default" => { "id" => "test_yubico_id", "key" => "test_yubico_key" })
+    stub_command("test -f /var/run/pam-debug.log").and_return(false)
   end
   it "Includes the openssh recipe." do
     expect(chef_run).to include_recipe('openssh')
