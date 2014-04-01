@@ -1,8 +1,5 @@
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
 require "chefspec"
 require "chefspec/berkshelf"
-require "codeclimate-test-reporter"
 
 RSpec.configure do |config|
   # Specify the path for Chef Solo to find cookbooks
@@ -12,7 +9,7 @@ RSpec.configure do |config|
   # config.role_path = '/var/roles'
 
   # Specify the Chef log_level (default: :warn)
-  config.log_level = :info
+  # config.log_level = :info
 
   # Specify the path to a local JSON file with Ohai data
   # config.path = 'ohai.json'

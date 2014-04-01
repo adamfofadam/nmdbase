@@ -21,3 +21,6 @@
 include_recipe 'chef-client::delete_validation'
 include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
+include_recipe 'fail2ban'
+include_recipe 'base::ldap'
+include_recipe 'base::yubico'

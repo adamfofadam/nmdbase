@@ -1,4 +1,4 @@
-[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=0.0.1)](https://magnum.travis-ci.com/newmediadenver/nmd-base) [![Code Climate](https://codeclimate.com/repos/53333b9b6956805631002d65/badges/c5e6a3c5d7b1aeb78992/gpa.png)](https://codeclimate.com/repos/53333b9b6956805631002d65/feed)
+[![Build Status](https://magnum.travis-ci.com/newmediadenver/nmd-base.svg?token=xqpRxzbZzgHp6Va3MXGL&branch=master)](https://magnum.travis-ci.com/newmediadenver/nmd-base)
 
 NewMedia Denver Base Cookbook
 =================
@@ -21,16 +21,50 @@ depends 'apt'
 depends 'openssh'
 ```
 
-
 Attributes
 ----------
 ```
-default['base']['yubico']['id'] = "123456"
-default['base']['yubico']['key'] = 'iqXJ1M4o70WCI2wrxBpn9qvGDiw='
+default['base']['yubico']['id'] = "15916"
+default['base']['yubico']['key'] = 'iqXJ1Moo70WCI4wrxBpniqvPDiw='
 default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
+# @TODO: Use LDAP for this data
 default['base']['yubico']['users'] = {
-  'username' => 'ccccccritlul'
+  'vagrant' => 'ccccccdivlul'
 }
+
+default['base']['ldap'] = '/etc/ldap.conf'
+default['base']['ldap_secret'] = '/etc/ldap.secret'
+default['base']['ldap_debug'] = true
+default['base']['ldap_config'] = [
+  %W(base dc=ldap,dc=newmediadenver,dc=com),
+  %W(uri ldap://ldap.newmediadenver.com/),
+  %W(ldap_version 3),
+  %W(rootbinddn cn=admin,dc=ldap,dc=newmediadenver,dc=com),
+  %W(pam_password md5)
+]
+default['base']['nsswitch_config'] = [
+  ['passwd', 'ldap compat'],
+  ['group', 'ldap compat'],
+  ['shadow', 'ldap compat'],
+  ['hosts', 'files dns'],
+  %W(networks files),
+  ['protocols', 'db files'],
+  ['services', 'db files'],
+  ['ethers', 'db files'],
+  ['rpc', 'db files'],
+  %W(netgroup nis)
+]
+default['base']['common_session_confg'] = [
+  ['session [default=1]', 'pam_permit.so'],
+  ['session requisite', 'pam_deny.so'],
+  ['session required', 'pam_permit.so'],
+  ['session optional', 'pam_umask.so'],
+  ['session required', 'pam_unix.so'],
+  ['session optional', 'pam_ldap.so'],
+  ['session required', 'pam_mkhomedir.so skel=/etc/skel umask=0022']
+]
+default['base']['nsswitch'] = '/etc/nsswitch.conf'
+default['base']['common_session'] = '/etc/pam.d/common-session'
 ```
 Recipes
 -------
@@ -39,6 +73,17 @@ Recipes
 
 Finishes establishing a server as a chef client by cleaning up residual
 certificates and enabling the chef-client service to execute periodically.
+
+### base::ldap
+
+````
+base::ldap
+  Installs the LDAP package to set this instance up as a client.
+  Configures the LDAP connection for this client.
+  Installs the LDAP secret authentication content.
+  Modifies the Name Service Switch to use LDAP.
+  It configures the PAM common session to create users from LDAP.
+````
 
 ### base::yubico
 
@@ -75,22 +120,23 @@ Testing
 The cookbook provides the following Rake tasks for testing:
 
 ```
-rake foodcritic                      # Lint Chef cookbooks
-rake integration                     # Alias for kitchen:all
-rake kitchen:all                     # Run all test instances
-rake kitchen:chefclient-ubuntu-1204  # Run chefclient-ubuntu-1204 test instance
-rake kitchen:yubico-ubuntu-1204      # Run yubico-ubuntu-1204 test instance
-rake rubocop                         # Run RuboCop style and lint checks
-rake spec                            # Run ChefSpec examples
-rake test                            # Run all tests
+rake foodcritic                   # Lint Chef cookbooks
+rake integration                  # Alias for kitchen:all
+rake kitchen:all                  # Run all test instances
+rake kitchen:default-ubuntu-1204  # Run default-ubuntu-1204 test instance
+rake kitchen:ldap-ubuntu-1204     # Run ldap-ubuntu-1204 test instance
+rake kitchen:yubico-ubuntu-1204   # Run yubico-ubuntu-1204 test instance
+rake rubocop                      # Run RuboCop style and lint checks
+rake spec                         # Run ChefSpec examples
+rake test                         # Run all tests
 ```
 
 License and Author
 ------------------
 
-Author:: Kevin Bridges kevin@newmediadenver.com
+Author:: Kevin Bridges
 
-Copyright:: 2014, NewMedia! Denver
+Copyright:: 2014, NewMedia Denver
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -114,4 +160,3 @@ We welcome contributed improvements and bug fixes via the usual workflow:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new pull request
-6. Profit!

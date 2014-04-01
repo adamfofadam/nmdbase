@@ -1,11 +1,12 @@
 require 'chefspec'
 require 'spec_helper'
 
-# Write unit tests with ChefSpec - https://github.com/sethvargo/chefspec#readme
 describe "base::yubico" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
     stub_command("grep 'auth required pam_yubico.so' /etc/pam.d/sshd").and_return(false)
+    stub_data_bag_item("users", "yubico").and_return("id" => "yubico", "_default" => { "id" => "test_yubico_id", "key" => "test_yubico_key" })
+    stub_command("test -f /var/run/pam-debug.log").and_return(false)
   end
   it "Includes the openssh recipe." do
     expect(chef_run).to include_recipe('openssh')
@@ -64,9 +65,30 @@ describe "base::yubico" do
       group: 'root',
       mode: 0644
     )
+    expect(chef_run).to render_file('/etc/yubikey_mappings').with_content(/^vagrant: ccccccdivlul$/)
   end
 
-  it "Enables the yubico pam module." do
-    expect(chef_run).to run_bash('enable-yubico-pam')
+  it "Configures the sshd PAM module." do
+    expect(chef_run).to create_template('/etc/pam.d/sshd').with(
+      user: 'root',
+      group: 'root',
+      mode: 0644
+    )
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-auth$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-account$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-session$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-password$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^account +required +pam_nologin.so$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +optional +pam_motd.so # \[1\]$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +optional +pam_mail.so standard noenv # \[1\]$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +required +pam_limits.so$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^session +required +pam_env.so # \[1\]$/)
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(%r{^session +required +pam_env.so user_readenv=1 envfile=/etc/default/locale$})
+    expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-password$/)
   end
+
+  it "Prepares for PAM debug logging." do
+    expect(chef_run).to run_bash('Prepare for debug logging.')
+  end
+
 end

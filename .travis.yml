@@ -3,16 +3,16 @@ rvm:
 - 1.9.3
 - 2.0.0
 before_install: 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
-install: bundle install --without=integration
-script: CODECLIMATE_REPO_TOKEN=61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
-  bundle exec rake test
+script: bundle exec rake test
 branches:
   only:
   - master
-addons:
-  code_climate:
-    repo_token: 61a0d4eb07d7694fc74c8098020a724884bc8425c89d307687230ae2164f928d
 notifications:
   hipchat:
     rooms:
       secure: "gmI8Dmv3pA49PkTi+1LjwyLZCCb58hKAADKkD/pA+VJQsljAd2uN4Pu2Vy85pCpMvTvQX4dwZa5S57hQGarLeXebxkAdo1fiSdYd9npB+Teabjfnydhu6Mj/ghmtRTV0By0oQ5Vnxo1MjFlHTbMw9/FU+UeqN5sC950ELf+5eTI="
+language: ruby
+install: bundle install --without integration --deployment
+cache:
+  directories:
+  - vendor/bundle

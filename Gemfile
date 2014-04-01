@@ -6,10 +6,9 @@ gem "rubocop"
 gem "rspec"
 gem "chefspec"
 gem "berkshelf"
+gem "net-ldap"
 
 group :integration do
   gem "test-kitchen", "~> 1.0"
   gem "kitchen-vagrant"
 end
-
-gem "codeclimate-test-reporter", group: :test, require: nil
