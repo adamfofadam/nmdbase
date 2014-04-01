@@ -134,7 +134,7 @@ rake test                         # Run all tests
 License and Author
 ------------------
 
-Author:: NewMedia! Denver support@newmediadenver.com
+Author:: Kevin Bridges
 
 Copyright:: 2014, NewMedia Denver
 

@@ -12,6 +12,10 @@ describe "base::ldap" do
     expect(chef_run).to install_package('libpam-ldap')
   end
 
+  it "Installs LDAP command line utilities." do
+    expect(chef_run).to install_package('ldap-utils')
+  end
+
   it "Configures the LDAP connection for this client." do
     expect(chef_run).to create_template('/etc/ldap.conf').with(
       user: 'root',

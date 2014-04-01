@@ -6,6 +6,7 @@ gem "rubocop"
 gem "rspec"
 gem "chefspec"
 gem "berkshelf"
+gem "net-ldap"
 
 group :integration do
   gem "test-kitchen", "~> 1.0"

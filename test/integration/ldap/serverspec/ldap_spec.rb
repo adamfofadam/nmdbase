@@ -13,6 +13,10 @@ describe package('libpam-ldap') do
   it { should be_installed }
 end
 
+describe package('ldap-utils') do
+  it { should be_installed }
+end
+
 describe file('/etc/ldap.conf') do
   it { should be_file }
   it { should be_mode 644 }

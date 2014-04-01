@@ -120,6 +120,7 @@ GEM
     multi_json (1.9.2)
     multipart-post (1.2.0)
     net-http-persistent (2.9.4)
+    net-ldap (0.5.1)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
@@ -241,6 +242,7 @@ DEPENDENCIES
   chefspec
   foodcritic (~> 3.0)
   kitchen-vagrant
+  net-ldap
   rake
   rspec
   rubocop

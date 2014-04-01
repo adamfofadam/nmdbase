@@ -16,8 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-%w(libpam-ldap).each do |pkg|
+%w(libpam-ldap ldap-utils).each do |pkg|
   package pkg do
     action :install
   end
