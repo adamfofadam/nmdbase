@@ -26,12 +26,37 @@ suites:
   - name: yubico
     run_list:
       - recipe[base::yubico]
+    data_bags_path: "~/nmd-chef/data_bags"
+    attributes: {
+      "base": {
+        "yubico": {
+          "authfile": '/etc/yubikey_mappings',
+          "users": [
+            'vagrant:ccccccdivlul',
+            'cyberswat:ccccccdivlul'
+          ]
+        }
+      },
+      "openssh": {
+        "server": {
+          "use_p_a_m": "yes",
+          "challenge_response_authentication": "yes",
+          "password_authentication": "yes"
+        }
+      }
+    }
+  - name: tfa
+    run_list:
+      - recipe[base::ldap]
+      - recipe[base::yubico]
+    data_bags_path: "~/nmd-chef/data_bags"
     attributes: {
       "base": {
         "yubico": {
           "id": "15916",
           "key": "iqXJ1Moo70WCI4wrxBpniqvPDiw=",
           "authfile": '/etc/yubikey_mappings',
+          "debug": true,
           "users": [
             'vagrant:ccccccdivlul',
             'cyberswat:ccccccdivlul'

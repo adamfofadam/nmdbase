@@ -26,7 +26,6 @@ include_recipe 'openssh'
 end
 
 case node['platform']
-  # @TODO: Cover additional operating systems
 when 'debian', 'ubuntu'
   execute "add-apt-repository" do
     command "add-apt-repository ppa:yubico/stable"
@@ -53,11 +52,32 @@ template node['base']['yubico']['authfile'] do
   variables(:data => node['base']['yubico']['users'])
 end
 
+yubico_data = data_bag_item('users', 'yubico')[node.chef_environment]
+unless yubico_data['id'].nil? || yubico_data['key'].nil?
+  # Need to make a deep copy of the original array because ruby is weird.
+  sshd_conf = []
+  node['base']['pam']['sshd']['conf'].each do |x|
+    sshd_conf.push(/^auth required pam_yubico.so/.match(x) ? "#{x} id=#{yubico_data['id']} key=#{yubico_data['key']}" : x)
+  end
+else
+  sshd_conf = node['base']['pam']['sshd']['conf']
+end
+
 template node['base']['pam']['sshd']['path'] do
   source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => node['base']['pam']['sshd']['conf'])
+  variables(:data => sshd_conf)
   notifies :restart, "service[ssh]", :delayed
+end
+
+# Debug logging is enabled by adding "debug" to node['base']['pam']['sshd']['conf']
+bash 'Prepare for debug logging.' do
+  code <<-EOH
+  touch /var/run/pam-debug.log
+  chmod go+w /var/run/pam-debug.log
+  EOH
+  creates "/var/run/pam-debug.log"
+  not_if "test -f /var/run/pam-debug.log"
 end

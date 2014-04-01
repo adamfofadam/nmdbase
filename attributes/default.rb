@@ -16,8 +16,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# An array of PAM sshd configuration options that should include enabling
+# pam_yubico.so
 default['base']['pam']['sshd']['conf'] = [
-  'auth required pam_yubico.so mode=client try_first_pass id=15916 key=iqXJ1Moo70WCI4wrxBpniqvPDiw= authfile=/etc/yubikey_mappings',
+  # Activate pam_yubico.so as the first item. If you create
+  # data_bags/users/yubico.json with your "key" and "id" from
+  # https://upgrade.yubico.com/getapikey/ it will be added to this string.
+  # Otherwuse, you will need to add the id and key to this string.
+  'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug',
   # Standard Un*x authentication.
   '@include common-auth',
   # Disallow non-root logins when /etc/nologin exists.
@@ -41,8 +47,16 @@ default['base']['pam']['sshd']['conf'] = [
   # Standard Un*x password updating.
   '@include common-password'
 ]
+# The path to the ssh PAM conf file.
 default['base']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 
+# See http://opensource.yubico.com/yubico-pam/
+default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
+default['base']['yubico']['users'] = [
+  'vagrant: ccccccdivlul'
+]
+
+# An array of LDAP configuration options to enable the node as a LDAP client.
 default['base']['ldap']['conf'] = [
   'base dc=ldap,dc=newmediadenver,dc=com',
   'uri ldap://ldap.newmediadenver.com/',
@@ -53,17 +67,9 @@ default['base']['ldap']['conf'] = [
 default['base']['ldap']['path'] = '/etc/ldap.conf'
 default['base']['ldap']['secret'] = '/etc/ldap.secret'
 
-# See http://opensource.yubico.com/yubico-pam/
-
-default['base']['yubico']['id'] = "15916"
-default['base']['yubico']['key'] = 'iqXJ1Moo70WCI4wrxBpniqvPDiw='
-default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
-default['base']['yubico']['users'] = [
-  'vagrant: ccccccdivlul'
-]
-
 # Manage nsswitch here to add ldap.
 default['base']['nsswitch'] = '/etc/nsswitch.conf'
+# An array of LDAP configuration options to enable the node as a LDAP client.
 default['base']['nsswitch_config'] = [
   'passwd: ldap compat',
   'group: ldap compat',

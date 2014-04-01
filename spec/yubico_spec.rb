@@ -85,4 +85,8 @@ describe "base::yubico" do
     expect(chef_run).to render_file('/etc/pam.d/sshd').with_content(/^@include common-password$/)
   end
 
+  it "Prepares for PAM debug logging." do
+    expect(chef_run).to run_bash('Prepare for debug logging.')
+  end
+
 end
