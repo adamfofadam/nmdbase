@@ -1,0 +1,31 @@
+require 'chefspec'
+require 'spec_helper'
+
+describe "base::default" do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  before do
+    stub_data_bag_item("users", "ldap").and_return("id" => "ldap", "_default" => { "secret" => "test_ldap_secret" })
+    stub_data_bag_item("users", "yubico").and_return("id" => "yubico", "_default" => { "id" => "test_yubico_id", "key" => "test_yubico_key" })
+    stub_command("test -f /var/run/pam-debug.log").and_return(false)
+  end
+
+  it "Includes the fail2ban recipe." do
+    expect(chef_run).to include_recipe('fail2ban')
+  end
+
+  it "Configures this instance as an LDAP client." do
+    expect(chef_run).to include_recipe('base::ldap')
+  end
+
+  it "Configures this instance as an Yubico API client." do
+    expect(chef_run).to include_recipe('base::yubico')
+  end
+
+  it "Configures this instance as a chef client." do
+    expect(chef_run).to include_recipe('chef-client::config')
+  end
+
+  it "Configures the chef-client service." do
+    expect(chef_run).to include_recipe('chef-client::service')
+  end
+end
