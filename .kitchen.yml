@@ -43,14 +43,14 @@ suites:
             "port": "ssh",
             "filter": "sshd",
             "logpath": "/var/log/auth.log",
-            "maxretry": "3"
+            "maxretry": "6"
           },
           "xinetd-fail": {
             "enabled": "true",
             "port": "all",
             "filter": "xinetd-fail",
             "logpath": "/var/log/daemon.log",
-            "maxretry": "3",
+            "maxretry": "6",
             "banaction": "iptables-multiport-log"
           },
           "ssh-ddos": {
@@ -58,7 +58,7 @@ suites:
             "port": "ssh",
             "filter": "sshd-ddos",
             "logpath": "/var/log/auth.log",
-            "maxretry": "4",
+            "maxretry": "6",
             "banaction": "iptables-multiport-log"
           }
         }
