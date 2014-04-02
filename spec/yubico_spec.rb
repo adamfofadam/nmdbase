@@ -65,7 +65,7 @@ describe "base::yubico" do
       group: 'root',
       mode: 0644
     )
-    expect(chef_run).to render_file('/etc/yubikey_mappings').with_content(/^vagrant: ccccccdivlul$/)
+    expect(chef_run).to render_file('/etc/yubikey_mappings').with_content(/^vagrant: cccccexample$/)
   end
 
   it "Configures the sshd PAM module." do

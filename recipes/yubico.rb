@@ -1,8 +1,9 @@
 #
-# Cookbook Name:: yubico
-# Recipe:: default
+# Cookbook Name:: base
+# Recipe:: yubico
 #
-# Copyright (C) 2014 NewMedia! Denver support@newmediadenver.com
+# Author:: Kevin Bridges
+# Copyright:: 2014, NewMedia Denver
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 include_recipe 'openssh'
 
 %w(python-software-properties).each do |pkg|

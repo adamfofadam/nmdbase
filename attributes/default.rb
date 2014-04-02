@@ -2,7 +2,8 @@
 # Cookbook Name:: base
 # Attributes:: default
 #
-# Copyright (C) 2014 NewMedia! Denver support@newmediadenver.com
+# Author:: Kevin Bridges
+# Copyright:: 2014, NewMedia Denver
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,14 +16,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
 # An array of PAM sshd configuration options that should include enabling
 # pam_yubico.so
 default['base']['pam']['sshd']['conf'] = [
   # Activate pam_yubico.so as the first item. If you create
   # data_bags/users/yubico.json with your "key" and "id" from
   # https://upgrade.yubico.com/getapikey/ it will be added to this string.
-  # Otherwuse, you will need to add the id and key to this string.
+  # Otherwise, you will need to add the id and key to this string.  There is an
+  # example of LDAP integration in the default suite of .kitchen.yml
   'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug',
   # Standard Un*x authentication.
   '@include common-auth',
@@ -50,24 +52,27 @@ default['base']['pam']['sshd']['conf'] = [
 # The path to the ssh PAM conf file.
 default['base']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 
-# See http://opensource.yubico.com/yubico-pam/
+# Define yubikey mappings according to http://opensource.yubico.com/yubico-pam/
+# if validating yubikeys from a file and not LDAP.
 default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
 default['base']['yubico']['users'] = [
-  'vagrant: ccccccdivlul'
+  'vagrant: cccccexample'
 ]
 
 # An array of LDAP configuration options to enable the node as a LDAP client.
 default['base']['ldap']['conf'] = [
-  'base dc=ldap,dc=newmediadenver,dc=com',
-  'uri ldap://ldap.newmediadenver.com/',
+  'base dc=ldap,dc=example,dc=com',
+  'uri ldap://ldap.example.com/',
   'ldap_version 3',
-  'rootbinddn cn=admin,dc=ldap,dc=newmediadenver,dc=com',
+  'rootbinddn cn=admin,dc=ldap,dc=example,dc=com',
   'pam_password md5'
 ]
 default['base']['ldap']['path'] = '/etc/ldap.conf'
+# The location of the ldap secret file. The password is stored in the "secret"
+# key of data_bags/users/ldap
 default['base']['ldap']['secret'] = '/etc/ldap.secret'
 
-# Manage nsswitch here to add ldap.
+# Manage nsswitch here to enable LDAP.
 default['base']['nsswitch'] = '/etc/nsswitch.conf'
 # An array of LDAP configuration options to enable the node as a LDAP client.
 default['base']['nsswitch_config'] = [
@@ -83,7 +88,7 @@ default['base']['nsswitch_config'] = [
   'netgroup: nis'
 ]
 
-# Modify the PAM common-session to create user accounts based on LDAP data.
+# Modify the PAM common-session to create user system accounts from LDAP data.
 default['base']['common_session'] = '/etc/pam.d/common-session'
 default['base']['common_session_confg'] = [
   'session [default=1] pam_permit.so',

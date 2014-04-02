@@ -2,7 +2,8 @@
 # Cookbook Name:: base
 # Recipe:: default
 #
-# Copyright (C) 2014 NewMedia! Denver support@newmediadenver.com
+# Author:: Kevin Bridges
+# Copyright:: 2014, NewMedia Denver
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +18,6 @@
 # limitations under the License.
 #
 
-# Include recipes
 include_recipe 'fail2ban'
 include_recipe 'base::ldap'
 include_recipe 'base::yubico'
