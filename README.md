@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/newmediadenver/nmd-base.svg?branch=master)](https://travis-ci.org/newmediadenver/nmd-base)
+[![Build Status](https://travis-ci.org/newmediadenver/nmdbase.svg?branch=master)](https://travis-ci.org/newmediadenver/nmdbase)
 
 NewMedia Denver Base Cookbook
 =================
