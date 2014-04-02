@@ -19,7 +19,7 @@
 
 # An array of PAM sshd configuration options that should include enabling
 # pam_yubico.so
-default['base']['pam']['sshd']['conf'] = [
+default['nmdbase']['pam']['sshd']['conf'] = [
   # Activate pam_yubico.so as the first item. If you create
   # data_bags/users/yubico.json with your "key" and "id" from
   # https://upgrade.yubico.com/getapikey/ it will be added to this string.
@@ -50,32 +50,32 @@ default['base']['pam']['sshd']['conf'] = [
   '@include common-password'
 ]
 # The path to the ssh PAM conf file.
-default['base']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
+default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 
 # Define yubikey mappings according to http://opensource.yubico.com/yubico-pam/
 # if validating yubikeys from a file and not LDAP.
-default['base']['yubico']['authfile'] = '/etc/yubikey_mappings'
-default['base']['yubico']['users'] = [
+default['nmdbase']['yubico']['authfile'] = '/etc/yubikey_mappings'
+default['nmdbase']['yubico']['users'] = [
   'vagrant: cccccexample'
 ]
 
 # An array of LDAP configuration options to enable the node as a LDAP client.
-default['base']['ldap']['conf'] = [
+default['nmdbase']['ldap']['conf'] = [
   'base dc=ldap,dc=example,dc=com',
   'uri ldap://ldap.example.com/',
   'ldap_version 3',
   'rootbinddn cn=admin,dc=ldap,dc=example,dc=com',
   'pam_password md5'
 ]
-default['base']['ldap']['path'] = '/etc/ldap.conf'
+default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
 # The location of the ldap secret file. The password is stored in the "secret"
 # key of data_bags/users/ldap
-default['base']['ldap']['secret'] = '/etc/ldap.secret'
+default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
 
 # Manage nsswitch here to enable LDAP.
-default['base']['nsswitch'] = '/etc/nsswitch.conf'
+default['nmdbase']['nsswitch'] = '/etc/nsswitch.conf'
 # An array of LDAP configuration options to enable the node as a LDAP client.
-default['base']['nsswitch_config'] = [
+default['nmdbase']['nsswitch_config'] = [
   'passwd: ldap compat',
   'group: ldap compat',
   'shadow: ldap compat',
@@ -89,8 +89,8 @@ default['base']['nsswitch_config'] = [
 ]
 
 # Modify the PAM common-session to create user system accounts from LDAP data.
-default['base']['common_session'] = '/etc/pam.d/common-session'
-default['base']['common_session_confg'] = [
+default['nmdbase']['common_session'] = '/etc/pam.d/common-session'
+default['nmdbase']['common_session_confg'] = [
   'session [default=1] pam_permit.so',
   'session requisite pam_deny.so',
   'session required pam_permit.so',
