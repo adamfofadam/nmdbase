@@ -1,7 +1,7 @@
 require 'chefspec'
 require 'spec_helper'
 
-describe "base::yubico" do
+describe "nmdbase::yubico" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
     stub_command("grep 'auth required pam_yubico.so' /etc/pam.d/sshd").and_return(false)

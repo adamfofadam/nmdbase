@@ -37,11 +37,11 @@ depends 'fail2ban'
 Attributes
 ----------
 
-### base::default
+### nmdbase::default
 
 No attributes.
 
-### base::ldap
+### nmdbase::ldap
 
 ````ruby
 # An array of LDAP configuration options to enable the node as a LDAP client.
@@ -86,7 +86,7 @@ default['base']['common_session_confg'] = [
 ]
 ````
 
-### base::yubico
+### nmdbase::yubico
 
 ````ruby
 # An array of PAM sshd configuration options that should include enabling
@@ -136,15 +136,15 @@ default['base']['yubico']['users'] = [
 Recipes
 -------
 
-### base::default
+### nmdbase::default
 
 Finishes establishing a server as a chef client by cleaning up residual
 certificates and enabling the chef-client service to execute periodically.
-Additionally, This enables the `base::ldap` and `base::yubico` recipes
+Additionally, This enables the `nmdbase::ldap` and `nmdbase::yubico` recipes
 providing a two factor solution backed by LDAP and YubiKey.
 
 ````
-base::default
+nmdbase::default
   Includes the fail2ban recipe.
   Configures this instance as an LDAP client.
   Configures this instance as an Yubico API client.
@@ -152,10 +152,10 @@ base::default
   Configures the chef-client service.
 ````
 
-### base::ldap
+### nmdbase::ldap
 
 ````
-base::ldap
+nmdbase::ldap
   Installs the LDAP package to set this instance up as a client.
   Installs LDAP command line utilities.
   Configures the LDAP connection for this client.
@@ -164,10 +164,10 @@ base::ldap
   It configures the PAM common session to create users from LDAP.
 ````
 
-### base::yubico
+### nmdbase::yubico
 
 ````
-base::yubico
+nmdbase::yubico
   Includes the openssh recipe.
   Installs the openssh-client.
   Installs the openssh-server.

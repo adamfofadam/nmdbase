@@ -1,8 +1,7 @@
 require 'chefspec'
 require 'spec_helper'
 
-# Write unit tests with ChefSpec - https://github.com/sethvargo/chefspec#readme
-describe "base::ldap" do
+describe "nmdbase::ldap" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
     stub_data_bag_item("users", "ldap").and_return("id" => "ldap", "_default" => { "secret" => "test_ldap_secret" })

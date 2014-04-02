@@ -1,7 +1,7 @@
 require 'chefspec'
 require 'spec_helper'
 
-describe "base::default" do
+describe "nmdbase::default" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
     stub_data_bag_item("users", "ldap").and_return("id" => "ldap", "_default" => { "secret" => "test_ldap_secret" })
@@ -14,11 +14,11 @@ describe "base::default" do
   end
 
   it "Configures this instance as an LDAP client." do
-    expect(chef_run).to include_recipe('base::ldap')
+    expect(chef_run).to include_recipe('nmdbase::ldap')
   end
 
   it "Configures this instance as an Yubico API client." do
-    expect(chef_run).to include_recipe('base::yubico')
+    expect(chef_run).to include_recipe('nmdbase::yubico')
   end
 
   it "Configures this instance as a chef client." do

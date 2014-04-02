@@ -19,7 +19,7 @@
 #
 
 include_recipe 'fail2ban'
-include_recipe 'base::ldap'
-include_recipe 'base::yubico'
+include_recipe 'nmdbase::ldap'
+include_recipe 'nmdbase::yubico'
 include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'

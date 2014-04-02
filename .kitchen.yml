@@ -14,7 +14,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[base::default]
+      - recipe[nmdbase::default]
     data_bags_path: "~/nmd-chef/data_bags"
     attributes: {
       "base": {
@@ -73,12 +73,12 @@ suites:
     }
   - name: ldap
     run_list:
-      - recipe[base::ldap]
+      - recipe[nmdbase::ldap]
     data_bags_path: "~/nmd-chef/data_bags"
     attributes:
   - name: yubico
     run_list:
-      - recipe[base::yubico]
+      - recipe[nmdbase::yubico]
     data_bags_path: "~/nmd-chef/data_bags"
     attributes: {
       "base": {
@@ -100,8 +100,8 @@ suites:
     }
   - name: yubico-ldap
     run_list:
-      - recipe[base::ldap]
-      - recipe[base::yubico]
+      - recipe[nmdbase::ldap]
+      - recipe[nmdbase::yubico]
     data_bags_path: "~/nmd-chef/data_bags"
     attributes: {
       "base": {
