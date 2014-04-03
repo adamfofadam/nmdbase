@@ -7,6 +7,7 @@ gem "rspec"
 gem "chefspec"
 gem "berkshelf"
 gem "net-ldap"
+gem "travis"
 
 group :integration do
   gem "test-kitchen", "~> 1.0"

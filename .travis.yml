@@ -10,7 +10,7 @@ branches:
 notifications:
   hipchat:
     rooms:
-      secure: "gmI8Dmv3pA49PkTi+1LjwyLZCCb58hKAADKkD/pA+VJQsljAd2uN4Pu2Vy85pCpMvTvQX4dwZa5S57hQGarLeXebxkAdo1fiSdYd9npB+Teabjfnydhu6Mj/ghmtRTV0By0oQ5Vnxo1MjFlHTbMw9/FU+UeqN5sC950ELf+5eTI="
+      secure: "PZE3vv48b+vEZiCXW/pSwWMUGZ6WZqikI9UcgfLGCR3YDLOVL/ClcUdGMyl1OtkFPdvbJ1TJ1DJnEygJTyrp1FKLDxFbUkL1cVsLKkw7DPnhA1kCDMAxcSCXVisqK9FphWIoFxjeGzG9KClKiioWzv7a8tbeJDXXS9Bh723afsg="
 language: ruby
 install: bundle install --without integration --deployment
 cache:
