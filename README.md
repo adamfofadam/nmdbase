@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/newmediadenver/nmdbase.svg?branch=master)](https://travis-ci.org/newmediadenver/nmdbase) [![Coverage Status](https://coveralls.io/repos/newmediadenver/nmdbase/badge.png?branch=master)](https://coveralls.io/r/newmediadenver/nmdbase?branch=master)
+[![Build Status](https://travis-ci.org/newmediadenver/nmdbase.svg?branch=master)](https://travis-ci.org/newmediadenver/nmdbase) [![Coverage Status](https://coveralls.io/repos/newmediadenver/nmdbase/badge.png?branch=master)](https://coveralls.io/r/newmediadenver/nmdbase?branch=master) [![Dependency Status](https://gemnasium.com/newmediadenver/nmdbase.svg)](https://gemnasium.com/newmediadenver/nmdbase)
 
 NewMedia Denver Base Cookbook
 =================
