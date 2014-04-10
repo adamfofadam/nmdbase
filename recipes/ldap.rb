@@ -23,21 +23,21 @@
   end
 end
 
+ldap = data_bag_item('nmdbase', 'ldap')[node.chef_environment]
 template node['nmdbase']['ldap']['path'] do
   source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => node['nmdbase']['ldap']['conf'])
+  variables(:data => ldap['conf'])
 end
 
-ldap_data = data_bag_item('users', 'ldap')[node.chef_environment]
 template node['nmdbase']['ldap']['secret'] do
   source "ldap.secret.erb"
   mode 0600
   owner "root"
   group "root"
-  variables(:secret => ldap_data['secret'])
+  variables(:secret => ldap['secret'])
 end
 
 template node['nmdbase']['nsswitch'] do

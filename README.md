@@ -41,14 +41,6 @@ No attributes.
 
 ### nmdbase::ldap
 
-    # An array of LDAP configuration options to enable the node as a LDAP client.
-    default['nmdbase']['ldap']['conf'] = [
-      'base dc=ldap,dc=example,dc=com',
-      'uri ldap://ldap.example.com/',
-      'ldap_version 3',
-      'rootbinddn cn=admin,dc=ldap,dc=example,dc=com',
-      'pam_password md5'
-    ]
     default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
     # The location of the ldap secret file. The password is stored in the "secret"
     # key of data_bags/users/ldap
@@ -154,6 +146,25 @@ providing a two factor solution backed by LDAP and YubiKey.
       Installs the LDAP secret authentication content.
       Modifies the Name Service Switch to use LDAP.
       It configures the PAM common session to create users from LDAP.
+
+The ldap recipe requires it's configuration information to be stored in a
+databag. This should include both the conf and secret keys as illustrated in
+the following example.  Each element in conf gets written to the ldap config
+file.  This should generally be `data_bags/nmdbase/ldap.json`.
+
+    {
+      "id": "ldap",
+      "_default": {
+        "conf":  [
+          "base dc=ldap,dc=example,dc=com",
+          "uri ldap://ldap.example.com/",
+          "ldap_version 3",
+          "rootbinddn cn=admin,dc=ldap,dc=example,dc=com",
+          "pam_password md5"
+        ],
+        "secret": "secretFoo"
+      }
+    }
 
 ### nmdbase::yubico
 

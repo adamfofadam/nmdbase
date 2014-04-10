@@ -18,13 +18,13 @@
 # limitations under the License.
 
 # An array of PAM sshd configuration options that should include enabling
-# pam_yubico.so
+# pam_yubico.so.  The recipe will read data_bags/nmdbase/yubico['pam_sshd_conf']
+# if you prefer to store the array there.
 default['nmdbase']['pam']['sshd']['conf'] = [
   # Activate pam_yubico.so as the first item. If you create
   # data_bags/users/yubico.json with your "key" and "id" from
   # https://upgrade.yubico.com/getapikey/ it will be added to this string.
-  # Otherwise, you will need to add the id and key to this string.  There is an
-  # example of LDAP integration in the default suite of .kitchen.yml
+  # Otherwise, you should look into storing this data in the data_bag.
   'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug',
   # Standard Un*x authentication.
   '@include common-auth',
@@ -55,18 +55,7 @@ default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 # Define yubikey mappings according to http://opensource.yubico.com/yubico-pam/
 # if validating yubikeys from a file and not LDAP.
 default['nmdbase']['yubico']['authfile'] = '/etc/yubikey_mappings'
-default['nmdbase']['yubico']['users'] = [
-  'vagrant: cccccexample'
-]
 
-# An array of LDAP configuration options to enable the node as a LDAP client.
-default['nmdbase']['ldap']['conf'] = [
-  'base dc=ldap,dc=example,dc=com',
-  'uri ldap://ldap.example.com/',
-  'ldap_version 3',
-  'rootbinddn cn=admin,dc=ldap,dc=example,dc=com',
-  'pam_password md5'
-]
 default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
 # The location of the ldap secret file. The password is stored in the "secret"
 # key of data_bags/users/ldap

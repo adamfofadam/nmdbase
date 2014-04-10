@@ -19,3 +19,5 @@
 
 # Macs
 .DS_Store
+
+/coverage

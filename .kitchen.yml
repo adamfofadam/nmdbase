@@ -15,27 +15,8 @@ suites:
   - name: default
     run_list:
       - recipe[nmdbase::default]
-    data_bags_path: "~/nmd-chef/data_bags"
+    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
     attributes: {
-      "base": {
-        "pam": {
-          "sshd": {
-            "conf": [
-              'auth required pam_yubico.so mode=client try_first_pass ldap_uri=ldap://ldap.newmediadenver.com/ ldapdn=ou=people,dc=ldap,dc=newmediadenver,dc=com user_attr=cn yubi_attr=departmentNumber debug',
-              '@include common-auth',
-              'account    required     pam_nologin.so',
-              '@include common-account',
-              '@include common-session',
-              'session    optional     pam_motd.so # [1]',
-              'session    optional     pam_mail.so standard noenv # [1]',
-              'session    required     pam_limits.so',
-              'session    required     pam_env.so # [1]',
-              'session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale',
-              '@include common-password'
-            ]
-          }
-        }
-      },
       "fail2ban": {
         "services": {
           "ssh": {
@@ -74,22 +55,13 @@ suites:
   - name: ldap
     run_list:
       - recipe[nmdbase::ldap]
-    data_bags_path: "~/nmd-chef/data_bags"
+    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
     attributes:
   - name: yubico
     run_list:
       - recipe[nmdbase::yubico]
-    data_bags_path: "~/nmd-chef/data_bags"
+    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
     attributes: {
-      "base": {
-        "yubico": {
-          "authfile": '/etc/yubikey_mappings',
-          "users": [
-            'vagrant:ccccccdivlul',
-            'cyberswat:ccccccdivlul'
-          ]
-        }
-      },
       "openssh": {
         "server": {
           "use_p_a_m": "yes",
@@ -102,27 +74,8 @@ suites:
     run_list:
       - recipe[nmdbase::ldap]
       - recipe[nmdbase::yubico]
-    data_bags_path: "~/nmd-chef/data_bags"
+    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
     attributes: {
-      "base": {
-        "pam": {
-          "sshd": {
-            "conf": [
-              'auth required pam_yubico.so mode=client try_first_pass ldap_uri=ldap://ldap.newmediadenver.com/ ldapdn=ou=people,dc=ldap,dc=newmediadenver,dc=com user_attr=cn yubi_attr=departmentNumber debug',
-              '@include common-auth',
-              'account    required     pam_nologin.so',
-              '@include common-account',
-              '@include common-session',
-              'session    optional     pam_motd.so # [1]',
-              'session    optional     pam_mail.so standard noenv # [1]',
-              'session    required     pam_limits.so',
-              'session    required     pam_env.so # [1]',
-              'session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale',
-              '@include common-password'
-            ]
-          }
-        }
-      },
       "openssh": {
         "server": {
           "use_p_a_m": "yes",

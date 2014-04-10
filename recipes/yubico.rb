@@ -44,35 +44,28 @@ when 'debian', 'ubuntu'
   end
 end
 
+yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
+
 template node['nmdbase']['yubico']['authfile'] do
   source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => node['nmdbase']['yubico']['users'])
+  variables(:data => yubico_data['users'])
 end
 
-yubico_data = data_bag_item('users', 'yubico')[node.chef_environment]
-if !yubico_data['id'].nil? && !yubico_data['key'].nil?
-  # Need to make a deep copy of the original array because ruby is weird.
-  sshd_conf = []
-  node['nmdbase']['pam']['sshd']['conf'].each do |x|
-    sshd_conf.push(/^auth required pam_yubico.so/.match(x) ? "#{x} id=#{yubico_data['id']} key=#{yubico_data['key']}" : x)
-  end
-else
-  sshd_conf = node['nmdbase']['pam']['sshd']['conf']
-end
-
+pam_sshd_conf = yubico_data['pam_sshd_conf'].nil? ? node['nmdbase']['pam']['sshd']['conf'] : yubico_data['pam_sshd_conf']
 template node['nmdbase']['pam']['sshd']['path'] do
   source "generic.erb"
   mode 0644
   owner "root"
   group "root"
-  variables(:data => sshd_conf)
+  variables(:data => pam_sshd_conf)
   notifies :restart, "service[ssh]", :delayed
 end
 
-# Debug logging is enabled by adding "debug" to node['nmdbase']['pam']['sshd']['conf']
+# Debug logging is enabled by adding a debug flag to the pam sshd conf. This
+# sets up the server in case that flag is ever enabled.
 bash 'Prepare for debug logging.' do
   code <<-EOH
   touch /var/run/pam-debug.log

@@ -4,7 +4,18 @@ require 'spec_helper'
 describe "nmdbase::ldap" do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
-    stub_data_bag_item("users", "ldap").and_return("id" => "ldap", "_default" => { "secret" => "test_ldap_secret" })
+    stub_data_bag_item("nmdbase", "ldap").and_return(
+      "id" => "ldap",
+      "_default" => {
+        "conf" =>  [
+          "base dc=ldap,dc=example,dc=com",
+          "uri ldap://ldap.example.com/",
+          "ldap_version 3",
+          "rootbinddn cn=admin,dc=ldap,dc=example,dc=com",
+          "pam_password md5"
+        ],
+        "secret" => "test_ldap_secret" }
+      )
   end
 
   it "Installs the LDAP package to set this instance up as a client." do
@@ -59,7 +70,7 @@ describe "nmdbase::ldap" do
     expect(chef_run).to render_file('/etc/nsswitch.conf').with_content(/^netgroup: +nis$/)
   end
 
-  it "It configures the PAM common session to create users from LDAP." do
+  it "Configures the PAM common session to create users from LDAP." do
     expect(chef_run).to create_template('/etc/pam.d/common-session').with(
       user: 'root',
       group: 'root',
