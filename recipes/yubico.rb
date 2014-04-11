@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: base
+# Cookbook Name:: nmdbase
 # Recipe:: yubico
 #
 # Author:: Kevin Bridges
