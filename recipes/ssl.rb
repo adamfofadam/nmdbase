@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: nmdbase
-# Recipe:: default
+# Recipe:: ssl
 #
 # Author:: Kevin Bridges
 # Copyright:: 2014, NewMedia Denver
@@ -18,9 +18,22 @@
 # limitations under the License.
 #
 
-include_recipe 'fail2ban'
-include_recipe 'nmdbase::ldap'
-include_recipe 'nmdbase::ssl'
-include_recipe 'nmdbase::yubico'
-include_recipe 'chef-client::config'
-include_recipe 'chef-client::service'
+ssl_data = data_bag_item('nmdbase', 'ssl')[node.chef_environment]
+
+file node['nmdbase']['ssl']['key'] do
+  content ssl_data['key']
+  owner "root"
+  group "root"
+  mode 0644
+  action :create
+  not_if { ssl_data['key'].nil? }
+end
+
+file node['nmdbase']['ssl']['crt'] do
+  content ssl_data['crt']
+  owner "root"
+  group "root"
+  mode 0644
+  action :create
+  not_if { ssl_data['crt'].nil? }
+end
