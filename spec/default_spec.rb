@@ -20,6 +20,13 @@ describe "nmdbase::default" do
       "id" => "yubico",
       "_default" => { "id" => "test_yubico_id", "key" => "test_yubico_key" }
       )
+    stub_data_bag_item("nmdbase", "ssl").and_return(
+      "id" => "ssl",
+      "_default" => {
+        "crt" => "test_crt",
+        "key" => "test_key"
+      }
+    )
     stub_command("test -f /var/run/pam-debug.log").and_return(false)
   end
 
