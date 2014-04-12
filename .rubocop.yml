@@ -3,6 +3,3 @@ AllCops:
     - Berksfile
     - Gemfile
     - Rakefile
-  Exclude:
-    - vendor/**
-
