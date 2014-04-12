@@ -91,9 +91,3 @@ default['nmdbase']['common_session_confg'] = [
   'session optional pam_ldap.so',
   'session required pam_mkhomedir.so skel=/etc/skel umask=0022'
 ]
-
-# A organizational certificate and key for the instance.
-default['nmdbase']['ssl'] = {
-  'crt' => '/etc/ssl/certs/example.crt',
-  'key' => '/etc/ssl/private/example.key'
-}
