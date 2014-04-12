@@ -26,8 +26,10 @@ describe file('/etc/apt/sources.list.d/yubico-stable-precise.list') do
   it { should be_mode 644 }
   it { should be_owned_by 'root' }
   it { should be_grouped_into 'root' }
-  its(:content) { should match 'deb http://ppa.launchpad.net/yubico/stable/ubuntu precise main' }
-  its(:content) { should match 'deb-src http://ppa.launchpad.net/yubico/stable/ubuntu precise main' }
+  m = 'deb http://ppa.launchpad.net/yubico/stable/ubuntu precise main'
+  its(:content) { should match m }
+  m = 'deb-src http://ppa.launchpad.net/yubico/stable/ubuntu precise main'
+  its(:content) { should match m }
 end
 
 describe package('libpam-yubico') do
