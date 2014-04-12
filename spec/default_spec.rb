@@ -23,10 +23,16 @@ describe 'nmdbase::default' do
       )
     stub_data_bag_item('nmdbase', 'ssl').and_return(
       'id' => 'ssl',
-      '_default' => {
-        'crt' => 'test_crt',
-        'key' => 'test_key'
-      }
+      '_default' => [
+        {
+          'content' => 'test_crt_one',
+          'path' => '/etc/ssl/certs/example_one.crt'
+        },
+        {
+          'content' => 'test_key_two',
+          'path' => '/etc/ssl/private/example_two.key'
+        }
+      ]
     )
     stub_command('test -f /var/run/pam-debug.log').and_return(false)
   end

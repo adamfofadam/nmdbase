@@ -15,7 +15,7 @@ describe 'nmdbase::ssl' do
         {
           'content' => 'test_key_two',
           'path' => '/etc/ssl/private/example_two.key'
-        },
+        }
       ]
     )
   end
