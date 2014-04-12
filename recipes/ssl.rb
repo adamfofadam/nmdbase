@@ -21,20 +21,13 @@
 
 ssl_data = data_bag_item('nmdbase', 'ssl')[node.chef_environment]
 
-file node['nmdbase']['ssl']['key'] do
-  content ssl_data['key']
-  owner 'root'
-  group 'root'
-  mode 0644
-  action :create
-  not_if { ssl_data['key'].nil? }
-end
-
-file node['nmdbase']['ssl']['crt'] do
-  content ssl_data['crt']
-  owner 'root'
-  group 'root'
-  mode 0644
-  action :create
-  not_if { ssl_data['crt'].nil? }
+ssl_data.each do |cert|
+  file cert['path'] do
+    content cert['content']
+    owner 'root'
+    group 'root'
+    mode 0644
+    action :create
+    not_if { cert['content'].nil? }
+  end
 end
