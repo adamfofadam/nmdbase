@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: base
 # Attributes:: default
@@ -18,14 +19,16 @@
 # limitations under the License.
 
 # An array of PAM sshd configuration options that should include enabling
-# pam_yubico.so.  The recipe will read data_bags/nmdbase/yubico['pam_sshd_conf']
+# pam_yubico.so.  The recipe will read data_bags/nmdbase/yubico[pam_sshd_conf]
 # if you prefer to store the array there.
+yubiconf = 'auth required pam_yubico.so mode=client try_first_pass'
+yubiconf << ' authfile=/etc/yubikey_mappings debug'
 default['nmdbase']['pam']['sshd']['conf'] = [
   # Activate pam_yubico.so as the first item. If you create
   # data_bags/users/yubico.json with your "key" and "id" from
   # https://upgrade.yubico.com/getapikey/ it will be added to this string.
   # Otherwise, you should look into storing this data in the data_bag.
-  'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug',
+  yubiconf,
   # Standard Un*x authentication.
   '@include common-auth',
   # Disallow non-root logins when /etc/nologin exists.
@@ -35,17 +38,17 @@ default['nmdbase']['pam']['sshd']['conf'] = [
   # Standard Un*x session setup and teardown.
   '@include common-session',
   # Print the message of the day upon successful login.
-  'session    optional     pam_motd.so # [1]',
+  'session optional pam_motd.so # [1]',
   # Print the status of the user's mailbox upon successful login.
-  'session    optional     pam_mail.so standard noenv # [1]',
+  'session optional pam_mail.so standard noenv # [1]',
   # Set up user limits from /etc/security/limits.conf.
-  'session    required     pam_limits.so',
+  'session required pam_limits.so',
   # Read environment variables from /etc/environment and
   # /etc/security/pam_env.conf.
-  'session    required     pam_env.so # [1]',
+  'session required pam_env.so # [1]',
   # In Debian 4.0 (etch), locale-related environment variables were moved to
   # /etc/default/locale, so read that as well
-  'session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale',
+  'session required pam_env.so user_readenv=1 envfile=/etc/default/locale',
   # Standard Un*x password updating.
   '@include common-password'
 ]
