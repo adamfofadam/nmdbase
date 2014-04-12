@@ -1,3 +1,4 @@
+# encoding: utf-8
 name 'nmdbase'
 maintainer 'NewMedia! Denver'
 maintainer_email 'support@newmediadenver.com'
