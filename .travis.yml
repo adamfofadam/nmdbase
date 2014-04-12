@@ -10,8 +10,7 @@ branches:
 notifications:
   hipchat:
     rooms:
-      secure: "CEDnwELcfSncKfslFz3HY1K6CZqqOrMs+3XTtf/MvUOsOT7lxBpn+XE0k1u/KBvYmlqPE+oAd9f2et9C2MzjR3uCggPN5ulXmepQ6SaYGyWsc5rE8eDj4MJeAFC5mqyanNe43p1SyzDNXa8sYpkIqFcPG7csQ+rUqzMjjVxHLfQ="
-      language: ruby
+      secure: "SNETE8vK2enrqUuNa10ZOkuTUZrJhNghn7iQHSGgAMJcaYh34zhftl2x1AGFuRQxcs91Wog9QOsqw0TQH97dhunZT1lCoP3NP22efj6jBPTC/e5YTsg1W/xhaBp2osecQ8pqONdZZtHO+oHIcB88ixDHKUlkJOj5DJ1ShSuSGaw="
 install: script/cached-bundle install --deployment
 env:
   global:
