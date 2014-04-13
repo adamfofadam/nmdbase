@@ -11,7 +11,7 @@ notifications:
   hipchat:
     rooms:
       secure: SNETE8vK2enrqUuNa10ZOkuTUZrJhNghn7iQHSGgAMJcaYh34zhftl2x1AGFuRQxcs91Wog9QOsqw0TQH97dhunZT1lCoP3NP22efj6jBPTC/e5YTsg1W/xhaBp2osecQ8pqONdZZtHO+oHIcB88ixDHKUlkJOj5DJ1ShSuSGaw=
-install: script/cached-bundle install --deployment
+install: script/cached-bundle install --without integration --deployment
 env:
   global:
     secure: QK39gcrrbgaR6dwr1XFD2uohFCVz8XYJmoGthPQciv+p7NgAfji4k5m1OpYQGiguxdQGKd0KNEcEY15IrofGyYWYLjsb4JvSVNNbFi/wvBBC59H3SR97/CiHYw277O4HOdf73e9rVcpfInuUnjMUPuKbbIX6bhN8nUAWKZ7HB4E=
