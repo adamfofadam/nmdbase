@@ -12,7 +12,7 @@ notifications:
     rooms:
       secure: cbBWzfnOHSzI/6JPz9IFW+ImKesN/EVrur/ikAdMorHcegwaOxzn7ZmrmjyIbtUkMJSxyHQIdHsOgqUzrPfHGB8XehGJNe6dg7EQYiiFy5JTV4s9+ZdwSnHPDb1esc5kTrWHp9ykgBhN6a+Bbl9nPRdgjGycnP+3NPspN3ydcis=
       language: ruby
-install: bundle install --without integration --deployment
-cache:
-  directories:
-  - vendor/bundle
+install: script/cached-bundle install --deployment
+env:
+  global:
+    secure: Bp3BFRBgE/+GQnYc10RJ9aEGPqwK5s4azsckjZ12yUIg/eS4twlQlYsRQz8W3/rpy2gSVZUxuOJiec4tUucEX+oznBzJVMbwZsxQd/GWUCdaWvrrtMf523AgtCRCz30TTGu4ke2b9gwLgQZe4T7QvCdTIQbIy0U2ydEZR4P7RRk=
