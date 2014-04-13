@@ -5,8 +5,8 @@
 # Outputs the URL for the newly uploaded file.
 #
 # Requirements:
-# - AMAZON_ACCESS_KEY_ID
-# - AMAZON_SECRET_ACCESS_KEY
+# - S3_ID
+# - S3_KEY
 # - openssl
 # - curl
 #
@@ -16,11 +16,11 @@ set -e
 
 authorization() {
   local signature="$(string_to_sign | hmac_sha1 | base64)"
-  echo "AWS ${AMAZON_ACCESS_KEY_ID?}:${signature}"
+  echo "AWS ${S3_ID?}:${signature}"
 }
 
 hmac_sha1() {
-  openssl dgst -binary -sha1 -hmac "${AMAZON_SECRET_ACCESS_KEY?}"
+  openssl dgst -binary -sha1 -hmac "${S3_KEY?}"
 }
 
 base64() {
