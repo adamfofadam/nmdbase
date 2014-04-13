@@ -10,5 +10,8 @@ branches:
 notifications:
   hipchat:
     rooms:
-      secure: "SNETE8vK2enrqUuNa10ZOkuTUZrJhNghn7iQHSGgAMJcaYh34zhftl2x1AGFuRQxcs91Wog9QOsqw0TQH97dhunZT1lCoP3NP22efj6jBPTC/e5YTsg1W/xhaBp2osecQ8pqONdZZtHO+oHIcB88ixDHKUlkJOj5DJ1ShSuSGaw="
-install: bundle install --without integration --deployment
+      secure: bVhXUZh/7CwFdGNKorB6xNteNujxo4Jdbcy9cs/PhIdLd30dKupiXcqK4TuLw2JID7rcUTybqnHVIBG9GvIxvT1Eh+dMGZe++O49T+/IUb5w8TqO2gjlMf6RTcQGmC5X00zmfJj6P2ZvzgJd3hWrEYTlvbcsujXd/Ucm6W3dcOg=
+install: script/cached-bundle install --without integration --deployment
+env:
+  global:
+    secure: V+xtzKssxyQJlEB9USMYtvj5SZfvguYvLESow4hSrgMZ+H5ZDKsgReCvXVFmxMv+c1V7iA2JmVIh0eD00T6PJEP2iwhgSXCr5sn425IBGzeWUP/ekoX1KLPIAdH254LDR/R68Ag17RmzyY8svWvZK7yVOtyyPHfGaiocDVAsPGI=
