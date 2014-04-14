@@ -18,6 +18,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+### nmdbase::default
+# No attributes. Everything that is unique is configured through databags.
+
+### nmdbase::ldap
+# The ldap configuration file path.
+default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
+# The location of the ldap secret file. The password is stored in the "secret"
+# key of data_bags/nmdbase/ldap
+default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
+
+# Manage nsswitch to enable LDAP.
+default['nmdbase']['nsswitch'] = '/etc/nsswitch.conf'
+# An array of LDAP configuration options to enable the node as a LDAP client.
+default['nmdbase']['nsswitch_config'] = [
+  'passwd: ldap compat',
+  'group: ldap compat',
+  'shadow: ldap compat',
+  'hosts: files dns',
+  'networks: files',
+  'protocols: db files',
+  'services: db files',
+  'ethers: db files',
+  'rpc: db files',
+  'netgroup: nis'
+]
+
+# Modify the PAM common-session to create user system accounts from LDAP data.
+default['nmdbase']['common_session'] = '/etc/pam.d/common-session'
+default['nmdbase']['common_session_confg'] = [
+  'session [default=1] pam_permit.so',
+  'session requisite pam_deny.so',
+  'session required pam_permit.so',
+  'session optional pam_umask.so',
+  'session required pam_unix.so',
+  'session optional pam_ldap.so',
+  'session required pam_mkhomedir.so skel=/etc/skel umask=0022'
+]
+
+### nmdbase::yubico
 # An array of PAM sshd configuration options that should include enabling
 # pam_yubico.so.  The recipe will read data_bags/nmdbase/yubico[pam_sshd_conf]
 # if you prefer to store the array there.
@@ -58,36 +97,3 @@ default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 # Define yubikey mappings according to http://opensource.yubico.com/yubico-pam/
 # if validating yubikeys from a file and not LDAP.
 default['nmdbase']['yubico']['authfile'] = '/etc/yubikey_mappings'
-
-default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
-# The location of the ldap secret file. The password is stored in the "secret"
-# key of data_bags/users/ldap
-default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
-
-# Manage nsswitch here to enable LDAP.
-default['nmdbase']['nsswitch'] = '/etc/nsswitch.conf'
-# An array of LDAP configuration options to enable the node as a LDAP client.
-default['nmdbase']['nsswitch_config'] = [
-  'passwd: ldap compat',
-  'group: ldap compat',
-  'shadow: ldap compat',
-  'hosts: files dns',
-  'networks: files',
-  'protocols: db files',
-  'services: db files',
-  'ethers: db files',
-  'rpc: db files',
-  'netgroup: nis'
-]
-
-# Modify the PAM common-session to create user system accounts from LDAP data.
-default['nmdbase']['common_session'] = '/etc/pam.d/common-session'
-default['nmdbase']['common_session_confg'] = [
-  'session [default=1] pam_permit.so',
-  'session requisite pam_deny.so',
-  'session required pam_permit.so',
-  'session optional pam_umask.so',
-  'session required pam_unix.so',
-  'session optional pam_ldap.so',
-  'session required pam_mkhomedir.so skel=/etc/skel umask=0022'
-]

@@ -3,20 +3,8 @@
 NewMedia Denver Base Cookbook
 =================
 
-This is a base cookbook for all NewMedia Denver servers. It contains core
-functionality necessary for standardized integration into our broader systems.
-In the spirit of open source, we are going to illustrate how to properly craft,
-and deliver, fantastically reliable and secure infrastructure.
-
-We use this recipe to enable two factor authentication for ssh accounts.  The
-first factor is a plain text password the user knows. The second is a YubiKey
-usb hardware device.  The instance is configured to create a new linux account
-on the machine if both factors authenticate. We also use this recipe to install
-fail2ban to protect against repeated ssh failures and ssh ddos attacks.  The
-final task performed by this recipe is to enable the instance as a chef client
-so that it is regularly checking in with our chef servers.
-
-The base boxes that we use are stored in s3 and referenced from the kitchen.yml.
+Requirements
+------------
 
 Requirements
 ------------

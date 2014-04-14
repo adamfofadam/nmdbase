@@ -3,11 +3,33 @@ name 'nmdbase'
 maintainer 'NewMedia! Denver'
 maintainer_email 'support@newmediadenver.com'
 license 'Apache 2.0'
-description 'Acts as a base recipe for chef-client and security components
-  (ldap/yubikey two factor authentication).'
+
 version '1.0.0'
-recipe 'nmdbase::default', 'Enables the chef-client service on a schedule in
-  addition to each of the other recipes in this cookbook.'
+
+desc = 'Acts as a base recipe for chef-client and security components '
+desc << '(ldap/yubikey two factor authentication).'
+
+desc = 'This is a base cookbook for all NewMedia Denver servers. It contains '
+desc << 'core functionality necessary for standardized integration into our '
+desc << 'broader systems. In the spirit of open source, we are going to '
+desc << 'illustrate how to properly craft, and deliver, fantastically '
+desc << 'reliable and secure infrastructure.'
+
+desc << 'We use this recipe to enable two factor authentication for ssh '
+desc << 'accounts. The first factor is a plain text password the user knows. '
+desc << 'The second is a YubiKey usb hardware device. The instance is '
+desc << 'configured to create a new linux account on the machine if both '
+desc << 'factors authenticate. We also use this recipe to install fail2ban to '
+desc << 'protect against repeated ssh failures and ssh ddos attacks. The '
+desc << 'final task performed by this recipe is to enable the instance as a '
+desc << 'chef client so that it is regularly checking in with our chef '
+desc << 'servers.'
+description desc
+
+desc = 'Enables the chef-client service on a schedule in addition to each of '
+desc << 'the other recipes in this cookbook.'
+recipe 'nmdbase::default', desc
+
 recipe 'nmdbase::ldap', 'Installs and configures ldap pam authentication.'
 recipe 'nmdbase::ssl', 'Manages the organization specific ssl certificates.'
 recipe 'nmdbase::yubico', 'Installs and configures yubico pam authentication.'
