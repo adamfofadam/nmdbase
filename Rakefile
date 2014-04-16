@@ -2,6 +2,55 @@
 require 'foodcritic'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
+require 'erb'
+require 'ostruct'
+require 'chef/cookbook/metadata'
+
+# Provides a basic Readme class so we can use a erb template.
+class Readme < OpenStruct
+  def render(template)
+    ERB.new(template).result(binding)
+  end
+end
+
+# rubocop:disable AssignmentInCondition, MethodLength
+def recipes(content = '')
+  Dir.glob('spec/*_spec.rb').sort.each do |f|
+    File.open(f, 'r') do |spec|
+      while line = spec.gets
+        recipe = line.match(/^describe.+['|"](\w+::\w+)/i)
+        content << "### #{recipe[1]}\n" unless recipe.nil?
+        describes = line.match(/ +it '([^']+)/)
+        content << "    #{describes[1]}\n" unless describes.nil?
+      end
+    end
+  end
+  content
+end
+
+def attributes(content = '')
+  File.open('attributes/default.rb', 'r') do |f|
+    output = false
+    while line = f.gets #
+      output = true if line =~ /^###/
+      if output
+        content << "#{line}" if line =~ /^###/
+        content << "    #{line}" unless line =~ /^###/
+      end
+    end
+  end
+  content
+end
+# rubocop:enable AssignmentInCondition, MethodLength
+
+def rake_tasks
+  documentation = ''
+  s = `rake -T`.split("\n")
+  s.each do |l|
+    documentation << "    #{l}\n" if l =~ /^rake/
+  end
+  documentation
+end
 
 desc 'Run RuboCop style and lint checks'
 Rubocop::RakeTask.new(:rubocop)
@@ -14,108 +63,18 @@ end
 desc 'Run ChefSpec examples'
 RSpec::Core::RakeTask.new(:spec)
 
-namespace :docs do
-  def update_readme (preheader, postheader, content)
-    output = true
-    new_readme = ''
-    possible_match = false
-    definite_match = false
-    match_length = 0
-    state = 'pre'
-    File.open('README.md', 'r') do |readme|
-      while line = readme.gets
-        if possible_match
-          if line.gsub("\n",'').length == match_length
-            definite_match = true
-          end
-          possible_match = false
-          match_length = 0
-        end
-        if line =~ /^#{preheader}$/
-          possible_match = true
-          match_length = preheader.length
-          state = 'pre'
-        end
-        if line =~ /^#{postheader}$/
-          possible_match = true
-          match_length = postheader.length
-          state = 'post'
-        end
-        new_readme << line if output
-        if definite_match
-          new_readme << content if state == 'pre'
-          output = false if state == 'pre'
-          if state == 'post'
-            new_readme << "\n#{postheader}\n#{line}"
-            output = true
-          end
-          definite_match = false
-        end
-      end
-    end
-    File.open('README.md', 'w') { |file| file.write(new_readme) }
-  end
-  desc 'Update attributes section of the Readme.'
-  task :attributes do
-    documented_attributes = ''
-    File.open('attributes/default.rb', 'r') do |readme|
-      output = false
-      while line = readme.gets
-        output = true if line =~ /^###/
-        if output
-          documented_attributes << "\n#{line}" if line =~ /^###/
-          documented_attributes << "    #{line}" unless line =~ /^###/
-        end
-      end
-    end
-    update_readme("Attributes", "Recipes", documented_attributes)
-  end
-
-  desc 'Update recipes section of the Readme.'
-  task :recipes do
-    documentation = ''
-    Dir.glob('spec/*_spec.rb').sort.each do |f|
-      File.open(f, 'r') do |spec|
-        while line = spec.gets
-          recipe = line.match(/^describe.+['|"](\w+::\w+)/i)
-          documentation << "\n### #{recipe[1]}\n" unless recipe.nil?
-          describes =line.match(/ +it '([^']+)/)
-          documentation << "    #{describes[1]}\n" unless describes.nil?
-        end
-      end
-    end
-    update_readme("Recipes", "Testing", documentation)
-  end
-
-  desc 'Update Testing section of the Readme.'
-  task :testing do
-    documentation="\n"
-    s=`rake -T`.split("\n")
-    s.each do |l|
-      documentation << "    #{l}\n" if l =~ /^rake/
-    end
-    update_readme("Testing", "License and Author", documentation)
-  end
-
-  task :all => [:attributes, :recipes, :testing]
-
-  desc 'Parse metadata'
-  task :metadata do
-    require 'chef/cookbook/metadata'
-    metadata = Chef::Cookbook::Metadata.new
-    metadata.from_file('metadata.rb')
-    documentation = ''
-    documentation << "__#{metadata.name} #{metadata.version}__ by #{metadata.maintainer} - #{metadata.description}"
-# puts metadata.inspect
-# output cookbook dependencies
-# metadata.dependencies.each { |cookbook, version| puts "#{cookbook} #{version}" }
-update_readme("Metadata", "Requirements", documentation)
-
-
-  end
+desc 'Generate the Readme.md file.'
+task :readme do
+  metadata = Chef::Cookbook::Metadata.new
+  metadata.from_file('metadata.rb')
+  markdown = Readme.new(
+                        metadata: metadata,
+                        attributes: attributes,
+                        recipes: recipes,
+                        rake_tasks: rake_tasks)
+  new_readme = markdown.render(File.read('templates/default/readme.md.erb'))
+  File.open('README.md', 'w') { |file| file.write(new_readme) }
 end
-
-
 
 desc 'Run all tests'
 task test: [:rubocop, :foodcritic, :spec]

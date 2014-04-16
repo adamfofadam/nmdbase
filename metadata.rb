@@ -5,6 +5,11 @@ maintainer_email 'support@newmediadenver.com'
 license 'Apache 2.0'
 
 version '1.0.0'
+supports 'ubuntu', '= 12.04'
+
+desc = 'Manages ldap client, yubico pam, ssl certificates and unattended '
+desc << 'updates.'
+description desc
 
 desc = 'Acts as a base recipe for chef-client and security components '
 desc << '(ldap/yubikey two factor authentication).'
@@ -24,14 +29,19 @@ desc << 'protect against repeated ssh failures and ssh ddos attacks. The '
 desc << 'final task performed by this recipe is to enable the instance as a '
 desc << 'chef client so that it is regularly checking in with our chef '
 desc << 'servers.'
-description desc
+long_description desc
 
 desc = 'Enables the chef-client service on a schedule in addition to each of '
 desc << 'the other recipes in this cookbook.'
 recipe 'nmdbase::default', desc
 
+provides 'nmdbase::ldap'
 recipe 'nmdbase::ldap', 'Installs and configures ldap pam authentication.'
+
+provides 'nmdbase::ssl'
 recipe 'nmdbase::ssl', 'Manages the organization specific ssl certificates.'
+
+provides 'nmdbase::yubico'
 recipe 'nmdbase::yubico', 'Installs and configures yubico pam authentication.'
 
 depends 'chef-client'
