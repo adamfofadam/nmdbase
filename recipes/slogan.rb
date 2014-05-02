@@ -23,4 +23,5 @@ template node['nmdbase']['slogan']['path'] do
   mode 0644
   owner 'root'
   group 'root'
+  variables(data: [node['nmdbase']['slogan']['value']])
 end

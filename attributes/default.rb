@@ -99,3 +99,4 @@ default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 default['nmdbase']['yubico']['authfile'] = '/etc/yubikey_mappings'
 
 default['nmdbase']['slogan']['path'] = '/etc/slogan'
+default['nmdbase']['slogan']['value'] = 'Your Slogan'
