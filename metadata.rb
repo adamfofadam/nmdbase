@@ -44,6 +44,9 @@ recipe 'nmdbase::ssl', 'Manages the organization specific ssl certificates.'
 provides 'nmdbase::yubico'
 recipe 'nmdbase::yubico', 'Installs and configures yubico pam authentication.'
 
+provides 'nmdbase::slogan'
+recipe 'nmdbase::slogan', 'Provides an example for documentation purposes.'
+
 depends 'chef-client'
 depends 'apt'
 depends 'openssh'
