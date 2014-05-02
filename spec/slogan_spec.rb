@@ -13,4 +13,9 @@ describe 'nmdbase::slogan' do
     )
   end
 
+  it 'Writes a slogan to the slogan file.' do
+    expect(chef_run).to render_file('/etc/slogan')
+      .with_content(/^Your\ Slogan$/)
+  end
+
 end
