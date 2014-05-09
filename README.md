@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/newmediadenver/nmdbase.png?label=ready&title=Ready)](https://waffle.io/newmediadenver/nmdbase)
 [![Build Status](https://travis-ci.org/newmediadenver/nmdbase.svg?branch=master)](https://travis-ci.org/newmediadenver/nmdbase) [![Coverage Status](https://coveralls.io/repos/newmediadenver/nmdbase/badge.png?branch=master)](https://coveralls.io/r/newmediadenver/nmdbase?branch=master) [![Dependency Status](https://gemnasium.com/newmediadenver/nmdbase.svg)](https://gemnasium.com/newmediadenver/nmdbase)
 
 NewMedia! Denver's Base Cookbook
@@ -13,7 +12,7 @@ Requirements
 
 ### Platforms
 
-`ubuntu >= 12.04`
+`ubuntu = 14.04`
 
 ### Dependencies
 
