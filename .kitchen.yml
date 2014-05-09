@@ -22,6 +22,14 @@ platforms:
     driver_config:
       box: ubuntu-14.04
       box_url: https://nmd-virtualbox.s3-us-west-2.amazonaws.com/nmd-ubunutu-14.04-x86_64-base.box
+  - name: centos-6.5-vmware
+    driver_config:
+      box: centos-6.5
+      box_url: https://nmd-vmware.s3-us-west-2.amazonaws.com/nmd-centos-6.5-x86_64-base.box
+  - name: centos-6.5-virtualbox
+    driver_config:
+      box: centos-6.5
+      box_url: https://nmd-virtualbox.s3-us-west-2.amazonaws.com/nmd-centos-6.5-x86_64-base.box
 suites:
   - name: default
     run_list:

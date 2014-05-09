@@ -24,6 +24,7 @@
 ### nmdbase::ldap
 # The ldap configuration file path.
 default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
+default['nmdbase']['ldap']['sssd_conf]']['path'] = '/etc/sssd/sssd.conf'
 # The location of the ldap secret file. The password is stored in the "secret"
 # key of data_bags/nmdbase/ldap
 default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
@@ -31,18 +32,34 @@ default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
 # Manage nsswitch to enable LDAP.
 default['nmdbase']['nsswitch'] = '/etc/nsswitch.conf'
 # An array of LDAP configuration options to enable the node as a LDAP client.
-default['nmdbase']['nsswitch_config'] = [
-  'passwd: ldap compat',
-  'group: ldap compat',
-  'shadow: ldap compat',
-  'hosts: files dns',
-  'networks: files',
-  'protocols: db files',
-  'services: db files',
-  'ethers: db files',
-  'rpc: db files',
-  'netgroup: nis'
+case node['platform_family']
+when 'rhel'
+  default['nmdbase']['nsswitch_config'] = [
+    'passwd: files sss',
+    'group: files sss',
+    'shadow: files sss',
+    'hosts: files dns',
+    'networks: files',
+    'protocols: db files',
+    'services: db files',
+    'ethers: db files',
+    'rpc: db files',
+    'netgroup: nis'
 ]
+when 'Debian'
+  default['nmdbase']['nsswitch_config'] = [
+    'passwd: ldap compat',
+    'group: ldap compat',
+    'shadow: ldap compat',
+    'hosts: files dns',
+    'networks: files',
+    'protocols: db files',
+    'services: db files',
+    'ethers: db files',
+    'rpc: db files',
+    'netgroup: nis'
+  ]
+end
 
 # Modify the PAM common-session to create user system accounts from LDAP data.
 default['nmdbase']['common_session'] = '/etc/pam.d/common-session'
