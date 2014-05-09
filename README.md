@@ -12,7 +12,7 @@ Requirements
 
 ### Platforms
 
-`ubuntu = 14.04`
+`ubuntu > 12.04`
 
 ### Dependencies
 
@@ -147,21 +147,29 @@ Recipes
 Testing and Utility
 -------
 
-    rake foodcritic                       # Lint Chef cookbooks
-    rake integration                      # Alias for kitchen:all
-    rake kitchen:all                      # Run all test instances
-    rake kitchen:default-ubuntu-1204      # Run default-ubuntu-1204 test instance
-    rake kitchen:default-ubuntu-1404      # Run default-ubuntu-1404 test instance
-    rake kitchen:ldap-ubuntu-1204         # Run ldap-ubuntu-1204 test instance
-    rake kitchen:ldap-ubuntu-1404         # Run ldap-ubuntu-1404 test instance
-    rake kitchen:yubico-ldap-ubuntu-1204  # Run yubico-ldap-ubuntu-1204 test instance
-    rake kitchen:yubico-ldap-ubuntu-1404  # Run yubico-ldap-ubuntu-1404 test instance
-    rake kitchen:yubico-ubuntu-1204       # Run yubico-ubuntu-1204 test instance
-    rake kitchen:yubico-ubuntu-1404       # Run yubico-ubuntu-1404 test instance
-    rake readme                           # Generate the Readme.md file
-    rake rubocop                          # Run RuboCop style and lint checks
-    rake spec                             # Run ChefSpec examples
-    rake test                             # Run all tests
+    rake foodcritic                                  # Lint Chef cookbooks
+    rake integration                                 # Alias for kitchen:all
+    rake kitchen:all                                 # Run all test instances
+    rake kitchen:default-ubuntu-1204-virtulbox       # Run default-ubuntu-1204-virtulbox test instance
+    rake kitchen:default-ubuntu-1204-vmware          # Run default-ubuntu-1204-vmware test instance
+    rake kitchen:default-ubuntu-1404-virtualbox      # Run default-ubuntu-1404-virtualbox test instance
+    rake kitchen:default-ubuntu-1404-vmware          # Run default-ubuntu-1404-vmware test instance
+    rake kitchen:ldap-ubuntu-1204-virtulbox          # Run ldap-ubuntu-1204-virtulbox test instance
+    rake kitchen:ldap-ubuntu-1204-vmware             # Run ldap-ubuntu-1204-vmware test instance
+    rake kitchen:ldap-ubuntu-1404-virtualbox         # Run ldap-ubuntu-1404-virtualbox test instance
+    rake kitchen:ldap-ubuntu-1404-vmware             # Run ldap-ubuntu-1404-vmware test instance
+    rake kitchen:yubico-ldap-ubuntu-1204-virtulbox   # Run yubico-ldap-ubuntu-1204-virtulbox test instance
+    rake kitchen:yubico-ldap-ubuntu-1204-vmware      # Run yubico-ldap-ubuntu-1204-vmware test instance
+    rake kitchen:yubico-ldap-ubuntu-1404-virtualbox  # Run yubico-ldap-ubuntu-1404-virtualbox test instance
+    rake kitchen:yubico-ldap-ubuntu-1404-vmware      # Run yubico-ldap-ubuntu-1404-vmware test instance
+    rake kitchen:yubico-ubuntu-1204-virtulbox        # Run yubico-ubuntu-1204-virtulbox test instance
+    rake kitchen:yubico-ubuntu-1204-vmware           # Run yubico-ubuntu-1204-vmware test instance
+    rake kitchen:yubico-ubuntu-1404-virtualbox       # Run yubico-ubuntu-1404-virtualbox test instance
+    rake kitchen:yubico-ubuntu-1404-vmware           # Run yubico-ubuntu-1404-vmware test instance
+    rake readme                                      # Generate the Readme.md file
+    rake rubocop                                     # Run RuboCop style and lint checks
+    rake spec                                        # Run ChefSpec examples
+    rake test                                        # Run all tests
 
 
 License and Author
