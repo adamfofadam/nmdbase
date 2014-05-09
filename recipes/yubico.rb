@@ -28,6 +28,10 @@ end
 
 case node['platform']
 when 'debian', 'ubuntu'
+  execute 'add-software-properties-common' do
+    command 'apt-get -y install software-properties-common'
+    not_if { ::File.exist?('/usr/bin/add-apt-repository') }
+  end
   path = '/etc/apt/sources.list.d/yubico-stable-precise.list'
   execute 'add-apt-repository' do
     command 'add-apt-repository ppa:yubico/stable'
