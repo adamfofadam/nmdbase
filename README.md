@@ -1,10 +1,9 @@
-[![Stories in Ready](https://badge.waffle.io/newmediadenver/nmdbase.png?label=ready&title=Ready)](https://waffle.io/newmediadenver/nmdbase)
 [![Build Status](https://travis-ci.org/newmediadenver/nmdbase.svg?branch=master)](https://travis-ci.org/newmediadenver/nmdbase) [![Coverage Status](https://coveralls.io/repos/newmediadenver/nmdbase/badge.png?branch=master)](https://coveralls.io/r/newmediadenver/nmdbase?branch=master) [![Dependency Status](https://gemnasium.com/newmediadenver/nmdbase.svg)](https://gemnasium.com/newmediadenver/nmdbase)
 
 NewMedia! Denver's Base Cookbook
 =============================
 
-nmdbase (1.0.0) Manages ldap client, yubico pam, ssl certificates and unattended updates.
+nmdbase (1.0.1) Manages ldap client, yubico pam, ssl certificates and unattended updates.
 
 This is a base cookbook for all NewMedia Denver servers. It contains core functionality necessary for standardized integration into our broader systems. In the spirit of open source, we are going to illustrate how to properly craft, and deliver, fantastically reliable and secure infrastructure.We use this recipe to enable two factor authentication for ssh accounts. The first factor is a plain text password the user knows. The second is a YubiKey usb hardware device. The instance is configured to create a new linux account on the machine if both factors authenticate. We also use this recipe to install fail2ban to protect against repeated ssh failures and ssh ddos attacks. The final task performed by this recipe is to enable the instance as a chef client so that it is regularly checking in with our chef servers.
 
@@ -13,7 +12,7 @@ Requirements
 
 ### Platforms
 
-`ubuntu = 12.04`
+`ubuntu >= 12.04`
 
 ### Dependencies
 
@@ -152,9 +151,13 @@ Testing and Utility
     rake integration                      # Alias for kitchen:all
     rake kitchen:all                      # Run all test instances
     rake kitchen:default-ubuntu-1204      # Run default-ubuntu-1204 test instance
+    rake kitchen:default-ubuntu-1404      # Run default-ubuntu-1404 test instance
     rake kitchen:ldap-ubuntu-1204         # Run ldap-ubuntu-1204 test instance
+    rake kitchen:ldap-ubuntu-1404         # Run ldap-ubuntu-1404 test instance
     rake kitchen:yubico-ldap-ubuntu-1204  # Run yubico-ldap-ubuntu-1204 test instance
+    rake kitchen:yubico-ldap-ubuntu-1404  # Run yubico-ldap-ubuntu-1404 test instance
     rake kitchen:yubico-ubuntu-1204       # Run yubico-ubuntu-1204 test instance
+    rake kitchen:yubico-ubuntu-1404       # Run yubico-ubuntu-1404 test instance
     rake readme                           # Generate the Readme.md file
     rake rubocop                          # Run RuboCop style and lint checks
     rake spec                             # Run ChefSpec examples
