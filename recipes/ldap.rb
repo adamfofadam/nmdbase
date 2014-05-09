@@ -18,7 +18,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-%w(libpam-ldap ldap-utils).each do |pkg|
+
+case node['platform_family']
+when 'rhel'
+  ldap_packages = %w(openldap openldap-clients)
+when 'debian'
+  ldap_packages = %w(libpam-ldap ldap-utils)
+end
+
+ldap_packages.each do |pkg|
   package pkg do
     action :install
   end

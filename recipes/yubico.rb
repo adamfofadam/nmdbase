@@ -20,14 +20,13 @@
 #
 include_recipe 'openssh'
 
-%w(python-software-properties).each do |pkg|
-  package pkg do
-    action :install
+case node['platform_family']
+when 'debian'
+  %w(python-software-properties).each do |pkg|
+    package pkg do
+      action :install
+    end
   end
-end
-
-case node['platform']
-when 'debian', 'ubuntu'
   execute 'add-software-properties-common' do
     command 'apt-get -y install software-properties-common'
     not_if { ::File.exist?('/usr/bin/add-apt-repository') }
@@ -47,6 +46,10 @@ when 'debian', 'ubuntu'
     package pkg do
       action :install
     end
+  end
+when 'rhel'
+  execute 'add-yubio-packages' do
+    command 'yum -y -t install libyubikey pam_yubico'
   end
 end
 
