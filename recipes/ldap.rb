@@ -20,7 +20,7 @@
 #
 
 ldap = data_bag_item('nmdbase', 'ldap')[node.chef_environment]
-
+sssd_ldap = data_bag_item('nmdbase', 'sssd_ldap')[node.chef_environment]
 def create_nsswitch
   template node['nmdbase']['nsswitch'] do
     source 'generic.erb'
@@ -48,7 +48,7 @@ when 'rhel'
     mode 0600
     owner 'root'
     group 'root'
-    variables(data: ldap['sssd_conf'])
+    variables(data: sssd_ldap['conf'])
   end
   create_nsswitch
   execute 'authconfig' do
