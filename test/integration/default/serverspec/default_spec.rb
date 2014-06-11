@@ -18,7 +18,8 @@ describe file('/etc/chef/client.rb') do
   it { should be_file }
   its(:content) { should match 'chef_server_url' }
   its(:content) { should match 'validation_client_name "chef-validator"' }
-  its(:content) do
-    should match(/node_name "default-ubuntu-(1204|1404)-(vmware|virtualbox)"/)
-  end
+  # rubocop:disable LineLength, StringLiterals
+  its(:content) { should match(/node_name "default-ubuntu-(1204|1404)-(vmware|virtualbox)"/) }
+  # rubocop:enable LineLength, StringLiterals
+
 end

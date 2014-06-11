@@ -21,6 +21,7 @@
 include_recipe 'openssh'
 
 yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
+attributes = node['nmdbase']['pam']['sshd']['conf']
 
 case node['platform_family']
 when 'debian'
@@ -50,11 +51,15 @@ when 'debian'
     end
   end
   databag = yubico_data['debian_pam_sshd_conf']
+  # rubocop:disable LineLength, StringLiterals
   pam_sshd_conf = yubico_data['debian_pam_sshd_conf'].nil? ? attributes : databag
+  # rubocop:enable LineLength, StringLiterals
 when 'rhel'
   yum_repository 'epel' do
     description 'Extra Packages for Enterprise Linux'
+    # rubocop:disable LineLength, StringLiterals
     mirrorlist 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch'
+    # rubocop:enable LineLength, StringLiterals
     gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
     action :create
   end
@@ -75,8 +80,6 @@ template node['nmdbase']['yubico']['authfile'] do
   group 'root'
   variables(data: yubico_data['users'])
 end
-
-attributes = node['nmdbase']['pam']['sshd']['conf']
 
 template node['nmdbase']['pam']['sshd']['path'] do
   source 'generic.erb'
