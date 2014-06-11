@@ -37,31 +37,31 @@ suites:
     data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
     attributes: {
       "fail2ban": {
-        # "services": {
-        #   # "ssh": {
-        #   #   "enabled": "true",
-        #   #   "port": "ssh",
-        #   #   "filter": "sshd",
-        #   #   "logpath": "/var/log/auth.log",
-        #   #   "maxretry": "6"
-        #   # },
-        #   "xinetd-fail": {
-        #     "enabled": "true",
-        #     "port": "all",
-        #     "filter": "xinetd-fail",
-        #     "logpath": "/var/log/daemon.log",
-        #     "maxretry": "6",
-        #     "banaction": "iptables-multiport-log"
-        #   },
-        #   "ssh-ddos": {
-        #     "enabled": "true",
-        #     "port": "ssh",
-        #     "filter": "sshd-ddos",
-        #     "logpath": "/var/log/auth.log",
-        #     "maxretry": "6",
-        #     "banaction": "iptables-multiport-log"
-        #   }
-        # }
+         "services": {
+            "ssh": {
+              "enabled": "true",
+              "port": "ssh",
+              "filter": "sshd",
+              "logpath": "/var/log/auth.log",
+              "maxretry": "6"
+            },
+           "xinetd-fail": {
+             "enabled": "true",
+             "port": "all",
+             "filter": "xinetd-fail",
+             "logpath": "/var/log/daemon.log",
+             "maxretry": "6",
+             "banaction": "iptables-multiport-log"
+           },
+           "ssh-ddos": {
+             "enabled": "true",
+             "port": "ssh",
+             "filter": "sshd-ddos",
+             "logpath": "/var/log/auth.log",
+             "maxretry": "6",
+             "banaction": "iptables-multiport-log"
+           }
+         }
       },
       "openssh": {
         "server": {
