@@ -20,6 +20,8 @@
 #
 include_recipe 'openssh'
 
+yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
+
 case node['platform_family']
 when 'debian'
   %w(python-software-properties).each do |pkg|
@@ -48,6 +50,7 @@ when 'debian'
     end
   end
   databag = yubico_data['debian_pam_sshd_conf']
+  pam_sshd_conf = yubico_data['debian_pam_sshd_conf'].nil? ? attributes : databag
 when 'rhel'
   yum_repository 'epel' do
     description 'Extra Packages for Enterprise Linux'
@@ -62,9 +65,8 @@ when 'rhel'
     action :upgrade
   end
   databag = yubico_data['rhel_pam_sshd_conf']
+  pam_sshd_conf = yubico_data['rhel_pam_sshd_conf'].nil? ? attributes : databag
 end
-
-yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
 
 template node['nmdbase']['yubico']['authfile'] do
   source 'generic.erb'
@@ -75,7 +77,6 @@ template node['nmdbase']['yubico']['authfile'] do
 end
 
 attributes = node['nmdbase']['pam']['sshd']['conf']
-pam_sshd_conf = yubico_data['pam_sshd_conf'].nil? ? attributes : databag
 
 template node['nmdbase']['pam']['sshd']['path'] do
   source 'generic.erb'
