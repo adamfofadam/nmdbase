@@ -47,10 +47,21 @@ when 'debian'
       action :install
     end
   end
+  databag = yubico_data['debian_pam_sshd_conf']
 when 'rhel'
-  execute 'add-yubio-packages' do
-    command 'yum -y -t install libyubikey pam_yubico'
+  yum_repository 'epel' do
+    description 'Extra Packages for Enterprise Linux'
+    mirrorlist 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch'
+    gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
+    action :create
   end
+  yum_package 'libyubikey' do
+    action :upgrade
+  end
+  yum_package 'pam_yubico' do
+    action :upgrade
+  end
+  databag = yubico_data['rhel_pam_sshd_conf']
 end
 
 yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
@@ -64,7 +75,6 @@ template node['nmdbase']['yubico']['authfile'] do
 end
 
 attributes = node['nmdbase']['pam']['sshd']['conf']
-databag = yubico_data['pam_sshd_conf']
 pam_sshd_conf = yubico_data['pam_sshd_conf'].nil? ? attributes : databag
 
 template node['nmdbase']['pam']['sshd']['path'] do
