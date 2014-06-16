@@ -13,14 +13,18 @@ RSpec.configure do |config|
   # Specify the Chef log_level (default: :warn)
   config.log_level = :error
 
-  # Specify the path to a local JSON file with Ohai data
-  # config.path = 'ohai.json'
+   #Specify the path to a local JSON file with Ohai data
+   #config.path = 'ohai.json'
 
-  # Specify the operating platform to mock Ohai data from
-  config.platform = 'ubuntu'
-
-  # Specify the operating version to mock Ohai data from
-  config.version = '12.04'
+  # Specify the operating platform and version to mock Ohai data from
+  case ENV['spec_os']
+  when 'redhat'
+    config.platform = 'redhat'
+    config.version = '6.5'
+  when 'ubuntu'
+    config.platform = 'ubuntu'
+    config.version = '14.04'
+  end
 
   # Use color output for RSpec
   config.color_enabled = true

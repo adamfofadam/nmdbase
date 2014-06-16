@@ -60,8 +60,24 @@ FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = { fail_tags: ['any'] }
 end
 
-desc 'Run ChefSpec examples'
-RSpec::Core::RakeTask.new(:spec)
+desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[redhat]" or "rake spec[ubuntu]"'
+
+task :spec, :os do |os, args|
+  os = args[:os]
+  puts os ? "Rspec test operating system defined as #{os}" : '@TODO'
+  case os
+  when 'redhat'
+    ENV['spec_os'] = 'redhat'
+    RSpec::Core::RakeTask.new(:spec)
+  when 'ubuntu'
+    ENV['spec_os'] = 'ubnutu'
+    RSpec::Core::RakeTask.new(:spec)
+  else
+    puts "Unknown rspec operating system #{os}. Defaulting to RedHat"
+    ENV['spec_os'] = 'redhat'
+    RSpec::Core::RakeTask.new(:spec)
+  end
+end
 
 desc 'Generate the Readme.md file.'
 task :readme do
