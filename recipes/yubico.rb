@@ -3,7 +3,7 @@
 # Cookbook Name:: nmdbase
 # Recipe:: yubico
 #
-# Author:: Kevin Bridges
+# Author:: Kevin Bridges David Arnold
 # Copyright:: 2014, NewMedia Denver
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
