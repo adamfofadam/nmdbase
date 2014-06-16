@@ -17,7 +17,7 @@ RSpec.configure do |config|
    #config.path = 'ohai.json'
 
   # Specify the operating platform and version to mock Ohai data from
-  case ENV['spec_os']
+  case ENV['nmdbase_spec_os']
   when 'redhat'
     config.platform = 'redhat'
     config.version = '6.5'

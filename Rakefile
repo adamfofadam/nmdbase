@@ -64,7 +64,6 @@ desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[redhat]" 
 
 task :spec, :os do |os, args|
   os = args[:os]
-  puts os ? "Rspec test operating system defined as #{os}" : '@TODO'
   case os
   when 'redhat'
     ENV['spec_os'] = 'redhat'
