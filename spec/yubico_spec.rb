@@ -145,7 +145,7 @@ describe 'nmdbase::yubico' do
     it 'Prepares for PAM debug logging.' do
       expect(chef_run).to run_bash('Prepare for debug logging.')
     end
-  when 'redhat'
+  when 'rhel'
     it 'Includes the openssh recipe.' do
       expect(chef_run).to include_recipe('openssh')
     end

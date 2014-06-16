@@ -60,16 +60,16 @@ FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = { fail_tags: ['any'] }
 end
 
-desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[redhat]" or "rake spec[ubuntu]"'
+desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or "rake spec[ubuntu]"'
 
 task :spec, :os do |os, args|
   os = args[:os]
   case os
-  when 'redhat'
-    ENV['nmdbase_spec_os'] = 'redhat'
+  when 'rhel'
+    ENV['nmdbase_spec_os'] = 'rhel'
     RSpec::Core::RakeTask.new(:spec)
   when 'ubuntu'
-    ENV['nmdbase_spec_os'] = 'ubnutu'
+    ENV['nmdbase_spec_os'] = 'ubuntu'
     RSpec::Core::RakeTask.new(:spec)
   else
     puts "Unknown rspec operating system #{os}. Defaulting to RedHat"

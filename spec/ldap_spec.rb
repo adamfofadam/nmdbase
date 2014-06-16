@@ -153,7 +153,7 @@ describe 'nmdbase::ldap' do
         .with_content(/^netgroup: +nis$/)
     end
 
-  when 'redhat'
+  when 'rhel'
     it 'Installs the LDAP package to set this instance up as a client.' do
       expect(chef_run).to install_package('sssd')
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
