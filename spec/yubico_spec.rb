@@ -124,10 +124,10 @@ describe 'nmdbase::yubico' do
 
       expect(chef_run).to render_file(path)
         .with_content(/^session +optional +pam_motd.so # \[1\]$/)
-
+        # rubocop:disable LineLength, StringLiterals
       expect(chef_run).to render_file(path)
         .with_content(/^session +optional +pam_mail.so standard noenv # \[1\]$/)
-
+        # rubocop:enable LineLength, StringLiterals
       expect(chef_run).to render_file(path)
         .with_content(/^session +required +pam_limits.so$/)
 

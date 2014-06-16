@@ -26,7 +26,9 @@ describe 'nmdbase::ldap' do
           'services = nss, pam',
           'domains = default',
           '[nss]',
+          # rubocop:disable LineLength, StringLiterals
           'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd',
+          # rubocop:enable LineLength, StringLiterals
           '[pam]',
           '[domain/default]',
           'ldap_schema = rfc2307bis',
@@ -170,8 +172,10 @@ describe 'nmdbase::ldap' do
        .with_content(/^domains = default$/)
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
        .with_content(/^\[nss\]$/)
+      # rubocop:disable LineLength, StringLiterals
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-       .with_content(/^filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd$/)
+        .with_content(/^filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd$/)
+      # rubocop:enable LineLength, StringLiterals
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
        .with_content(/^\[pam\]$/)
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
@@ -207,13 +211,13 @@ describe 'nmdbase::ldap' do
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
        .with_content(/^chpass_provider = ldap$/)
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-       .with_content(/^ldap_uri = ldaps:\/\/ldap.example.com$/)
+       .with_content(%r{ldap_uri = ldaps:\/\/ldap.example.com})
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
        .with_content(/^krb5_kdcip = kerberos.example.com$/)
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
        .with_content(/^cache_credentials = True$/)
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-       .with_content(/^ldap_tls_cacertdir = \/etc\/openldap\/cacerts$/)
+       .with_content(%r{^ldap_tls_cacertdir = \/etc\/openldap\/cacerts$})
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')
        .with_content(/^entry_cache_timeout = 600$/)
       expect(chef_run).to render_file('/etc/sssd/sssd.conf')

@@ -13,8 +13,8 @@ RSpec.configure do |config|
   # Specify the Chef log_level (default: :warn)
   config.log_level = :error
 
-   #Specify the path to a local JSON file with Ohai data
-   #config.path = 'ohai.json'
+   # Specify the path to a local JSON file with Ohai data
+   # config.path = 'ohai.json'
 
   # Specify the operating platform and version to mock Ohai data from
   case ENV['nmdbase_spec_os']

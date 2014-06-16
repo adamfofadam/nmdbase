@@ -43,7 +43,9 @@ describe 'nmdbase::default' do
           'services = nss, pam',
           'domains = default',
           '[nss]',
+          # rubocop:disable LineLength, StringLiterals
           'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd',
+          # rubocop:enable LineLength, StringLiterals
           '[pam]',
           '[domain/default]',
           'ldap_schema = rfc2307bis',
