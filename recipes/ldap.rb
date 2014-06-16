@@ -41,7 +41,7 @@ end
 
 case node['platform_family']
 when 'rhel'
-  ldap_packages = %w(sssd)
+  ldap_packages = %w(sssd authconfig)
   install(ldap_packages)
   template node['nmdbase']['ldap']['sssd_conf]']['path'] do
     source 'generic.erb'
