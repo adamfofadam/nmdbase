@@ -57,7 +57,7 @@ describe 'nmdbase::ldap' do
     )
   end
 
-  case ENV['spec_os']
+  case ENV['nmdbase_spec_os']
     when 'debian'
       it 'Installs the LDAP package to set this instance up as a client.' do
         expect(chef_run).to install_package('libpam-ldap')

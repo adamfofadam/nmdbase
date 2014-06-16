@@ -66,14 +66,14 @@ task :spec, :os do |os, args|
   os = args[:os]
   case os
   when 'redhat'
-    ENV['spec_os'] = 'redhat'
+    ENV['nmdbase_spec_os'] = 'redhat'
     RSpec::Core::RakeTask.new(:spec)
   when 'ubuntu'
-    ENV['spec_os'] = 'ubnutu'
+    ENV['nmdbase_spec_os'] = 'ubnutu'
     RSpec::Core::RakeTask.new(:spec)
   else
     puts "Unknown rspec operating system #{os}. Defaulting to RedHat"
-    ENV['spec_os'] = 'redhat'
+    ENV['nmdbase_spec_os'] = 'redhat'
     RSpec::Core::RakeTask.new(:spec)
   end
 end
