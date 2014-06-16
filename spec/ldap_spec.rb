@@ -150,7 +150,7 @@ describe 'nmdbase::ldap' do
       .with_content(/^# Do NOT modify this file by hand!$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-      .with_content(/^[sssd]$/)
+      .with_content(/^\[sssd\]$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
       .with_content(/^config_file_version = 2$/)
@@ -162,16 +162,16 @@ describe 'nmdbase::ldap' do
       .with_content(/^domains = default$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-      .with_content(/^[nss]$/)
+      .with_content(/^\[nss\]$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
       .with_content(/^filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-      .with_content(/^[pam]$/)
+      .with_content(/^\[pam\]$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-      .with_content(/^[domain/default]$/)
+      .with_content(/^\[domain\/default\]$/)
 
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
       .with_content(/^ldap_schema = rfc2307bis$/)
