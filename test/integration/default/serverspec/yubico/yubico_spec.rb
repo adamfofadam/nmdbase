@@ -35,31 +35,20 @@ if os[:family] == 'Debian'
 elsif os[:family] == 'RedHat'
   describe file('/etc/pam.d/sshd') do
     it { should be_file }
-    #it { should be_mode 644 }
+    it { should be_mode 644 }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
-    m = 'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug'
-    its(:content) { should match m }
-    m = 'auth  required  pam_sepermit.so'
-    its(:content) { should match m }
-    m = 'auth include  password-auth'
-    its(:content) { should match m }
-    m = 'account    required     pam_nologin.so'
-    its(:content) { should match m }
-    m = 'account    include  password-auth'
-    its(:content) { should match m }
-    m = 'password  include password-auth'
-    its(:content) { should match m }
-    m = 'session required  pam_selinux.so close'
-    its(:content) { should match m }
-    m = 'session required  pam_loginuid.so'
-    its(:content) { should match m }
-    m = 'session required  pam_selinux.so open env_params'
-    its(:content) { should match m }
-    m = 'session optional  pam_keyinit.so  force revoke'
-    its(:content) { should match m }
-    m = 'session include   password-auth'
-    its(:content) { should match m }
+    its(:content) { should match 'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug' }
+    its(:content) { should match 'auth  required  pam_sepermit.so' }
+    its(:content) { should match 'auth include  password-auth' }
+    its(:content) { should match 'account    required     pam_nologin.so' }
+    its(:content) { should match 'account    include  password-auth' }
+    its(:content) { should match 'password  include password-auth' }
+    its(:content) { should match 'session required  pam_selinux.so close' }
+    its(:content) { should match 'session required  pam_loginuid.so' }
+    its(:content) { should match 'session required  pam_selinux.so open env_params' }
+    its(:content) { should match 'session optional  pam_keyinit.so  force revoke' }
+    its(:content) { should match 'session include   password-auth' }
   end
   describe package('pam_yubico') do
     it { should be_installed }
