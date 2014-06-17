@@ -1,8 +1,10 @@
 # encoding: utf-8
 require 'chefspec'
 require 'chefspec/berkshelf'
-require 'coveralls'
-Coveralls.wear!
+require 'simplecov'
+SimpleCov.start do
+  add_filter 'vendor/'
+end
 RSpec.configure do |config|
   # Specify the path for Chef Solo to find cookbooks
   # config.cookbook_path = '/var/cookbooks'
