@@ -2,6 +2,7 @@
 require 'chefspec'
 require 'spec_helper'
 
+
 describe 'nmdbase::yubico' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do

@@ -19,11 +19,11 @@ RSpec.configure do |config|
   # Specify the operating platform and version to mock Ohai data from
   case ENV['nmdbase_spec_os']
   when 'rhel'
-    config.platform = 'redhat'
+    config.platform = 'centos'
     config.version = '6.5'
   when 'ubuntu'
     config.platform = 'ubuntu'
-    config.version = '14.04'
+    config.version = '12.04'
   end
 
   # Use color output for RSpec
