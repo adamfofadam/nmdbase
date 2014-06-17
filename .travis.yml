@@ -12,7 +12,8 @@ notifications:
   hipchat:
     rooms:
       secure: bVhXUZh/7CwFdGNKorB6xNteNujxo4Jdbcy9cs/PhIdLd30dKupiXcqK4TuLw2JID7rcUTybqnHVIBG9GvIxvT1Eh+dMGZe++O49T+/IUb5w8TqO2gjlMf6RTcQGmC5X00zmfJj6P2ZvzgJd3hWrEYTlvbcsujXd/Ucm6W3dcOg=
-install: script/cached-bundle install --without integration --deployment
+install: '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && script/cached-bundle install --without integration --deployment || bundle install --without integration --deployment'
+
 env:
   global:
     secure: PjF5jJYkoA2CYc/9ijWAs/NAfS5kbQKC8h4IccT2Kr8wUVSUAq0D5UvE2mvt9gZadBqwW4fyC81Fw9xd8I2Soy5TnHklPSSWiiiJKUmxNq3D79uKBZwKWlOwy+N1fC0OkoL6BP+B+H2Emjb18/ZuYOCTBUeHtpcSYvGRAGDs2DA=
