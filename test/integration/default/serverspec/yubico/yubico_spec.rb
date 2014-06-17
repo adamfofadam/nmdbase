@@ -33,7 +33,7 @@ if os[:family] == 'Debian'
 elsif os[:family] == 'RedHat'
   describe file('/etc/pam.d/sshd') do
     it { should be_file }
-    it { should be_mode 644 }
+    it { should be_mode 600 }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
     m = 'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug'

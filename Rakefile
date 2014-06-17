@@ -73,7 +73,7 @@ task :spec, :os do |os, args|
     RSpec::Core::RakeTask.new(:spec)
   else
     puts "Unknown rspec operating system #{os}. Defaulting to RedHat"
-    ENV['nmdbase_spec_os'] = 'redhat'
+    ENV['nmdbase_spec_os'] = 'rhel'
     RSpec::Core::RakeTask.new(:spec)
   end
 end

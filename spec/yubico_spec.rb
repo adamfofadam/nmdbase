@@ -166,7 +166,7 @@ describe 'nmdbase::yubico' do
       expect(chef_run).to create_template('/etc/ssh/sshd_config').with(
         user: 'root',
         group: 'root',
-        mode: '0644'
+        mode: '0600'
       )
     end
     it 'Creates a global yubico auth file.' do
