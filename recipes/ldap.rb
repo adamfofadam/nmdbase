@@ -69,15 +69,6 @@ when 'debian'
     group 'root'
     variables(data: sssd_ldap['conf'])
   end
-
-
-  # template node['nmdbase']['ldap']['secret'] do
-  #   source 'ldap.secret.erb'
-  #   mode 0600
-  #   owner 'root'
-  #   group 'root'
-  #   variables(secret: ldap['secret'])
-  # end
   template node['nmdbase']['common_session'] do
     source 'generic.erb'
     mode 0644
