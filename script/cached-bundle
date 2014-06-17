@@ -27,7 +27,6 @@ download() {
   curl --tcp-nodelay -qsfL "$1" -o "$2"
 }
 
-echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
 if [ "$TRAVIS_PULL_REQUEST" -ne "false" ]; then
   bundle_path="vendor/bundle"
   gemfile_hash="$(compute_md5 <"${BUNDLE_GEMFILE:-Gemfile}.lock")"
@@ -38,9 +37,11 @@ if [ "$TRAVIS_PULL_REQUEST" -ne "false" ]; then
     echo "Reusing cached bundle ${cache_name}"
     tar xzf "$cache_name"
   fi
+fi
 
   bundle "$@"
 
+if [ "$TRAVIS_PULL_REQUEST" -ne "false" ]; then
   if [ ! -f "$cache_name" ]; then
     echo "Caching \`${bundle_path}' to S3"
     tar czf "$cache_name" "$bundle_path"
