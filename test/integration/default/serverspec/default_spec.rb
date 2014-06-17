@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'serverspec'
+require_relative 'yubico/yubico_spec'
 
 include Serverspec::Helper::Exec
 include Serverspec::Helper::DetectOS
@@ -19,7 +20,7 @@ describe file('/etc/chef/client.rb') do
   its(:content) { should match 'chef_server_url' }
   its(:content) { should match 'validation_client_name "chef-validator"' }
   # rubocop:disable LineLength, StringLiterals
-  its(:content) { should match(/node_name "default-ubuntu-(1204|1404)-(vmware|virtualbox)"/) }
+  its(:content) { should match(/node_name "default-(centos|redhat|ubuntu)-(1204|1404|65)-(vmware|virtualbox)"/) }
   # rubocop:enable LineLength, StringLiterals
 
 end
