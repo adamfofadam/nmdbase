@@ -32,7 +32,7 @@ when 'debian'
   # rubocop:disable LineLength, StringLiterals
   pam_sshd_conf = yubico_data['debian_pam_sshd_conf'].nil? ? attributes : databag
   # rubocop:enable LineLength, StringLiterals
-  template node['nmdbase']['common_session'] do
+  template node['nmdbase']['common_auth'] do
     source 'generic.erb'
     mode 0644
     owner 'root'
