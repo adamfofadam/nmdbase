@@ -132,7 +132,16 @@ when 'debian'
     'session required pam_env.so user_readenv=1 envfile=/etc/default/locale',
   # Standard Un*x password updating.
     '@include common-password'
-]
+  ]
+  default['nmdbase']['common_auth'] = '/etc/pam.d/common-auth'
+  default['nmdbase']['common_auth_confg'] = [
+    'auth  [success=2 default=ignore pam_unix.so nullok_secure try_first_pass',
+    'auth  [success=1 default=ignore] pam_sss.so use_first_pass',
+    'auth    requisite                       pam_deny.so',
+    'auth    required                        pam_permit.so',
+    'auth    optional                        pam_cap.so'
+  ]
+
 end
 # The path to the ssh PAM conf file.
 default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
