@@ -48,16 +48,21 @@ when 'rhel'
 ]
 when 'debian'
   default['nmdbase']['nsswitch_config'] = [
-    'passwd: ldap compat',
-    'group: ldap compat',
-    'shadow: ldap compat',
-    'hosts: files dns',
-    'networks: files',
-    'protocols: db files',
-    'services: db files',
-    'ethers: db files',
-    'rpc: db files',
-    'netgroup: nis'
+    'passwd:         files sss',
+    'shadow:         files sss',
+    'group:          files sss',
+    'hosts:          files dns',
+    'bootparams:     files',
+    'ethers:         files',
+    'netmasks:       files',
+    'networks:       files',
+    'protocols:      files',
+    'rpc:            files',
+    'services:       files',
+    'netgroup:       files sss',
+    'publickey:      files',
+    'automount:      files',
+    'aliases:        files'
   ]
 end
 

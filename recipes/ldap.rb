@@ -60,23 +60,24 @@ when 'rhel'
     action [:enable, :start]
   end
 when 'debian'
-  ldap_packages = %w(libpam-ldap ldap-utils)
+  ldap_packages = %w(sssd libpam-sss libnss-sss)
   install(ldap_packages)
-  template node['nmdbase']['ldap']['path'] do
+  template node['nmdbase']['ldap']['sssd_conf]']['path'] do
     source 'generic.erb'
-    mode 0644
-    owner 'root'
-    group 'root'
-    variables(data: ldap['conf'])
-  end
-
-  template node['nmdbase']['ldap']['secret'] do
-    source 'ldap.secret.erb'
     mode 0600
     owner 'root'
     group 'root'
-    variables(secret: ldap['secret'])
+    variables(data: sssd_ldap['conf'])
   end
+
+
+  # template node['nmdbase']['ldap']['secret'] do
+  #   source 'ldap.secret.erb'
+  #   mode 0600
+  #   owner 'root'
+  #   group 'root'
+  #   variables(secret: ldap['secret'])
+  # end
   template node['nmdbase']['common_session'] do
     source 'generic.erb'
     mode 0644
@@ -85,4 +86,8 @@ when 'debian'
     variables(data: node['nmdbase']['common_session_confg'])
   end
   create_nsswitch
+  service 'sssd' do
+    provider Chef::Provider::Service::Upstart
+    action [:enable, :start]
+  end
 end
