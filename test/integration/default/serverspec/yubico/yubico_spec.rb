@@ -38,7 +38,9 @@ elsif os[:family] == 'RedHat'
     it { should be_mode 644 }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
+# rubocop:disable LineLength, StringLiterals
     its(:content) { should match 'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug' }
+# rubocop:enable LineLength, StringLiterals
     its(:content) { should match 'auth  required  pam_sepermit.so' }
     its(:content) { should match 'auth include  password-auth' }
     its(:content) { should match 'account    required     pam_nologin.so' }
@@ -46,8 +48,10 @@ elsif os[:family] == 'RedHat'
     its(:content) { should match 'password  include password-auth' }
     its(:content) { should match 'session required  pam_selinux.so close' }
     its(:content) { should match 'session required  pam_loginuid.so' }
+# rubocop:disable LineLength, StringLiterals
     its(:content) { should match 'session required  pam_selinux.so open env_params' }
     its(:content) { should match 'session optional  pam_keyinit.so  force revoke' }
+# rubocop:enable LineLength, StringLiterals
     its(:content) { should match 'session include   password-auth' }
   end
   describe package('pam_yubico') do
