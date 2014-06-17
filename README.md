@@ -14,7 +14,7 @@ Requirements
 
 `ubuntu > 12.04`
 
-`centos > 6`
+`centos > 6.0`
 
 ### Dependencies
 
