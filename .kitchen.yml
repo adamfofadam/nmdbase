@@ -35,15 +35,7 @@ suites:
     run_list:
       - recipe[nmdbase::default]
     data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
-    attributes: {
-       "openssh": {
-         "server": {
-           "use_p_a_m": "yes",
-           "challenge_response_authentication": "yes",
-           "password_authentication": "yes"
-         }
-       }
-     }
+    attributes:
   - name: ldap
     run_list:
       - recipe[nmdbase::ldap]
@@ -53,26 +45,10 @@ suites:
     run_list:
       - recipe[nmdbase::yubico]
     data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
-    attributes: {
-      "openssh": {
-        "server": {
-          "use_p_a_m": "yes",
-          "challenge_response_authentication": "yes",
-          "password_authentication": "yes"
-        }
-      }
-    }
+    attributes:
   - name: yubico-ldap
     run_list:
       - recipe[nmdbase::ldap]
       - recipe[nmdbase::yubico]
     data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
-    attributes: {
-      "openssh": {
-        "server": {
-          "use_p_a_m": "yes",
-          "challenge_response_authentication": "yes",
-          "password_authentication": "yes"
-        }
-      }
-    }
+    attributes:
