@@ -25,30 +25,8 @@ attributes = node['nmdbase']['pam']['sshd']['conf']
 
 case node['platform_family']
 when 'debian'
-  %w(python-software-properties).each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-  execute 'add-software-properties-common' do
-    command 'apt-get -y install software-properties-common'
-    not_if { ::File.exist?('/usr/bin/add-apt-repository') }
-  end
-  path = '/etc/apt/sources.list.d/yubico-stable-precise.list'
-  execute 'add-apt-repository' do
-    command 'add-apt-repository ppa:yubico/stable'
-    not_if { ::File.exist?(path) }
-    notifies :run, 'execute[apt-get-update]', :immediately
-    action :run
-  end
-  execute 'apt-get-update' do
-    command 'apt-get update'
-    action :nothing
-  end
-  %w(libpam-yubico).each do |pkg|
-    package pkg do
-      action :install
-    end
+  package 'libpam-yubico' do
+    action :install
   end
   databag = yubico_data['debian_pam_sshd_conf']
   # rubocop:disable LineLength, StringLiterals
