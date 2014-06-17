@@ -60,7 +60,7 @@ FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = { fail_tags: ['any'] }
 end
 # rubocop:disable LineLength, StringLiterals
-desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or "rake spec[ubuntu]"'
+desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or "rake spec[ubuntu]" . Defaults to rhel'
 # rubocop:enable LineLength, StringLiterals
 task :spec, :os do |os, args|
   os = args[:os]
