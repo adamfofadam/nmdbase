@@ -22,12 +22,8 @@
 # No attributes. Everything that is unique is configured through databags.
 
 ### nmdbase::ldap
-# The ldap configuration file path.
-default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
+# The sssd configuration file path.
 default['nmdbase']['ldap']['sssd_conf]']['path'] = '/etc/sssd/sssd.conf'
-# The location of the ldap secret file. The password is stored in the "secret"
-# key of data_bags/nmdbase/ldap
-default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
 
 # Manage nsswitch to enable LDAP.
 default['nmdbase']['nsswitch'] = '/etc/nsswitch.conf'

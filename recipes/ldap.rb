@@ -19,7 +19,6 @@
 # limitations under the License.
 #
 
-ldap = data_bag_item('nmdbase', 'ldap')[node.chef_environment]
 sssd_ldap = data_bag_item('nmdbase', 'sssd_ldap')[node.chef_environment]
 def create_nsswitch
   template node['nmdbase']['nsswitch'] do
