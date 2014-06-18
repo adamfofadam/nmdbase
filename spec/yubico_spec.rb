@@ -63,20 +63,7 @@ describe 'nmdbase::yubico' do
       )
     end
 
-    it 'Installs python-software-properties.' do
-      expect(chef_run).to install_package('python-software-properties')
-    end
-
-    it 'Adds the yubico repositories.' do
-      expect(chef_run).to run_execute('add-apt-repository')
-    end
-
-    it 'Notifies apt-get update when adding yubico repositories.' do
-      cmd = chef_run.execute('add-apt-repository')
-      expect(cmd).to notify('execute[apt-get-update]')
-    end
-
-    it 'Installs the libpam-yubico package from the yubico repositories.' do
+    it 'Installs PAM yubico library.' do
       expect(chef_run).to install_package('libpam-yubico')
     end
 
