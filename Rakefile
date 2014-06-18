@@ -60,7 +60,7 @@ FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = { fail_tags: ['any'] }
 end
 # rubocop:disable LineLength, StringLiterals
-desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or "rake spec[ubuntu]" . Defaults to rhel'
+desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or "rake spec[ubuntu]" . Defaults to both'
 # rubocop:enable LineLength, StringLiterals
 task :spec, :os do |os, args|
   os = args[:os]
@@ -72,8 +72,14 @@ task :spec, :os do |os, args|
     ENV['nmdbase_spec_os'] = 'ubuntu'
     RSpec::Core::RakeTask.new(:spec)
   else
-    puts "Unknown rspec operating system #{os}. Defaulting to RedHat"
+    # rubocop:disable LineLength, StringLiterals
+    puts "Unknown rspec operating system #{os}. Running both Rehat Family and Ubuntu tests."
+    # rubocop:enable LineLength, StringLiterals
+    puts 'Running RedHat tests.'
     ENV['nmdbase_spec_os'] = 'rhel'
+    RSpec::Core::RakeTask.new(:spec)
+    puts 'Running Ubuntu tests.'
+    ENV['nmdbase_spec_os'] = 'ubuntu'
     RSpec::Core::RakeTask.new(:spec)
   end
 end
