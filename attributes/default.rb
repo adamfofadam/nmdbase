@@ -22,7 +22,7 @@
 # No attributes. Everything that is unique is configured through databags.
 
 ### nmdbase::ldap
-# The sssd configuration file path.
+
 default['nmdbase']['ldap']['sssd_conf]']['path'] = '/etc/sssd/sssd.conf'
 
 # Manage nsswitch to enable LDAP.
