@@ -13,8 +13,6 @@ describe 'nmdbase::yubico' do
         'users' => [
           'test_user:cccccexample'
         ],
-        'id' => 'test_id',
-        'key' => 'test_key'
       }
     )
     stub_data_bag_item('nmdbase', 'ssl').and_return(
@@ -89,13 +87,15 @@ describe 'nmdbase::yubico' do
 
       expect(chef_run).to render_file(path)
         .with_content(/^# Do NOT modify this file by hand!$/)
-
+        # rubocop:disable LineLength, StringLiterals
       expect(chef_run).to render_file(path)
-        .with_content(%r{^auth\srequired\spam_yubico.so\smode=client
-          \stry_first_pass\sauthfile=/etc/yubikey_mappings\sdebug}x)
-
+        .with_content(%r{^auth required pam_yubico.so mode=client try_first_pass authfile=\/etc\/yubikey_mappings debug})
+        # rubocop:enable LineLength, StringLiterals
       expect(chef_run).to render_file(path)
         .with_content(/^@include common-auth$/)
+
+      expect(chef_run).to render_file(path)
+        .with_content(/^account    required     pam_nologin.so$/)
 
       expect(chef_run).to render_file(path)
         .with_content(/^@include common-account$/)
@@ -104,29 +104,27 @@ describe 'nmdbase::yubico' do
         .with_content(/^@include common-session$/)
 
       expect(chef_run).to render_file(path)
-        .with_content(/^session +optional +pam_motd.so # \[1\]$/)
+        .with_content(/^session optional pam_motd.so # \[1\]$/)
 
       expect(chef_run).to render_file(path)
-        .with_content(/^account +required +pam_nologin.so$/)
+        .with_content(/^session optional pam_mail.so standard noenv # \[1\]$/)
 
       expect(chef_run).to render_file(path)
-        .with_content(/^session +optional +pam_motd.so # \[1\]$/)
-        # rubocop:disable LineLength, StringLiterals
-      expect(chef_run).to render_file(path)
-        .with_content(/^session +optional +pam_mail.so standard noenv # \[1\]$/)
-        # rubocop:enable LineLength, StringLiterals
-      expect(chef_run).to render_file(path)
-        .with_content(/^session +required +pam_limits.so$/)
+        .with_content(/^session required pam_limits.so$/)
 
       expect(chef_run).to render_file(path)
-        .with_content(/^session +required +pam_env.so # \[1\]$/)
+        .with_content(/^session required pam_env.so # \[1\]$/)
 
+# rubocop:disable LineLength, StringLiterals
       expect(chef_run).to render_file(path)
-        .with_content(%r{^session\s+required\s+pam_env.so\s+user_readenv=1
-          \senvfile=/etc/default/locale$}x)
+        .with_content(%r{session required pam_env.so user_readenv=1 envfile=\/etc\/default\/locale})
+# rubocop:enable LineLength, StringLiterals
+      expect(chef_run).to render_file(path)
+        .with_content(/^session required pam_limits.so$/)
 
       expect(chef_run).to render_file(path)
         .with_content(/^@include common-password$/)
+
     end
 
     it 'Prepares for PAM debug logging.' do
