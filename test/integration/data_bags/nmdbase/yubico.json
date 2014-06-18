@@ -1,6 +1,9 @@
   {
     "id": "yubico",
     "_default": {
+        "id": "",
+        "key": "",
+        "users": [],
         "debian_pam_sshd_conf": [
           "auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug",
           "@include common-auth",

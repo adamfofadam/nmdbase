@@ -66,7 +66,7 @@ when 'rhel'
   pam_sshd_conf = yubico_data['rhel_pam_sshd_conf'].nil? ? attributes : databag
   template node['nmdbase']['pam']['sshd']['path'] do
     source 'generic.erb'
-    mode 0600
+    mode 0644
     owner 'root'
     group 'root'
     variables(data: pam_sshd_conf)
