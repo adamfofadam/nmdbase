@@ -39,6 +39,14 @@ when 'debian'
     group 'root'
     variables(data: node['nmdbase']['common_auth_confg'])
   end
+  template node['nmdbase']['pam']['sshd']['path'] do
+    source 'generic.erb'
+    mode 0644
+    owner 'root'
+    group 'root'
+    variables(data: pam_sshd_conf)
+    notifies :restart, 'service[ssh]', :delayed
+  end
 when 'rhel'
   yum_repository 'epel' do
     description 'Extra Packages for Enterprise Linux'
@@ -56,6 +64,15 @@ when 'rhel'
   end
   databag = yubico_data['rhel_pam_sshd_conf']
   pam_sshd_conf = yubico_data['rhel_pam_sshd_conf'].nil? ? attributes : databag
+  template node['nmdbase']['pam']['sshd']['path'] do
+    source 'generic.erb'
+    mode 0600
+    owner 'root'
+    group 'root'
+    variables(data: pam_sshd_conf)
+    notifies :restart, 'service[ssh]', :delayed
+  end
+
 end
 
 template node['nmdbase']['yubico']['authfile'] do
@@ -64,15 +81,6 @@ template node['nmdbase']['yubico']['authfile'] do
   owner 'root'
   group 'root'
   variables(data: yubico_data['users'])
-end
-
-template node['nmdbase']['pam']['sshd']['path'] do
-  source 'generic.erb'
-  mode 0644
-  owner 'root'
-  group 'root'
-  variables(data: pam_sshd_conf)
-  notifies :restart, 'service[ssh]', :delayed
 end
 
 # Debug logging is enabled by adding a debug flag to the pam sshd conf. This
