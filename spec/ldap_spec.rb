@@ -341,4 +341,3 @@ describe 'nmdbase::ldap - rhel tests', :rhel do
      .with_content(/^krb5_server = kerberos.example.com$/)
   end
 end
-

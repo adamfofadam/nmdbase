@@ -60,44 +60,27 @@ FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = { fail_tags: ['any'] }
 end
 # rubocop:disable LineLength, StringLiterals
-desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or "rake spec[ubuntu]" . Defaults to both'
+desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]" . Defaults to both'
 # rubocop:enable LineLength, StringLiterals
 #task spec: [:specrhel, :specubuntu]
 task :spec, :os do |os, args|
   os = args[:os]
   case os
   when 'rhel'
-    ENV['nmdbase_spec_os'] = 'rhel'
     RSpec::Core::RakeTask.new(:spec) do |t|
       t.rspec_opts = '--tag rhel'
     end
   when 'ubuntu'
-    ENV['nmdbase_spec_os'] = 'ubuntu'
     RSpec::Core::RakeTask.new(:spec) do |t|
       t.rspec_opts = '--tag ubuntu'
     end
   else
-    # rubocop:disable LineLength, StringLiterals
-    puts "Unknown rspec operating system #{os}. Running both Rehdat Family and Ubuntu tests."
-    # rubocop:enable LineLength, StringLiterals
+    puts "Unknown rspec operating system #{os}. Running all tests."
     RSpec::Core::RakeTask.new(:spec) do |t|
-      ENV['nmdbase_spec_os'] = 'ubuntu'
       t.rspec_opts = '--tag rhel --tag ubuntu'
     end
   end
 end
-# desc 'Run ChefSpec rhel family examples(CentOS, RedHat etc..)'
-# task :specrhel
-# RSpec::Core::RakeTask.new(:specrhel) do |t|
-#   t.rspec_opts = '--tag rhel'
-#   ENV['nmdbase_spec_os'] = 'rhel'
-# end
-# desc 'Run ChefSpec Ubuntu examples'
-# task :specubuntu
-# RSpec::Core::RakeTask.new(:specubuntu) do |t|
-#   t.rspec_opts = '--tag ubuntu'
-#   ENV['nmdbase_spec_os'] = 'ubuntu'
-# end
 
 desc 'Generate the Readme.md file.'
 task :readme do
