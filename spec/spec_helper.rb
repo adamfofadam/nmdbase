@@ -19,14 +19,16 @@ RSpec.configure do |config|
    # config.path = 'ohai.json'
 
   # Specify the operating platform and version to mock Ohai data from
-  case ENV['nmdbase_spec_os']
-  when 'rhel'
-    config.platform = 'centos'
-    config.version = '6.5'
-  when 'ubuntu'
-    config.platform = 'ubuntu'
-    config.version = '12.04'
-  end
+  #case ENV['nmdbase_spec_os']
+  #when 'rhel'
+  #  config.platform = 'centos'
+  #  config.version = '6.5'
+  #when 'ubuntu'
+  #  config.platform = 'ubuntu'
+  #  config.version = '12.04'
+  #end
+
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 
   # Use color output for RSpec
   config.color_enabled = true

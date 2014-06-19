@@ -2,31 +2,51 @@
 require 'chefspec'
 require 'spec_helper'
 
-describe 'nmdbase::yubico' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-  before do
-    stub_command('grep \'auth required pam_yubico.so\' /etc/pam.d/sshd')
-      .and_return(false)
-    stub_data_bag_item('nmdbase', 'yubico').and_return(
-      'id' => 'yubico',
-      '_default' => {
-        'users' => [
-          'test_user:cccccexample'
-        ],
-      }
-    )
-    stub_data_bag_item('nmdbase', 'ssl').and_return(
-      'id' => 'ssl',
-      '_default' => {
-        'crt' => 'test_crt',
-        'key' => 'test_key'
-      }
-    )
-    stub_command('test -f /var/run/pam-debug.log').and_return(false)
-  end
+#describe 'nmdbase::yubico' do
+#  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  # before do
+  #   stub_command('grep \'auth required pam_yubico.so\' /etc/pam.d/sshd')
+  #     .and_return(false)
+  #   stub_data_bag_item('nmdbase', 'yubico').and_return(
+  #     'id' => 'yubico',
+  #     '_default' => {
+  #       'users' => [
+  #         'test_user:cccccexample'
+  #       ],
+  #     }
+  #   )
+  #   stub_data_bag_item('nmdbase', 'ssl').and_return(
+  #     'id' => 'ssl',
+  #     '_default' => {
+  #       'crt' => 'test_crt',
+  #       'key' => 'test_key'
+  #     }
+  #   )
+  #   stub_command('test -f /var/run/pam-debug.log').and_return(false)
+  # end
 
-  case ENV['nmdbase_spec_os']
-  when 'ubuntu'
+describe 'nmdbase::yubico - Ubuntu tests', :ubuntu do
+    let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: '13.04').converge('nmdbase::yubico') }
+    before do
+      stub_command('grep \'auth required pam_yubico.so\' /etc/pam.d/sshd')
+        .and_return(false)
+      stub_data_bag_item('nmdbase', 'yubico').and_return(
+        'id' => 'yubico',
+        '_default' => {
+          'users' => [
+            'test_user:cccccexample'
+          ],
+        }
+      )
+      stub_data_bag_item('nmdbase', 'ssl').and_return(
+        'id' => 'ssl',
+        '_default' => {
+          'crt' => 'test_crt',
+          'key' => 'test_key'
+        }
+      )
+      stub_command('test -f /var/run/pam-debug.log').and_return(false)
+    end
     it 'Includes the openssh recipe.' do
       expect(chef_run).to include_recipe('openssh')
     end
@@ -130,7 +150,30 @@ describe 'nmdbase::yubico' do
     it 'Prepares for PAM debug logging.' do
       expect(chef_run).to run_bash('Prepare for debug logging.')
     end
-  when 'rhel'
+end
+
+describe 'nmdbase::yubico - rhel family tests', :rhel do
+    let(:chef_run) { ChefSpec::Runner.new(platform: 'centos', version: '6.5').converge('nmdbase::yubico') }
+    before do
+      stub_command('grep \'auth required pam_yubico.so\' /etc/pam.d/sshd')
+        .and_return(false)
+      stub_data_bag_item('nmdbase', 'yubico').and_return(
+        'id' => 'yubico',
+        '_default' => {
+          'users' => [
+            'test_user:cccccexample'
+          ],
+        }
+      )
+      stub_data_bag_item('nmdbase', 'ssl').and_return(
+        'id' => 'ssl',
+        '_default' => {
+          'crt' => 'test_crt',
+          'key' => 'test_key'
+        }
+      )
+      stub_command('test -f /var/run/pam-debug.log').and_return(false)
+    end
     it 'Includes the openssh recipe.' do
       expect(chef_run).to include_recipe('openssh')
     end
@@ -162,5 +205,4 @@ describe 'nmdbase::yubico' do
       expect(chef_run).to render_file('/etc/yubikey_mappings')
         .with_content(/^test_user:cccccexample$/)
     end
-  end
 end
