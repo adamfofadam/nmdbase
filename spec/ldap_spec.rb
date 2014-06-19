@@ -232,7 +232,6 @@ describe 'nmdbase::ldap - rhel tests', :rhel do
       }
     )
   end
-#describe 'rhel family tests', :rhel do
   it 'Installs the sssd package.' do
     expect(chef_run).to install_package('sssd')
   end
