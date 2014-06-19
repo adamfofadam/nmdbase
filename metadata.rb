@@ -4,9 +4,9 @@ maintainer 'NewMedia! Denver'
 maintainer_email 'support@newmediadenver.com'
 license 'Apache 2.0'
 
-version '1.0.2'
-supports 'ubuntu', '> 12.04'
-supports 'centos', '> 6.0'
+version '1.0.3'
+supports 'ubuntu', '>= 14.04'
+supports 'centos', '>= 6.0'
 
 desc = 'Manages ldap client, yubico pam, ssl certificates and unattended '
 desc << 'updates.'
