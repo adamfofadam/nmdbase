@@ -3,8 +3,13 @@ require 'chefspec'
 require 'spec_helper'
 
 describe 'nmdbase::ldap - ubuntu tests', :ubuntu do
-  let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: '13.04').converge('nmdbase::ldap') }
+  let(:chef_run) do
+    ChefSpec::Runner.new(platform: 'ubuntu', version: '13.04')
+      .converge('nmdbase::ldap')
+  end
   before do
+    filters = 'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,'
+    filters << 'news,nscd'
     stub_data_bag_item('nmdbase', 'sssd_ldap').and_return(
       'id' => 'sssd_ldap',
       '_default' => {
@@ -14,9 +19,7 @@ describe 'nmdbase::ldap - ubuntu tests', :ubuntu do
           'services = nss, pam',
           'domains = default',
           '[nss]',
-          # rubocop:disable LineLength, StringLiterals
-          'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd',
-          # rubocop:enable LineLength, StringLiterals
+          filters,
           '[pam]',
           '[domain/default]',
           'ldap_schema = rfc2307bis',
@@ -71,10 +74,11 @@ describe 'nmdbase::ldap - ubuntu tests', :ubuntu do
       .with_content(/^session required pam_unix.so$/)
     expect(chef_run).to render_file('/etc/pam.d/common-session')
       .with_content(/^session optional pam_ldap.so$/)
-        # rubocop:disable LineLength, StringLiterals
     expect(chef_run).to render_file('/etc/pam.d/common-session')
-      .with_content(%r{^session required pam_mkhomedir.so skel=\/etc\/skel umask=0022$})
-        # rubocop:enable LineLength, StringLiterals
+      .with_content(%r{
+        ^session\srequired\spam_mkhomedir.so\sskel=\/etc\/skel
+        \sumask=0022$
+      }x)
   end
   it 'Modifies the Name Service Switch to use LDAP.' do
     expect(chef_run).to create_template('/etc/nsswitch.conf').with(
@@ -132,10 +136,9 @@ describe 'nmdbase::ldap - ubuntu tests', :ubuntu do
      .with_content(/^domains = default$/)
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
      .with_content(/^\[nss\]$/)
-    # rubocop:disable LineLength, StringLiterals
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-      .with_content(/^filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd$/)
-    # rubocop:enable LineLength, StringLiterals
+      .with_content(/^filter_users\s=\sroot,ldap,named,avahi,haldaemon,dbus,
+                    radiusd,news,nscd$/x)
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
      .with_content(/^\[pam\]$/)
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
@@ -189,8 +192,13 @@ describe 'nmdbase::ldap - ubuntu tests', :ubuntu do
   end
 end
 describe 'nmdbase::ldap - rhel tests', :rhel do
-  let(:chef_run) { ChefSpec::Runner.new(platform: 'centos', version: '6.5').converge('nmdbase::ldap') }
+  let(:chef_run) do
+    ChefSpec::Runner.new(platform: 'centos', version: '6.5')
+      .converge('nmdbase::ldap')
+  end
   before do
+    filters = 'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,'
+    filters << 'news,nscd'
     stub_data_bag_item('nmdbase', 'sssd_ldap').and_return(
       'id' => 'sssd_ldap',
       '_default' => {
@@ -200,9 +208,7 @@ describe 'nmdbase::ldap - rhel tests', :rhel do
           'services = nss, pam',
           'domains = default',
           '[nss]',
-          # rubocop:disable LineLength, StringLiterals
-          'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd',
-          # rubocop:enable LineLength, StringLiterals
+          filters,
           '[pam]',
           '[domain/default]',
           'ldap_schema = rfc2307bis',
@@ -284,10 +290,9 @@ describe 'nmdbase::ldap - rhel tests', :rhel do
      .with_content(/^domains = default$/)
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
      .with_content(/^\[nss\]$/)
-    # rubocop:disable LineLength, StringLiterals
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
-      .with_content(/^filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd$/)
-    # rubocop:enable LineLength, StringLiterals
+      .with_content(/^filter_users\s=\sroot,ldap,named,avahi,haldaemon,dbus,
+                    radiusd,news,nscd$/x)
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
      .with_content(/^\[pam\]$/)
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')

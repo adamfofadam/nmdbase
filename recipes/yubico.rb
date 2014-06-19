@@ -29,9 +29,7 @@ when 'debian'
     action :install
   end
   databag = yubico_data['debian_pam_sshd_conf']
-  # rubocop:disable LineLength, StringLiterals
-  pam_sshd_conf = yubico_data['debian_pam_sshd_conf'].nil? ? attributes : databag
-  # rubocop:enable LineLength, StringLiterals
+  psc = yubico_data['debian_pam_sshd_conf'].nil? ? attributes : databag
   template node['nmdbase']['common_auth'] do
     source 'generic.erb'
     mode 0644
@@ -44,15 +42,15 @@ when 'debian'
     mode 0644
     owner 'root'
     group 'root'
-    variables(data: pam_sshd_conf)
+    variables(data: psc)
     notifies :restart, 'service[ssh]', :delayed
   end
 when 'rhel'
   yum_repository 'epel' do
     description 'Extra Packages for Enterprise Linux'
-    # rubocop:disable LineLength, StringLiterals
-    mirrorlist 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch'
-    # rubocop:enable LineLength, StringLiterals
+    uri = 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch='
+    uri << '$basearch'
+    mirrorlist uri
     gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
     action :create
   end
@@ -63,13 +61,13 @@ when 'rhel'
     action :upgrade
   end
   databag = yubico_data['rhel_pam_sshd_conf']
-  pam_sshd_conf = yubico_data['rhel_pam_sshd_conf'].nil? ? attributes : databag
+  psc = yubico_data['rhel_pam_sshd_conf'].nil? ? attributes : databag
   template node['nmdbase']['pam']['sshd']['path'] do
     source 'generic.erb'
     mode 0644
     owner 'root'
     group 'root'
-    variables(data: pam_sshd_conf)
+    variables(data: psc)
     notifies :restart, 'service[ssh]', :delayed
   end
 
