@@ -13,11 +13,10 @@ class Readme < OpenStruct
   end
 end
 
-# rubocop:disable AssignmentInCondition, MethodLength
-def recipes(content = '')
+def recipes(content = '') # rubocop:disable MethodLength
   Dir.glob('spec/*_spec.rb').sort.each do |f|
     File.open(f, 'r') do |spec|
-      while line = spec.gets
+      while line = spec.gets # rubocop:disable AssignmentInCondition
         recipe = line.match(/^describe.+['|"](\w+::\w+)/i)
         content << "### #{recipe[1]}\n" unless recipe.nil?
         describes = line.match(/ +it '([^']+)/)
@@ -28,10 +27,9 @@ def recipes(content = '')
   content
 end
 
-def attributes(content = '')
+def attributes(content = '', output = false)
   File.open('attributes/default.rb', 'r') do |f|
-    output = false
-    while line = f.gets #
+    while line = f.gets # rubocop:disable AssignmentInCondition
       output = true if line =~ /^###/
       if output
         content << "#{line}" if line =~ /^###/
@@ -41,7 +39,6 @@ def attributes(content = '')
   end
   content
 end
-# rubocop:enable AssignmentInCondition, MethodLength
 
 def rake_tasks
   documentation = ''
@@ -59,10 +56,11 @@ desc 'Run Foodcritic lint checks'
 FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = { fail_tags: ['any'] }
 end
-# rubocop:disable LineLength, StringLiterals
-desc 'Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]" . Defaults to both'
-# rubocop:enable LineLength, StringLiterals
-#task spec: [:specrhel, :specubuntu]
+
+description = 'Run ChefSpec examples. Specify OS to test either with rake '
+description << '"spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]". '
+description << 'Defaults to both'
+desc description
 task :spec, :os do |os, args|
   os = args[:os]
   case os

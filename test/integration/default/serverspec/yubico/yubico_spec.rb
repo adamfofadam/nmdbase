@@ -43,22 +43,40 @@ if os[:family] == 'Debian'
     it { should be_mode 644 }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
-# rubocop:disable LineLength, StringLiterals
-    its(:content) { should match 'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug' }
+    its(:content) do
+      auth = 'auth required pam_yubico.so mode=client try_first_pass authfile='
+      auth << '/etc/yubikey_mappings debug'
+      should match auth
+    end
     its(:content) { should match '@include common-auth' }
     its(:content) { should match 'account    required     pam_nologin.so' }
     its(:content) { should match '@include common-account' }
-    its(:content) { should match 'session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so close' }
+    its(:content) do
+      session = 'session [success=ok ignore=ignore module_unknown=ignore '
+      session << 'default=bad]        pam_selinux.so close'
+      should match session
+    end
     its(:content) { should match 'session    required     pam_loginuid.so' }
-    its(:content) { should match 'session    optional     pam_keyinit.so force revoke' }
+    its(:content) do
+      should match 'session    optional     pam_keyinit.so force revoke'
+    end
     its(:content) { should match '@include common-session' }
     its(:content) { should match 'session    optional     pam_motd.so # [1]' }
-    its(:content) { should match 'session    optional     pam_mail.so standard noenv # [1]' }
+    its(:content) do
+      should match 'session    optional     pam_mail.so standard noenv # [1]'
+    end
     its(:content) { should match 'session    required     pam_limits.so' }
     its(:content) { should match 'session    required     pam_env.so # [1]' }
-    its(:content) { should match 'session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale' }
-    its(:content) { should match 'session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so open' }
-# rubocop:enable LineLength, StringLiterals
+    its(:content) do
+      session = 'session    required     pam_env.so user_readenv=1 envfile='
+      session << '/etc/default/locale'
+      should match session
+    end
+    its(:content) do
+      s = 'session [success=ok ignore=ignore module_unknown=ignore default='
+      s << 'bad]        pam_selinux.so open'
+      should match s
+    end
     its(:content) { should match '@include common-password' }
   end
 elsif os[:family] == 'RedHat'
@@ -77,9 +95,11 @@ elsif os[:family] == 'RedHat'
     it { should be_mode 644 }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
-# rubocop:disable LineLength, StringLiterals
-    its(:content) { should match 'auth required pam_yubico.so mode=client try_first_pass authfile=/etc/yubikey_mappings debug' }
-# rubocop:enable LineLength, StringLiterals
+    its(:content) do
+      auth_match = 'auth required pam_yubico.so mode=client try_first_pass '
+      auth_match << 'authfile=/etc/yubikey_mappings debug'
+      should match authmatch
+    end
     its(:content) { should match 'auth  required  pam_sepermit.so' }
     its(:content) { should match 'auth include  password-auth' }
     its(:content) { should match 'account    required     pam_nologin.so' }
@@ -87,10 +107,12 @@ elsif os[:family] == 'RedHat'
     its(:content) { should match 'password  include password-auth' }
     its(:content) { should match 'session required  pam_selinux.so close' }
     its(:content) { should match 'session required  pam_loginuid.so' }
-# rubocop:disable LineLength, StringLiterals
-    its(:content) { should match 'session required  pam_selinux.so open env_params' }
-    its(:content) { should match 'session optional  pam_keyinit.so  force revoke' }
-# rubocop:enable LineLength, StringLiterals
+    its(:content) do
+      should match 'session required  pam_selinux.so open env_params'
+    end
+    its(:content) do
+      should match 'session optional  pam_keyinit.so  force revoke'
+    end
     its(:content) { should match 'session include   password-auth' }
   end
   describe package('pam_yubico') do

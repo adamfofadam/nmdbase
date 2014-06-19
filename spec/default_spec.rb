@@ -22,6 +22,8 @@ describe 'nmdbase::default', :ubuntu && :rhel do
         }
       ]
     )
+    filters = 'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,'
+    filters << 'news,nscd'
     stub_data_bag_item('nmdbase', 'sssd_ldap').and_return(
       'id' => 'sssd_ldap',
       '_default' => {
@@ -31,9 +33,7 @@ describe 'nmdbase::default', :ubuntu && :rhel do
           'services = nss, pam',
           'domains = default',
           '[nss]',
-          # rubocop:disable LineLength, StringLiterals
-          'filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd',
-          # rubocop:enable LineLength, StringLiterals
+          filters,
           '[pam]',
           '[domain/default]',
           'ldap_schema = rfc2307bis',
