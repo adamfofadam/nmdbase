@@ -11,6 +11,7 @@ gem 'net-ldap', '~> 0.6.0'
 gem 'travis', '~> 1.6.9'
 gem 'websocket-native', '~> 1.0.0'
 gem 'coveralls', require: false
+gem 'octokit', '~> 3.0'
 
 group :integration do
   gem 'test-kitchen', '~> 1.0'

@@ -22,27 +22,45 @@
 # No attributes. Everything that is unique is configured through databags.
 
 ### nmdbase::ldap
-# The ldap configuration file path.
-default['nmdbase']['ldap']['path'] = '/etc/ldap.conf'
-# The location of the ldap secret file. The password is stored in the "secret"
-# key of data_bags/nmdbase/ldap
-default['nmdbase']['ldap']['secret'] = '/etc/ldap.secret'
+
+default['nmdbase']['ldap']['sssd_conf]']['path'] = '/etc/sssd/sssd.conf'
 
 # Manage nsswitch to enable LDAP.
 default['nmdbase']['nsswitch'] = '/etc/nsswitch.conf'
 # An array of LDAP configuration options to enable the node as a LDAP client.
-default['nmdbase']['nsswitch_config'] = [
-  'passwd: ldap compat',
-  'group: ldap compat',
-  'shadow: ldap compat',
-  'hosts: files dns',
-  'networks: files',
-  'protocols: db files',
-  'services: db files',
-  'ethers: db files',
-  'rpc: db files',
-  'netgroup: nis'
+case node['platform_family']
+when 'rhel'
+  default['nmdbase']['nsswitch_config'] = [
+    'passwd: files sss',
+    'group: files sss',
+    'shadow: files sss',
+    'hosts: files dns',
+    'networks: files',
+    'protocols: db files',
+    'services: db files',
+    'ethers: db files',
+    'rpc: db files',
+    'netgroup: nis'
 ]
+when 'debian'
+  default['nmdbase']['nsswitch_config'] = [
+    'passwd:         files sss',
+    'shadow:         files sss',
+    'group:          files sss',
+    'hosts:          files dns',
+    'bootparams:     files',
+    'ethers:         files',
+    'netmasks:       files',
+    'networks:       files',
+    'protocols:      files',
+    'rpc:            files',
+    'services:       files',
+    'netgroup:       files sss',
+    'publickey:      files',
+    'automount:      files',
+    'aliases:        files'
+  ]
+end
 
 # Modify the PAM common-session to create user system accounts from LDAP data.
 default['nmdbase']['common_session'] = '/etc/pam.d/common-session'
@@ -62,35 +80,67 @@ default['nmdbase']['common_session_confg'] = [
 # if you prefer to store the array there.
 yubiconf = 'auth required pam_yubico.so mode=client try_first_pass'
 yubiconf << ' authfile=/etc/yubikey_mappings debug'
-default['nmdbase']['pam']['sshd']['conf'] = [
+case node['platform_family']
+when 'rhel'
+  default['nmdbase']['pam']['sshd']['conf'] = [
   # Activate pam_yubico.so as the first item. If you create
   # data_bags/users/yubico.json with your "key" and "id" from
   # https://upgrade.yubico.com/getapikey/ it will be added to this string.
   # Otherwise, you should look into storing this data in the data_bag.
-  yubiconf,
+    yubiconf,
+    'auth  required  pam_sepermit.so',
+    'auth include  password-auth',
+    'account    required     pam_nologin.so',
+    'account    include  password-auth',
+    'password  include password-auth',
+    'session required  pam_selinux.so close',
+    'session required  pam_loginuid.so',
+    'session required  pam_selinux.so open env_params',
+    'session optional  pam_keyinit.so  force revoke',
+    'session include   password-auth'
+]
+when 'debian'
+  default['nmdbase']['pam']['sshd']['conf'] = [
+  # Activate pam_yubico.so as the first item. If you create
+  # data_bags/users/yubico.json with your "key" and "id" from
+  # https://upgrade.yubico.com/getapikey/ it will be added to this string.
+  # Otherwise, you should look into storing this data in the data_bag.
+    yubiconf,
   # Standard Un*x authentication.
-  '@include common-auth',
+    '@include common-auth',
   # Disallow non-root logins when /etc/nologin exists.
-  'account    required     pam_nologin.so',
+    'account    required     pam_nologin.so',
   # Standard Un*x authorization.
-  '@include common-account',
+    '@include common-account',
   # Standard Un*x session setup and teardown.
-  '@include common-session',
+    '@include common-session',
   # Print the message of the day upon successful login.
-  'session optional pam_motd.so # [1]',
+    'session optional pam_motd.so # [1]',
   # Print the status of the user's mailbox upon successful login.
-  'session optional pam_mail.so standard noenv # [1]',
+    'session optional pam_mail.so standard noenv # [1]',
   # Set up user limits from /etc/security/limits.conf.
-  'session required pam_limits.so',
+    'session required pam_limits.so',
   # Read environment variables from /etc/environment and
   # /etc/security/pam_env.conf.
-  'session required pam_env.so # [1]',
+    'session required pam_env.so # [1]',
   # In Debian 4.0 (etch), locale-related environment variables were moved to
   # /etc/default/locale, so read that as well
-  'session required pam_env.so user_readenv=1 envfile=/etc/default/locale',
+    'session required pam_env.so user_readenv=1 envfile=/etc/default/locale',
   # Standard Un*x password updating.
-  '@include common-password'
-]
+    '@include common-password'
+  ]
+  default['nmdbase']['common_auth'] = '/etc/pam.d/common-auth'
+  auth_first = 'auth  [success=2 default=ignore] pam_unix.so nullok_secure '
+  auth_first << 'try_first_pass'
+  default['nmdbase']['common_auth_confg'] = [
+    auth_first,
+    'auth  [success=1 default=ignore] pam_sss.so use_first_pass',
+    'auth    requisite                       pam_deny.so',
+    'auth    required                        pam_permit.so',
+    'auth    optional                        pam_cap.so'
+  ]
+
+end
 # The path to the ssh PAM conf file.
 default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 

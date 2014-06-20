@@ -3,7 +3,7 @@
 # Cookbook Name:: nmdbase
 # Recipe:: yubico
 #
-# Author:: Kevin Bridges
+# Author:: Kevin Bridges David Arnold
 # Copyright:: 2014, NewMedia Denver
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
@@ -20,37 +20,58 @@
 #
 include_recipe 'openssh'
 
-%w(python-software-properties).each do |pkg|
-  package pkg do
+yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
+attributes = node['nmdbase']['pam']['sshd']['conf']
+
+case node['platform_family']
+when 'debian'
+  package 'libpam-yubico' do
     action :install
   end
-end
+  databag = yubico_data['debian_pam_sshd_conf']
+  psc = yubico_data['debian_pam_sshd_conf'].nil? ? attributes : databag
+  template node['nmdbase']['common_auth'] do
+    source 'generic.erb'
+    mode 0644
+    owner 'root'
+    group 'root'
+    variables(data: node['nmdbase']['common_auth_confg'])
+  end
+  template node['nmdbase']['pam']['sshd']['path'] do
+    source 'generic.erb'
+    mode 0644
+    owner 'root'
+    group 'root'
+    variables(data: psc)
+    notifies :restart, 'service[ssh]', :delayed
+  end
+when 'rhel'
+  yum_repository 'epel' do
+    description 'Extra Packages for Enterprise Linux'
+    uri = 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch='
+    uri << '$basearch'
+    mirrorlist uri
+    gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
+    action :create
+  end
+  yum_package 'libyubikey' do
+    action :upgrade
+  end
+  yum_package 'pam_yubico' do
+    action :upgrade
+  end
+  databag = yubico_data['rhel_pam_sshd_conf']
+  psc = yubico_data['rhel_pam_sshd_conf'].nil? ? attributes : databag
+  template node['nmdbase']['pam']['sshd']['path'] do
+    source 'generic.erb'
+    mode 0644
+    owner 'root'
+    group 'root'
+    variables(data: psc)
+    notifies :restart, 'service[ssh]', :delayed
+  end
 
-case node['platform']
-when 'debian', 'ubuntu'
-  execute 'add-software-properties-common' do
-    command 'apt-get -y install software-properties-common'
-    not_if { ::File.exist?('/usr/bin/add-apt-repository') }
-  end
-  path = '/etc/apt/sources.list.d/yubico-stable-precise.list'
-  execute 'add-apt-repository' do
-    command 'add-apt-repository ppa:yubico/stable'
-    not_if { ::File.exist?(path) }
-    notifies :run, 'execute[apt-get-update]', :immediately
-    action :run
-  end
-  execute 'apt-get-update' do
-    command 'apt-get update'
-    action :nothing
-  end
-  %w(libpam-yubico).each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
 end
-
-yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
 
 template node['nmdbase']['yubico']['authfile'] do
   source 'generic.erb'
@@ -58,19 +79,6 @@ template node['nmdbase']['yubico']['authfile'] do
   owner 'root'
   group 'root'
   variables(data: yubico_data['users'])
-end
-
-attributes = node['nmdbase']['pam']['sshd']['conf']
-databag = yubico_data['pam_sshd_conf']
-pam_sshd_conf = yubico_data['pam_sshd_conf'].nil? ? attributes : databag
-
-template node['nmdbase']['pam']['sshd']['path'] do
-  source 'generic.erb'
-  mode 0644
-  owner 'root'
-  group 'root'
-  variables(data: pam_sshd_conf)
-  notifies :restart, 'service[ssh]', :delayed
 end
 
 # Debug logging is enabled by adding a debug flag to the pam sshd conf. This

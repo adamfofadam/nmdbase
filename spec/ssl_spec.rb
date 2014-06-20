@@ -2,7 +2,7 @@
 require 'chefspec'
 require 'spec_helper'
 
-describe 'nmdbase::ssl' do
+describe 'nmdbase::ssl', :ubuntu && :rhel do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
   before do
     stub_data_bag_item('nmdbase', 'ssl').and_return(

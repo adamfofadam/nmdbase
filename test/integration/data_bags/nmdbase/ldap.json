@@ -1,0 +1,13 @@
+{
+  "id": "ldap",
+  "_default" : {
+    "conf": [
+      "base dc=ldap,dc=example,dc=com",
+      "uri ldap://ldap.example.com/",
+      "ldap_version 3",
+      "rootbinddn cn=admin,dc=ldap,dc=example,dc=com",
+      "pam_password md5"
+    ],
+    "secret": "bobssecretp@$$word"
+  }
+}

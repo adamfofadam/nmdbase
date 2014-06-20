@@ -1,0 +1,9 @@
+{
+  "id": "ssl",
+  "_default" : [
+    {
+      "content": "test_crt_one",
+      "path": "/etc/ssl/certs/example_one.crt"
+    }
+  ]
+}
