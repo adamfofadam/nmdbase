@@ -81,7 +81,8 @@ task :spec, :os do |os, args|
   end
 end
 
-def credit
+# TODO: this seriously needs to be refactored and cleaned up.
+def credit # rubocop:disable MethodLength
   logs = `git log`.split('commit ')
   logs.shift
 
@@ -99,7 +100,8 @@ def credit
         if credit[commit_detail[:author][:html_url]].nil?
           credit[commit_detail[:author][:html_url]] = {}
         end
-        credit[commit_detail[:author][:html_url]][author.split(' <')[0]] = author.split(' <')[1][0..-2]
+        html_url = commit_detail[:author][:html_url]
+        credit[html_url][author.split(' <')[0]] = author.split(' <')[1][0..-2]
       end
     end
   end
