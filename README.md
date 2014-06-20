@@ -34,8 +34,7 @@ Attributes
 Recipes
 -------
 
-        nmdbase::default: Enables the chef-client service on a schedule in addition to each
-      of the other recipes in this cookbook.
+    nmdbase::default: Enables the chef-client service on a schedule in addition to each of the other recipes in this cookbook.
     nmdbase::ldap: Installs and configures ldap pam authentication.
     nmdbase::ssl: Manages the organization specific ssl certificates.
     nmdbase::yubico: Installs and configures yubico pam authentication.
@@ -44,7 +43,7 @@ Recipes
 Testing and Utility
 -------
 
-        rake foodcritic                                  # Lint Chef cookbooks
+    rake foodcritic                                  # Lint Chef cookbooks
     rake integration                                 # Alias for kitchen:all
     rake kitchen:all                                 # Run all test instances
     rake kitchen:default-centos-65-virtualbox        # Run default-centos-65-virtualbox test instance
@@ -73,8 +72,8 @@ License and Authors
 ------------------
 
 The following users have contributed to this code:
-  * [David Arnold](https://github.com/DavidXArnold)
   * [Kevin Bridges](https://github.com/cyberswat)
+  * [David Arnold](https://github.com/DavidXArnold)
   * [Making GitHub Delicious.](https://github.com/waffle-iron)
   * [Brandon Williams](https://github.com/bw411)
 
