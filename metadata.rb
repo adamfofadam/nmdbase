@@ -4,7 +4,7 @@ maintainer 'NewMedia! Denver'
 maintainer_email 'support@newmediadenver.com'
 license 'Apache 2.0'
 
-version '1.0.3'
+version '1.0.4'
 supports 'ubuntu', '>= 14.04'
 supports 'centos', '>= 6.0'
 
@@ -32,7 +32,8 @@ desc << 'chef client so that it is regularly checking in with our chef '
 desc << 'servers. Test kitchen is configured to expect that the environment'
 desc << ' variable DATA_BAGS_PATH be set.  To use the example databags '
 desc << 'set DATA_BAGS_PATH to test/integration/data_bags/ ie'
-desc << ' export DATA_BAGS_PATH=test/integration/data_bags/'
+desc << ' export DATA_BAGS_PATH=test/integration/data_bags/ and set '
+desc << 'use_encrypted_databags to :no.'
 long_description desc
 
 desc = 'Enables the chef-client service on a schedule in addition to each of '
