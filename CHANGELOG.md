@@ -4,6 +4,10 @@ nmdbase CHANGELOG
 This file is used to list changes made in each version of the nmdbase
 cookbook.
 
+1.0.4 24-June-2014
+-----
+- [David Arnold] - Updated to support encrypted data bags.
+
 1.0.3 19-June-2014
 -----
 - [David Arnold] - Initial release of nmdbase that includes ldap, sssd and yubico config.

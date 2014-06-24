@@ -19,8 +19,12 @@
 # limitations under the License.
 #
 include_recipe 'openssh'
+if node['nmdbase']['use_encrypted_databags'] == :yes
+  yubico_data = Chef::EncryptedDataBagItem.load('nmdbase', 'yubico')
+else
+  yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
+end
 
-yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
 attributes = node['nmdbase']['pam']['sshd']['conf']
 
 case node['platform_family']

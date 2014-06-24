@@ -19,7 +19,12 @@
 # limitations under the License.
 #
 
-sssd_ldap = data_bag_item('nmdbase', 'sssd_ldap')[node.chef_environment]
+if node['nmdbase']['use_encrypted_databags'] == :yes
+  sssd_ldap = Chef::EncryptedDataBagItem.load('nmdbase', 'sssd_ldap')
+else
+  sssd_ldap = data_bag_item('nmdbase', 'sssd_ldap')[node.chef_environment]
+end
+
 def create_nsswitch
   template node['nmdbase']['nsswitch'] do
     source 'generic.erb'
