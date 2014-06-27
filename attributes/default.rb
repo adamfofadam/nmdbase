@@ -20,8 +20,8 @@
 
 ### nmdbase::default
 # No attributes. Everything that is unique is configured through databags.
-# Define if encrypted databags are used.
-default['nmdbase']['use_encrypted_databags'] = :no
+# Define if encrypted databags are used.  Options are 'yes' or 'no'.
+default['nmdbase']['use_encrypted_databags'] = 'no'
 
 ### nmdbase::ldap
 

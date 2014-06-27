@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-if node['nmdbase']['use_encrypted_databags'] == :yes
+if node['nmdbase']['use_encrypted_databags'] == 'yes'
   sssd_ldap = Chef::EncryptedDataBagItem.load('nmdbase', 'sssd_ldap')
 else
   sssd_ldap = data_bag_item('nmdbase', 'sssd_ldap')[node.chef_environment]
