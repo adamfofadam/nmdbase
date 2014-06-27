@@ -4,6 +4,10 @@ nmdbase CHANGELOG
 This file is used to list changes made in each version of the nmdbase
 cookbook.
 
+1.0.6 27-June-2014
+-----
+- [David Arnold] - Changed data bag encryption attribute to string vs symbol.
+
 1.0.5 24-June-2014
 -----
 - [David Arnold] - Changed data bag encryption level to default to :no.
