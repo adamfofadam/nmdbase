@@ -19,7 +19,9 @@
 # limitations under the License.
 #
 if node['nmdbase']['use_encrypted_databags'] == 'yes'
+# rubocop:disable LineLength
   ssl_data = Chef::EncryptedDataBagItem.load('nmdbase', 'ssl')[node.chef_environment]
+# rubocop:enable LineLength
 else
   ssl_data = data_bag_item('nmdbase', 'ssl')[node.chef_environment]
 end

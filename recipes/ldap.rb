@@ -20,7 +20,9 @@
 #
 
 if node['nmdbase']['use_encrypted_databags'] == 'yes'
+# rubocop:disable LineLength
   sssd_ldap = Chef::EncryptedDataBagItem.load('nmdbase', 'sssd_ldap')[node.chef_environment]
+# rubocop:enable LineLength
 else
   sssd_ldap = data_bag_item('nmdbase', 'sssd_ldap')[node.chef_environment]
 end
