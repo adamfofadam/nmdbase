@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 if node['nmdbase']['use_encrypted_databags'] == 'yes'
-  ssl_data = Chef::EncryptedDataBagItem.load('nmdbase', 'ssl')
+  ssl_data = Chef::EncryptedDataBagItem.load('nmdbase', 'ssl')[node.chef_environment]
 else
   ssl_data = data_bag_item('nmdbase', 'ssl')[node.chef_environment]
 end
