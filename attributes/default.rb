@@ -150,9 +150,9 @@ default['nmdbase']['pam']['sshd']['path'] = '/etc/pam.d/sshd'
 # if validating yubikeys from a file and not LDAP.
 default['nmdbase']['yubico']['authfile'] = '/etc/yubikey_mappings'
 
-## Define iptables policy and/or rules see uses simple iptables
+## Define iptables policy and/or rules uses simple iptables
 ## https://github.com/rtkwlf/cookbook-simple-iptables
 
-default['nmdbase']['simple_iptables_rules'] = ''
+default['nmdbase']['simple_iptables_rules'] = nil
 
-default['nmdbase']['simple_iptables_policy'] = ''
+default['nmdbase']['simple_iptables_policy'] = nil

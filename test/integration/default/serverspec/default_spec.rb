@@ -1,6 +1,7 @@
 # encoding: utf-8
 require 'serverspec'
 require_relative 'yubico/yubico_spec'
+require_relative 'iptables/iptables_spec'
 
 include Serverspec::Helper::Exec
 include Serverspec::Helper::DetectOS
