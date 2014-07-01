@@ -44,3 +44,4 @@ suites:
       - recipe[nmdbase::yubico]
     data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
     attributes:
+

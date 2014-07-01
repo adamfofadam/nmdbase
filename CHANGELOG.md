@@ -4,6 +4,10 @@ nmdbase CHANGELOG
 This file is used to list changes made in each version of the nmdbase
 cookbook.
 
+1.0.7 1-July-2014
+-----
+- [David Arnold] - Added iptables recipe.
+
 1.0.6 27-June-2014
 -----
 - [David Arnold] - Changed data bag encryption attribute to string vs symbol.
