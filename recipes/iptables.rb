@@ -23,7 +23,15 @@ unless simple_iptables_rules.nil?
   end
 end
 
-service 'iptables' do
-  action :restart
-  notifies :restart, 'service[fail2ban]', :delayed
+case node['platform_family']
+when 'rhel'
+  service 'iptables' do
+    action :restart
+    notifies :restart, 'service[fail2ban]', :delayed
+  end
+when 'debian'
+  execute 'ufw' do
+    command 'ufw reload'
+    notifies :restart, 'service[fail2ban]', :delayed
+  end
 end
