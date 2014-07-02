@@ -3,7 +3,9 @@ require 'chefspec'
 require 'spec_helper'
 
 describe 'nmdbase::default', :ubuntu && :rhel do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+# rubocop:disable LineLength
+  let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: '13.04').converge(described_recipe)  }
+# rubocop:enable LineLength
   before do
     stub_data_bag_item('nmdbase', 'yubico').and_return(
       'id' => 'yubico',
@@ -67,6 +69,10 @@ describe 'nmdbase::default', :ubuntu && :rhel do
 
   it 'Includes the fail2ban recipe.' do
     expect(chef_run).to include_recipe('fail2ban')
+  end
+
+  it 'Configure iptables.' do
+    expect(chef_run).to include_recipe('nmdbase::iptables')
   end
 
   it 'Configures this instance as an LDAP client.' do

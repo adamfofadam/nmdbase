@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-include_recipe 'simple_iptables::default'
+include_recipe 'simple_iptables'
 include_recipe 'fail2ban'
 
 simple_iptables_policy = node['nmdbase']['simple_iptables_policy']

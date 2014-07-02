@@ -20,8 +20,7 @@ describe file('/etc/chef/client.rb') do
   it { should be_file }
   its(:content) { should match 'chef_server_url' }
   its(:content) { should match 'validation_client_name "chef-validator"' }
-  its(:content) do
-    should match(/node_name "default-(centos|redhat|ubuntu)-(1204|1404|65)-(
-                 vmware|virtualbox)"/x)
+  its(:content) do should match(/^node_name "default-(centos|redhat|ubuntu)-(12
+    04|1404|65)-(vmware|virtualbox)"/)
   end
 end
