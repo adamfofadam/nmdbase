@@ -8,17 +8,7 @@ RSpec.configure do |c|
     c.path = '/usr/bin'
   end
 end
-if os[:family] == 'Debian'
-  describe file('/etc/apt/sources.list.d/yubico-stable-precise.list') do
-    it { should be_file }
-    it { should be_mode 644 }
-    it { should be_owned_by 'root' }
-    it { should be_grouped_into 'root' }
-    m = 'deb http://ppa.launchpad.net/yubico/stable/ubuntu precise main'
-    its(:content) { should match m }
-    m = 'deb-src http://ppa.launchpad.net/yubico/stable/ubuntu precise main'
-    its(:content) { should match m }
-  end
+if os[:family] == 'Ubuntu'
   describe package('libpam-yubico') do
     it { should be_installed }
   end
@@ -37,47 +27,11 @@ if os[:family] == 'Debian'
     it { should be_mode 644 }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
-  end
-  describe file('/etc/pam.d/sshd') do
-    it { should be_file }
-    it { should be_mode 644 }
-    it { should be_owned_by 'root' }
-    it { should be_grouped_into 'root' }
     its(:content) do
       auth = 'auth required pam_yubico.so mode=client try_first_pass authfile='
       auth << '/etc/yubikey_mappings debug'
       should match auth
     end
-    its(:content) { should match '@include common-auth' }
-    its(:content) { should match 'account    required     pam_nologin.so' }
-    its(:content) { should match '@include common-account' }
-    its(:content) do
-      session = 'session [success=ok ignore=ignore module_unknown=ignore '
-      session << 'default=bad]        pam_selinux.so close'
-      should match session
-    end
-    its(:content) { should match 'session    required     pam_loginuid.so' }
-    its(:content) do
-      should match 'session    optional     pam_keyinit.so force revoke'
-    end
-    its(:content) { should match '@include common-session' }
-    its(:content) { should match 'session    optional     pam_motd.so # [1]' }
-    its(:content) do
-      should match 'session    optional     pam_mail.so standard noenv # [1]'
-    end
-    its(:content) { should match 'session    required     pam_limits.so' }
-    its(:content) { should match 'session    required     pam_env.so # [1]' }
-    its(:content) do
-      session = 'session    required     pam_env.so user_readenv=1 envfile='
-      session << '/etc/default/locale'
-      should match session
-    end
-    its(:content) do
-      s = 'session [success=ok ignore=ignore module_unknown=ignore default='
-      s << 'bad]        pam_selinux.so open'
-      should match s
-    end
-    its(:content) { should match '@include common-password' }
   end
 elsif os[:family] == 'RedHat'
   describe file('/etc/ssh/sshd_config') do
@@ -98,7 +52,7 @@ elsif os[:family] == 'RedHat'
     its(:content) do
       auth_match = 'auth required pam_yubico.so mode=client try_first_pass '
       auth_match << 'authfile=/etc/yubikey_mappings debug'
-      should match authmatch
+      should match auth_match
     end
     its(:content) { should match 'auth  required  pam_sepermit.so' }
     its(:content) { should match 'auth include  password-auth' }

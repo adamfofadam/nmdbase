@@ -2,9 +2,9 @@
 NewMedia! Denver's nmdbase cookbook
 =============================
 
-nmdbase (1.0.6) Manages ldap client, yubico pam, ssl certificates and unattended updates.
+nmdbase (1.0.7) Manages ldap client, yubico pam, ssl certificates and unattended updates.
 
-This is a base cookbook for all NewMedia Denver servers. It contains core functionality necessary for standardized integration into our broader systems. In the spirit of open source, we are going to illustrate how to properly craft, and deliver, fantastically reliable and secure infrastructure.We use this recipe to enable two factor authentication for ssh accounts. The first factor is a plain text password the user knows. The second is a YubiKey usb hardware device. The instance is configured to create a new linux account on the machine if both factors authenticate. We also use this recipe to install fail2ban to protect against repeated ssh failures and ssh ddos attacks. The final task performed by this recipe is to enable the instance as a chef client so that it is regularly checking in with our chef servers. Test kitchen is configured to expect that the environment variable DATA_BAGS_PATH be set.  To use the example databags set DATA_BAGS_PATH to test/integration/data_bags/ ie export DATA_BAGS_PATH=test/integration/data_bags/ and set use_encrypted_databags to :no.
+This is a base cookbook for all NewMedia Denver servers. It contains core functionality necessary for standardized integration into our broader systems. In the spirit of open source, we are going to illustrate how to properly craft, and deliver, fantastically reliable and secure infrastructure.We use this recipe to enable two factor authentication for ssh accounts. The first factor is a plain text password the user knows. The second is a YubiKey usb hardware device. The instance is configured to create a new linux account on the machine if both factors authenticate. We also use this recipe to install fail2ban to protect against repeated ssh failures and ssh ddos attacks. The final task performed by this recipe is to enable the instance as a chef client so that it is regularly checking in with our chef servers. Test kitchen is configured to expect that the environment variable DATA_BAGS_PATH be set.  To use the example databags set DATA_BAGS_PATH to test/integration/data_bags/ ie export DATA_BAGS_PATH=test/integration/data_bags/ and assure that use_encrypted_databags is set to :no.
 
 Requirements
 ------------
@@ -25,6 +25,8 @@ Requirements
 
 `fail2ban >= 0.0.0`
 
+`simple_iptables >= 0.0.0`
+
 
 Attributes
 ----------
@@ -38,6 +40,26 @@ Recipes
     nmdbase::ldap: Installs and configures ldap pam authentication.
     nmdbase::ssl: Manages the organization specific ssl certificates.
     nmdbase::yubico: Installs and configures yubico pam authentication.
+    nmdbase::iptables: 'Configures iptables.  Uses the recipe simple_iptables https://github.com/rtkwlf/cookbook-simple-iptables to manage rules and polices.
+        Example:
+        "nmdbase": {
+            "simple_iptables_policy": {
+              "policy 1": {
+                "name": "INPUT",
+                "table": "nat",
+                "defined_policy": "DENY"
+              }
+            },
+            "simple_iptables_rules": {
+              "rule 1": {
+                "name": "icmp",
+                "chain": "INPUT",
+                "rule": '--proto icmp',
+                "jump": "ACCEPT",
+                "weight": 1
+              }
+            }
+          }
     
 
 Testing and Utility

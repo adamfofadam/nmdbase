@@ -15,8 +15,8 @@ RSpec.configure do |config|
   # Specify the Chef log_level (default: :warn)
   config.log_level = :error
 
-   # Specify the path to a local JSON file with Ohai data
-   # config.path = 'ohai.json'
+  # Specify the path to a local JSON file with Ohai data
+  # config.path = 'ohai.json'
 
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
