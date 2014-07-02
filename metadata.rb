@@ -49,7 +49,7 @@ recipe 'nmdbase::ssl', 'Manages the organization specific ssl certificates.'
 provides 'nmdbase::yubico'
 recipe 'nmdbase::yubico', 'Installs and configures yubico pam authentication.'
 
-#provides 'nmdbase::iptables'
+provides 'nmdbase::iptables'
 desc = 'Configures iptables.  Uses the recipe '
 desc << 'simple_iptables https://github.com/rtkwlf/cookbook-simple-iptables '
 desc << ' to manage rules / polices. '

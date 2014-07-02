@@ -1,4 +1,5 @@
 include_recipe 'simple_iptables::default'
+include_recipe 'fail2ban'
 
 simple_iptables_policy = node['nmdbase']['simple_iptables_policy']
 simple_iptables_rules = node['nmdbase']['simple_iptables_rules']
@@ -6,8 +7,7 @@ simple_iptables_rules = node['nmdbase']['simple_iptables_rules']
 unless simple_iptables_policy.nil?
   simple_iptables_policy.each do | key, value |
     simple_iptables_policy value[:name] do
-      if defined?(value[:table]) then table value[:table]
-      end
+      table value[:table] if defined?(value[:table])
       policy value[:defined_policy]
     end
   end
@@ -30,8 +30,7 @@ when 'rhel'
     notifies :restart, 'service[fail2ban]', :delayed
   end
 when 'debian'
-  execute 'ufw' do
-    command 'ufw reload'
-    notifies :restart, 'service[fail2ban]', :delayed
+  service 'fail2ban' do
+    action :restart
   end
 end
