@@ -39,10 +39,11 @@ when 'rhel'
     'hosts: files dns',
     'networks: files',
     'protocols: db files',
-    'services: db files',
+    'services: files sss',
     'ethers: db files',
     'rpc: db files',
-    'netgroup: nis'
+    'netgroup: files sss',
+    'automount: files'
 ]
 when 'debian'
   default['nmdbase']['nsswitch_config'] = [

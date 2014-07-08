@@ -4,6 +4,10 @@ nmdbase CHANGELOG
 This file is used to list changes made in each version of the nmdbase
 cookbook.
 
+1.0.8 7-July-2014
+-----
+- [David Arnold] - Changed rhel default nsswitch attribute.
+
 1.0.7 1-July-2014
 -----
 - [David Arnold] - Added iptables recipe.
