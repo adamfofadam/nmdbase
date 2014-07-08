@@ -267,13 +267,13 @@ describe 'nmdbase::ldap - rhel tests', :rhel do
     expect(chef_run).to render_file('/etc/nsswitch.conf')
         .with_content(/^protocols: db files$/)
     expect(chef_run).to render_file('/etc/nsswitch.conf')
-        .with_content(/^services: db files$/)
+        .with_content(/^services: files sss$/)
     expect(chef_run).to render_file('/etc/nsswitch.conf')
         .with_content(/^ethers: db files$/)
     expect(chef_run).to render_file('/etc/nsswitch.conf')
         .with_content(/^rpc: db files$/)
     expect(chef_run).to render_file('/etc/nsswitch.conf')
-      .with_content(/^netgroup: nis$/)
+      .with_content(/^netgroup: files sss$/)
   end
   it 'Configures the sssd package to setup this instance as an ldap client.' do
     expect(chef_run).to render_file('/etc/sssd/sssd.conf')
