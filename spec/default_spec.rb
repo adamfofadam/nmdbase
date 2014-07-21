@@ -3,9 +3,9 @@ require 'chefspec'
 require 'spec_helper'
 
 describe 'nmdbase::default', :ubuntu && :rhel do
-# rubocop:disable LineLength
+  # rubocop:disable LineLength
   let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: '13.04').converge(described_recipe)  }
-# rubocop:enable LineLength
+  # rubocop:enable LineLength
   before do
     stub_data_bag_item('nmdbase', 'yubico').and_return(
       'id' => 'yubico',
