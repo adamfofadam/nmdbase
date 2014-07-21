@@ -47,7 +47,7 @@ task test: [:rubocop, :foodcritic, :spec]
 task default: :test
 
 desc 'Run foo'
-task :foo [:rubocop]
+task foo: [:rubocop]
 
 # Kitchen::RakeTasks.new
 # desc 'Alias for kitchen:all'
