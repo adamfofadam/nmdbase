@@ -43,9 +43,13 @@ task :spec, :os do |os, args|
 end
 
 desc 'Run all tests'
-task test: [:rubocop]
+task test: [:rubocop, :foodcritic, :spec]
 task default: :test
 
-Kitchen::RakeTasks.new
-desc 'Alias for kitchen:all'
-task integration: 'kitchen:all'
+task :foo do
+  puts 'bar'
+end
+
+# Kitchen::RakeTasks.new
+# desc 'Alias for kitchen:all'
+# task integration: 'kitchen:all'
