@@ -1,21 +1,11 @@
 # encoding: utf-8
 source 'https://rubygems.org'
 
-gem 'foodcritic', '~> 3.0'
-gem 'rake', '~> 10.3.0'
-gem 'rubocop', '~> 0.20.0'
-gem 'rspec', '~> 2.14.1'
-gem 'berkshelf', '~> 2.0.18'
-gem 'chefspec', '~> 3.4.0'
-gem 'net-ldap', '~> 0.6.0'
-gem 'travis', '~> 1.6.9'
-gem 'websocket-native', '~> 1.0.0'
-gem 'coveralls', require: false
-gem 'octokit', '~> 3.0'
+gem 'drud', '= 0.0.3'
 
-group :integration do
-  gem 'test-kitchen', '~> 1.0'
-  gem 'kitchen-vagrant'
-  gem 'vagrant-wrapper'
-
+group :test, :development do
+  gem 'chefspec', '= 4.0.1'
+  gem 'travis', '= 1.6.16'
+  gem 'fauxhai', '= 2.2.0'
+  gem 'websocket-native', '= 1.0.0'
 end

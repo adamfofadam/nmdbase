@@ -1,10 +1,9 @@
-
 NewMedia! Denver's nmdbase cookbook
 =============================
 
-nmdbase (1.0.7) Manages ldap client, yubico pam, ssl certificates and unattended updates.
+nmdbase (1.0.9) Manages ldap client, yubico pam, ssl certificates and unattended updates.
 
-This is a base cookbook for all NewMedia Denver servers. It contains core functionality necessary for standardized integration into our broader systems. In the spirit of open source, we are going to illustrate how to properly craft, and deliver, fantastically reliable and secure infrastructure.We use this recipe to enable two factor authentication for ssh accounts. The first factor is a plain text password the user knows. The second is a YubiKey usb hardware device. The instance is configured to create a new linux account on the machine if both factors authenticate. We also use this recipe to install fail2ban to protect against repeated ssh failures and ssh ddos attacks. The final task performed by this recipe is to enable the instance as a chef client so that it is regularly checking in with our chef servers. Test kitchen is configured to expect that the environment variable DATA_BAGS_PATH be set.  To use the example databags set DATA_BAGS_PATH to test/integration/data_bags/ ie export DATA_BAGS_PATH=test/integration/data_bags/ and assure that use_encrypted_databags is set to :no.
+This is a base cookbook for all NewMedia Denver servers. It contains core functionality necessary for standardized integration into our broader systems. In the spirit of open source, we are going to illustrate how to properly craft, and deliver, fantastically reliable and secure infrastructure.We use this recipe to enable two factor authentication for ssh accounts. The first factor is a plain text password the user knows. The second is a YubiKey usb hardware device. The instance is configured to create a new linux account on the machine if both factors authenticate. We also use this recipe to install fail2ban to protect against repeated ssh failures and ssh ddos attacks. The final task performed by this recipe is to enable the instance as a chef client so that it is regularly checking in with our chef servers. Test kitchen is configured to expect that the environment variable DATA_BAGS_PATH be set.  To use the example databags set DATA_BAGS_PATH to test/integration/data_bags/ ie export DATA_BAGS_PATH=test/integration/data_bags/ and set use_encrypted_databags to :no.
 
 Requirements
 ------------
@@ -27,78 +26,117 @@ Requirements
 
 `simple_iptables >= 0.0.0`
 
+`logwatch >= 0.0.0`
+
+`postfix >= 0.0.0`
+
 
 Attributes
 ----------
 
-    
 
 Recipes
 -------
 
-    nmdbase::default: Enables the chef-client service on a schedule in addition to each of the other recipes in this cookbook.
-    nmdbase::ldap: Installs and configures ldap pam authentication.
-    nmdbase::ssl: Manages the organization specific ssl certificates.
-    nmdbase::yubico: Installs and configures yubico pam authentication.
-    nmdbase::iptables: 'Configures iptables.  Uses the recipe simple_iptables https://github.com/rtkwlf/cookbook-simple-iptables to manage rules and polices.
-        Example:
-        "nmdbase": {
-            "simple_iptables_policy": {
-              "policy 1": {
-                "name": "INPUT",
-                "table": "nat",
-                "defined_policy": "DENY"
-              }
-            },
-            "simple_iptables_rules": {
-              "rule 1": {
-                "name": "icmp",
-                "chain": "INPUT",
-                "rule": '--proto icmp',
-                "jump": "ACCEPT",
-                "weight": 1
-              }
-            }
-          }
-    
+    nmdbase::default
+      Enables the chef-client service on a schedule in addition to each of the other recipes in this cookbook.
+
+    nmdbase::ldap
+      Installs and configures ldap pam authentication.
+
+    nmdbase::ssl
+      Manages the organization specific ssl certificates.
+
+    nmdbase::yubico
+      Installs and configures yubico pam authentication.
+
+    nmdbase::iptables
+      Configures iptables.  Uses the recipe simple_iptables https://github.com/rtkwlf/cookbook-simple-iptables  to manage rules / polices.  example:  "nmdbase": {           "simple_iptables_policy": {             "policy 1": {               "name": "INPUT",               "table": "nat",               "defined_policy": "ACCEPT"             }           },           "simple_iptables_rules": {             "rule 1": {               "name": "icmp",               "chain": "INPUT",               "rule": "--proto icmp",               "jump": "ACCEPT",               "weight": 2             }           }         }
 
 Testing and Utility
 -------
+    <Rake::Task default => [test]>
 
-    rake foodcritic                                  # Lint Chef cookbooks
-    rake integration                                 # Alias for kitchen:all
-    rake kitchen:all                                 # Run all test instances
-    rake kitchen:default-centos-65-virtualbox        # Run default-centos-65-virtualbox test instance
-    rake kitchen:default-centos-65-vmware            # Run default-centos-65-vmware test instance
-    rake kitchen:default-ubuntu-1404-virtualbox      # Run default-ubuntu-1404-virtualbox test instance
-    rake kitchen:default-ubuntu-1404-vmware          # Run default-ubuntu-1404-vmware test instance
-    rake kitchen:ldap-centos-65-virtualbox           # Run ldap-centos-65-virtualbox test instance
-    rake kitchen:ldap-centos-65-vmware               # Run ldap-centos-65-vmware test instance
-    rake kitchen:ldap-ubuntu-1404-virtualbox         # Run ldap-ubuntu-1404-virtualbox test instance
-    rake kitchen:ldap-ubuntu-1404-vmware             # Run ldap-ubuntu-1404-vmware test instance
-    rake kitchen:yubico-centos-65-virtualbox         # Run yubico-centos-65-virtualbox test instance
-    rake kitchen:yubico-centos-65-vmware             # Run yubico-centos-65-vmware test instance
-    rake kitchen:yubico-ldap-centos-65-virtualbox    # Run yubico-ldap-centos-65-virtualbox test instance
-    rake kitchen:yubico-ldap-centos-65-vmware        # Run yubico-ldap-centos-65-vmware test instance
-    rake kitchen:yubico-ldap-ubuntu-1404-virtualbox  # Run yubico-ldap-ubuntu-1404-virtualbox test instance
-    rake kitchen:yubico-ldap-ubuntu-1404-vmware      # Run yubico-ldap-ubuntu-1404-vmware test instance
-    rake kitchen:yubico-ubuntu-1404-virtualbox       # Run yubico-ubuntu-1404-virtualbox test instance
-    rake kitchen:yubico-ubuntu-1404-vmware           # Run yubico-ubuntu-1404-vmware test instance
-    rake readme                                      # Generate the Readme.md file
-    rake rubocop                                     # Run RuboCop style and lint checks
-    rake spec[os]                                    # Run ChefSpec examples
-    rake test                                        # Run all tests
+    <Rake::Task foodcritic => []>
+      Run Foodcritic lint checks
 
+    <Rake::Task integration => [kitchen:all]>
+      Alias for kitchen:all
+
+    <Rake::Task kitchen:all => [default-ubuntu-1404-vmware, default-ubuntu-1404-virtualbox, default-centos-65-vmware, default-centos-65-virtualbox, ldap-ubuntu-1404-vmware, ldap-ubuntu-1404-virtualbox, ldap-centos-65-vmware, ldap-centos-65-virtualbox, yubico-ubuntu-1404-vmware, yubico-ubuntu-1404-virtualbox, yubico-centos-65-vmware, yubico-centos-65-virtualbox, yubico-ldap-ubuntu-1404-vmware, yubico-ldap-ubuntu-1404-virtualbox, yubico-ldap-centos-65-vmware, yubico-ldap-centos-65-virtualbox]>
+      Run all test instances
+
+    <Rake::Task kitchen:default-centos-65-virtualbox => []>
+      Run default-centos-65-virtualbox test instance
+
+    <Rake::Task kitchen:default-centos-65-vmware => []>
+      Run default-centos-65-vmware test instance
+
+    <Rake::Task kitchen:default-ubuntu-1404-virtualbox => []>
+      Run default-ubuntu-1404-virtualbox test instance
+
+    <Rake::Task kitchen:default-ubuntu-1404-vmware => []>
+      Run default-ubuntu-1404-vmware test instance
+
+    <Rake::Task kitchen:ldap-centos-65-virtualbox => []>
+      Run ldap-centos-65-virtualbox test instance
+
+    <Rake::Task kitchen:ldap-centos-65-vmware => []>
+      Run ldap-centos-65-vmware test instance
+
+    <Rake::Task kitchen:ldap-ubuntu-1404-virtualbox => []>
+      Run ldap-ubuntu-1404-virtualbox test instance
+
+    <Rake::Task kitchen:ldap-ubuntu-1404-vmware => []>
+      Run ldap-ubuntu-1404-vmware test instance
+
+    <Rake::Task kitchen:yubico-centos-65-virtualbox => []>
+      Run yubico-centos-65-virtualbox test instance
+
+    <Rake::Task kitchen:yubico-centos-65-vmware => []>
+      Run yubico-centos-65-vmware test instance
+
+    <Rake::Task kitchen:yubico-ldap-centos-65-virtualbox => []>
+      Run yubico-ldap-centos-65-virtualbox test instance
+
+    <Rake::Task kitchen:yubico-ldap-centos-65-vmware => []>
+      Run yubico-ldap-centos-65-vmware test instance
+
+    <Rake::Task kitchen:yubico-ldap-ubuntu-1404-virtualbox => []>
+      Run yubico-ldap-ubuntu-1404-virtualbox test instance
+
+    <Rake::Task kitchen:yubico-ldap-ubuntu-1404-vmware => []>
+      Run yubico-ldap-ubuntu-1404-vmware test instance
+
+    <Rake::Task kitchen:yubico-ubuntu-1404-virtualbox => []>
+      Run yubico-ubuntu-1404-virtualbox test instance
+
+    <Rake::Task kitchen:yubico-ubuntu-1404-vmware => []>
+      Run yubico-ubuntu-1404-vmware test instance
+
+    <Rake::Task readme => []>
+      Generate the Readme.md file.
+
+    <Rake::Task rubocop => []>
+      Run RuboCop style and lint checks
+
+    <Rake::Task rubocop:auto_correct => []>
+      Auto-correct RuboCop offenses
+
+    <Rake::Task spec => []>
+      Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]". Defaults to both
+
+    <Rake::Task test => [rubocop, foodcritic, spec, integration]>
+      Run all tests
 
 License and Authors
 ------------------
 
-The following users have contributed to this code:
-  * [David Arnold](https://github.com/DavidXArnold)
-  * [Kevin Bridges](https://github.com/cyberswat)
-  * [Brandon Williams](https://github.com/bw411)
-
-
+The following engineers have contributed to this code:
+ * [Kevin Bridges](https://github.com/cyberswat) - 139 commits
+ * [David Arnold, DavidXArnold](https://github.com/DavidXArnold) - 95 commits
+ * [Making GitHub Delicious.](https://github.com/waffle-iron) - 1 commits
+ * [Brandon Williams](https://github.com/bw411) - 9 commits
 
 Copyright:: 2014, NewMedia Denver
 
