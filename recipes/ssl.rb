@@ -27,7 +27,7 @@ else
 end
 
 ssl_data.each do |cert|
-  next unless cert['path'].nil?
+  next if cert['path'].nil?
   file "cert: #{cert['path']}" do
     content cert['content']
     owner 'root'
