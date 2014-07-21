@@ -43,7 +43,7 @@ task :spec, :os do |os, args|
 end
 
 desc 'Run all tests'
-task test: [:rubocop, :foodcritic, :spec]
+task test: [:rubocop]
 task default: :test
 
 Kitchen::RakeTasks.new
