@@ -59,7 +59,7 @@ namespace :integration do
 end
 
 desc 'Run all style checks'
-task style: ['style:chef', 'style:ruby']
+task style: ['style:chef', 'style:ruby', 'style:spec']
 
 desc 'Generate README.md'
 task readme: ['utility:readme']
