@@ -1,54 +1,52 @@
 # encoding: utf-8
-require 'foodcritic'
-require 'rspec/core/rake_task'
-require 'rubocop/rake_task'
-require 'kitchen/rake_tasks'
-require 'drud'
 
-desc 'Generate the Readme.md file.'
-task :readme do
-  drud = Drud::Readme.new(File.dirname(__FILE__))
-  drud.render
-end
+# Style tests. Rubocop and Foodcritic
+namespace :style do
+  begin
+    require 'drud'
+  rescue LoadError
+    puts '>>>>> Drud gem not loaded, omitting tasks' unless ENV['CI']
+  end
 
-desc 'Run RuboCop style and lint checks'
-RuboCop::RakeTask.new(:rubocop)
+  begin
+    require 'rubocop/rake_task'
+    desc 'Run Ruby style checks'
+    RuboCop::RakeTask.new(:ruby)
+  rescue LoadError
+    puts '>>>>> Rubocop gem not loaded, omitting tasks' unless ENV['CI']
+  end
 
-desc 'Run Foodcritic lint checks'
-FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
-  t.options = { fail_tags: ['any'] }
-end
+  begin
+    require 'foodcritic'
 
-description = 'Run ChefSpec examples. Specify OS to test either with rake '
-description << '"spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]". '
-description << 'Defaults to both'
-desc description
-task :spec, :os do |os, args|
-  os = args[:os]
-  case os
-  when 'rhel'
-    RSpec::Core::RakeTask.new(:spec) do |t|
-      t.rspec_opts = '--tag rhel'
+    desc 'Run Chef style checks'
+    FoodCritic::Rake::LintTask.new(:chef) do |t|
+      t.options = {
+        fail_tags: ['any']
+      }
     end
-  when 'ubuntu'
-    RSpec::Core::RakeTask.new(:spec) do |t|
-      t.rspec_opts = '--tag ubuntu'
-    end
-  else
-    puts "Unknown rspec operating system #{os}. Running all tests."
-    RSpec::Core::RakeTask.new(:spec) do |t|
-      t.rspec_opts = '--tag rhel --tag ubuntu'
-    end
+  rescue LoadError
+    puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
   end
 end
 
-desc 'Run all tests'
-task test: [:rubocop, :foodcritic, :spec]
-task default: :test
+desc 'Run all style checks'
+task style: ['style:chef', 'style:ruby']
 
-desc 'Run foo'
-task foo: [:rubocop, :foodcritic, :spec]
+# Integration tests. Kitchen.ci
+namespace :integration do
+  begin
+    require 'kitchen/rake_tasks'
 
-Kitchen::RakeTasks.new
-# desc 'Alias for kitchen:all'
-# task integration: 'kitchen:all'
+    desc 'Run kitchen integration tests'
+    Kitchen::RakeTasks.new
+  rescue LoadError
+    puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
+  end
+end
+
+desc 'Run all tests on Travis'
+task travis: ['style']
+
+# Default
+task default: ['style', 'integration:kitchen:all']
