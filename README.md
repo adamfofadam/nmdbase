@@ -55,85 +55,91 @@ Recipes
 
 Testing and Utility
 -------
-    <Rake::Task default => [test]>
+    <Rake::Task default => [style, integration:kitchen:all]>
 
-    <Rake::Task foodcritic => []>
-      Run Foodcritic lint checks
-
-    <Rake::Task integration => [kitchen:all]>
-      Alias for kitchen:all
-
-    <Rake::Task kitchen:all => [default-ubuntu-1404-vmware, default-ubuntu-1404-virtualbox, default-centos-65-vmware, default-centos-65-virtualbox, ldap-ubuntu-1404-vmware, ldap-ubuntu-1404-virtualbox, ldap-centos-65-vmware, ldap-centos-65-virtualbox, yubico-ubuntu-1404-vmware, yubico-ubuntu-1404-virtualbox, yubico-centos-65-vmware, yubico-centos-65-virtualbox, yubico-ldap-ubuntu-1404-vmware, yubico-ldap-ubuntu-1404-virtualbox, yubico-ldap-centos-65-vmware, yubico-ldap-centos-65-virtualbox]>
+    <Rake::Task integration:kitchen:all => [default-ubuntu-1404-vmware, default-ubuntu-1404-virtualbox, default-centos-65-vmware, default-centos-65-virtualbox, ldap-ubuntu-1404-vmware, ldap-ubuntu-1404-virtualbox, ldap-centos-65-vmware, ldap-centos-65-virtualbox, yubico-ubuntu-1404-vmware, yubico-ubuntu-1404-virtualbox, yubico-centos-65-vmware, yubico-centos-65-virtualbox, yubico-ldap-ubuntu-1404-vmware, yubico-ldap-ubuntu-1404-virtualbox, yubico-ldap-centos-65-vmware, yubico-ldap-centos-65-virtualbox]>
       Run all test instances
 
-    <Rake::Task kitchen:default-centos-65-virtualbox => []>
+    <Rake::Task integration:kitchen:default-centos-65-virtualbox => []>
       Run default-centos-65-virtualbox test instance
 
-    <Rake::Task kitchen:default-centos-65-vmware => []>
+    <Rake::Task integration:kitchen:default-centos-65-vmware => []>
       Run default-centos-65-vmware test instance
 
-    <Rake::Task kitchen:default-ubuntu-1404-virtualbox => []>
+    <Rake::Task integration:kitchen:default-ubuntu-1404-virtualbox => []>
       Run default-ubuntu-1404-virtualbox test instance
 
-    <Rake::Task kitchen:default-ubuntu-1404-vmware => []>
+    <Rake::Task integration:kitchen:default-ubuntu-1404-vmware => []>
       Run default-ubuntu-1404-vmware test instance
 
-    <Rake::Task kitchen:ldap-centos-65-virtualbox => []>
+    <Rake::Task integration:kitchen:ldap-centos-65-virtualbox => []>
       Run ldap-centos-65-virtualbox test instance
 
-    <Rake::Task kitchen:ldap-centos-65-vmware => []>
+    <Rake::Task integration:kitchen:ldap-centos-65-vmware => []>
       Run ldap-centos-65-vmware test instance
 
-    <Rake::Task kitchen:ldap-ubuntu-1404-virtualbox => []>
+    <Rake::Task integration:kitchen:ldap-ubuntu-1404-virtualbox => []>
       Run ldap-ubuntu-1404-virtualbox test instance
 
-    <Rake::Task kitchen:ldap-ubuntu-1404-vmware => []>
+    <Rake::Task integration:kitchen:ldap-ubuntu-1404-vmware => []>
       Run ldap-ubuntu-1404-vmware test instance
 
-    <Rake::Task kitchen:yubico-centos-65-virtualbox => []>
+    <Rake::Task integration:kitchen:yubico-centos-65-virtualbox => []>
       Run yubico-centos-65-virtualbox test instance
 
-    <Rake::Task kitchen:yubico-centos-65-vmware => []>
+    <Rake::Task integration:kitchen:yubico-centos-65-vmware => []>
       Run yubico-centos-65-vmware test instance
 
-    <Rake::Task kitchen:yubico-ldap-centos-65-virtualbox => []>
+    <Rake::Task integration:kitchen:yubico-ldap-centos-65-virtualbox => []>
       Run yubico-ldap-centos-65-virtualbox test instance
 
-    <Rake::Task kitchen:yubico-ldap-centos-65-vmware => []>
+    <Rake::Task integration:kitchen:yubico-ldap-centos-65-vmware => []>
       Run yubico-ldap-centos-65-vmware test instance
 
-    <Rake::Task kitchen:yubico-ldap-ubuntu-1404-virtualbox => []>
+    <Rake::Task integration:kitchen:yubico-ldap-ubuntu-1404-virtualbox => []>
       Run yubico-ldap-ubuntu-1404-virtualbox test instance
 
-    <Rake::Task kitchen:yubico-ldap-ubuntu-1404-vmware => []>
+    <Rake::Task integration:kitchen:yubico-ldap-ubuntu-1404-vmware => []>
       Run yubico-ldap-ubuntu-1404-vmware test instance
 
-    <Rake::Task kitchen:yubico-ubuntu-1404-virtualbox => []>
+    <Rake::Task integration:kitchen:yubico-ubuntu-1404-virtualbox => []>
       Run yubico-ubuntu-1404-virtualbox test instance
 
-    <Rake::Task kitchen:yubico-ubuntu-1404-vmware => []>
+    <Rake::Task integration:kitchen:yubico-ubuntu-1404-vmware => []>
       Run yubico-ubuntu-1404-vmware test instance
 
-    <Rake::Task readme => []>
-      Generate the Readme.md file.
+    <Rake::Task readme => [utility:readme]>
+      Generate README.md
 
-    <Rake::Task rubocop => []>
-      Run RuboCop style and lint checks
+    <Rake::Task spec => [style:spec]>
+      Run rspec tests.
 
-    <Rake::Task rubocop:auto_correct => []>
+    <Rake::Task style => [style:chef, style:ruby]>
+      Run all style checks
+
+    <Rake::Task style:chef => []>
+      Run Chef style checks
+
+    <Rake::Task style:ruby => []>
+      Run Ruby style checks
+
+    <Rake::Task style:ruby:auto_correct => []>
       Auto-correct RuboCop offenses
 
-    <Rake::Task spec => []>
+    <Rake::Task style:spec => []>
       Run ChefSpec examples. Specify OS to test either with rake "spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]". Defaults to both
 
-    <Rake::Task test => [rubocop, foodcritic, spec, integration]>
-      Run all tests
+    <Rake::Task travis => [style]>
+      Run all tests on Travis
+
+    <Rake::Task utility:readme => []>
+      Generate the Readme.md file.
 
 License and Authors
 ------------------
 
 The following engineers have contributed to this code:
- * [Kevin Bridges](https://github.com/cyberswat) - 139 commits
+ * [Kevin Bridges](https://github.com/cyberswat) - 151 commits
  * [David Arnold, DavidXArnold](https://github.com/DavidXArnold) - 95 commits
  * [Making GitHub Delicious.](https://github.com/waffle-iron) - 1 commits
  * [Brandon Williams](https://github.com/bw411) - 9 commits
