@@ -1,147 +1,74 @@
 # encoding: utf-8
-require 'foodcritic'
-require 'rspec/core/rake_task'
-require 'rubocop/rake_task'
-require 'erb'
-require 'ostruct'
-require 'chef/cookbook/metadata'
-require 'octokit'
 
-# Provides a basic Readme class so we can use a erb template.
-class Readme < OpenStruct
-  def render(template)
-    ERB.new(template).result(binding)
+namespace :utility do
+  begin
+    require 'drud'
+    desc 'Generate the Readme.md file.'
+    task :readme do
+      drud = Drud::Readme.new(File.dirname(__FILE__))
+      drud.render
+    end
+  rescue LoadError
+    puts '>>>>> Drud gem not loaded, omitting tasks' unless ENV['CI']
   end
 end
 
-def recipes(content = '') # rubocop:disable MethodLength
-  Dir.glob('spec/*_spec.rb').sort.each do |f|
-    File.open(f, 'r') do |spec|
-      while line = spec.gets # rubocop:disable AssignmentInCondition
-        recipe = line.match(/^describe.+['|"](\w+::\w+)/i)
-        content << "### #{recipe[1]}\n" unless recipe.nil?
-        describes = line.match(/ +it '([^']+)/)
-        content << "    #{describes[1]}\n" unless describes.nil?
-      end
-    end
+namespace :style do
+  begin
+    require 'rubocop/rake_task'
+    desc 'Run Ruby style checks'
+    RuboCop::RakeTask.new(:ruby)
+  rescue LoadError
+    puts '>>>>> Rubocop gem not loaded, omitting tasks' unless ENV['CI']
   end
-  content
-end
 
-def attributes(content = '', output = false)
-  File.open('attributes/default.rb', 'r') do |f|
-    while line = f.gets # rubocop:disable AssignmentInCondition
-      output = true if line =~ /^###/
-      if output
-        content << "#{line}" if line =~ /^###/
-        content << "    #{line}" unless line =~ /^###/
-      end
+  begin
+    require 'foodcritic'
+    desc 'Run Chef style checks'
+    FoodCritic::Rake::LintTask.new(:chef) do |t|
+      t.options = {
+        fail_tags: ['any']
+      }
     end
+  rescue LoadError
+    puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
   end
-  content
-end
 
-def rake_tasks
-  documentation = ''
-  s = `rake -T`.split("\n")
-  s.each do |l|
-    documentation << "    #{l}\n" if l =~ /^rake/
-  end
-  documentation
-end
-
-desc 'Run RuboCop style and lint checks'
-Rubocop::RakeTask.new(:rubocop)
-
-desc 'Run Foodcritic lint checks'
-FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
-  t.options = { fail_tags: ['any'] }
-end
-
-description = 'Run ChefSpec examples. Specify OS to test either with rake '
-description << '"spec[rhel]" (Redhat,centos etc) or rake "spec[ubuntu]". '
-description << 'Defaults to both'
-desc description
-task :spec, :os do |os, args|
-  os = args[:os]
-  case os
-  when 'rhel'
-    RSpec::Core::RakeTask.new(:spec) do |t|
-      t.rspec_opts = '--tag rhel'
-    end
-  when 'ubuntu'
-    RSpec::Core::RakeTask.new(:spec) do |t|
-      t.rspec_opts = '--tag ubuntu'
-    end
-  else
-    puts "Unknown rspec operating system #{os}. Running all tests."
+  begin
+    require 'rspec/core/rake_task'
+    description = 'Run rspec tests.'
+    desc description
     RSpec::Core::RakeTask.new(:spec) do |t|
       t.rspec_opts = '--tag rhel --tag ubuntu'
     end
+  rescue LoadError
+    puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
   end
 end
 
-# TODO: this seriously needs to be refactored and cleaned up.
-def credit # rubocop:disable MethodLength
-  logs = `git log`.split('commit ')
-  logs.shift
+# Integration tests. Kitchen.ci
+namespace :integration do
+  begin
+    require 'kitchen/rake_tasks'
 
-  authors = {}
-  credit = {}
-
-  logs.map do |log|
-    l = log.split("\n")
-    commit = l.shift
-    author = l.shift.to_s.split('Author: ')[1]
-    unless author.nil?
-      if authors[author].nil?
-        commit_detail = Octokit.commit('newmediadenver/nmdbase', commit)
-        authors[author] = commit_detail[:author][:html_url]
-        if credit[commit_detail[:author][:html_url]].nil?
-          credit[commit_detail[:author][:html_url]] = {}
-        end
-        html_url = commit_detail[:author][:html_url]
-        credit[html_url][author.split(' <')[0]] = author.split(' <')[1][0..-2]
-      end
-    end
+    desc 'Run kitchen integration tests'
+    Kitchen::RakeTasks.new
+  rescue LoadError
+    puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
   end
-  credit.each do |key, names|
-    clean_names = []
-    names.each do |name, _email|
-      clean_names.push(name)
-    end
-    credit[key] = clean_names.join(', ')
-  end
-  credit
 end
 
-desc 'Generate the Readme.md file.'
-task :readme do
-  metadata = Chef::Cookbook::Metadata.new
-  metadata.from_file('metadata.rb')
-  authors = credit
-  markdown = Readme.new(
-                        metadata: metadata,
-                        attributes: attributes,
-                        recipes: recipes,
-                        rake_tasks: rake_tasks,
-                        authors: authors)
-  new_readme = markdown.render(File.read('templates/default/readme.md.erb'))
-  File.open('README.md', 'w') { |file| file.write(new_readme) }
-end
+desc 'Run all style checks'
+task style: ['style:chef', 'style:ruby', 'style:spec']
 
-desc 'Run all tests'
-task test: [:rubocop, :foodcritic, :spec]
-task default: :test
+desc 'Generate README.md'
+task readme: ['utility:readme']
 
-begin
-  require 'kitchen/rake_tasks'
-  Kitchen::RakeTasks.new
+desc 'Run rspec tests.'
+task spec: ['style:spec']
 
-  desc 'Alias for kitchen:all'
-  task integration: 'kitchen:all'
+desc 'Run all tests on Travis'
+task travis: ['style']
 
-  task test: :integration
-rescue LoadError
-  puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
-end
+# Default
+task default: ['style', 'integration:kitchen:all']

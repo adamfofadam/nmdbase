@@ -44,7 +44,7 @@ when 'rhel'
     'rpc: db files',
     'netgroup: files sss',
     'automount: files'
-]
+  ]
 when 'debian'
   default['nmdbase']['nsswitch_config'] = [
     'passwd:         files sss',
@@ -86,10 +86,10 @@ yubiconf << ' authfile=/etc/yubikey_mappings debug'
 case node['platform_family']
 when 'rhel'
   default['nmdbase']['pam']['sshd']['conf'] = [
-  # Activate pam_yubico.so as the first item. If you create
-  # data_bags/users/yubico.json with your "key" and "id" from
-  # https://upgrade.yubico.com/getapikey/ it will be added to this string.
-  # Otherwise, you should look into storing this data in the data_bag.
+    # Activate pam_yubico.so as the first item. If you create
+    # data_bags/users/yubico.json with your "key" and "id" from
+    # https://upgrade.yubico.com/getapikey/ it will be added to this string.
+    # Otherwise, you should look into storing this data in the data_bag.
     yubiconf,
     'auth  required  pam_sepermit.so',
     'auth include  password-auth',
@@ -101,35 +101,35 @@ when 'rhel'
     'session required  pam_selinux.so open env_params',
     'session optional  pam_keyinit.so  force revoke',
     'session include   password-auth'
-]
+  ]
 when 'debian'
   default['nmdbase']['pam']['sshd']['conf'] = [
-  # Activate pam_yubico.so as the first item. If you create
-  # data_bags/users/yubico.json with your "key" and "id" from
-  # https://upgrade.yubico.com/getapikey/ it will be added to this string.
-  # Otherwise, you should look into storing this data in the data_bag.
+    # Activate pam_yubico.so as the first item. If you create
+    # data_bags/users/yubico.json with your "key" and "id" from
+    # https://upgrade.yubico.com/getapikey/ it will be added to this string.
+    # Otherwise, you should look into storing this data in the data_bag.
     yubiconf,
-  # Standard Un*x authentication.
+    # Standard Un*x authentication.
     '@include common-auth',
-  # Disallow non-root logins when /etc/nologin exists.
+    # Disallow non-root logins when /etc/nologin exists.
     'account    required     pam_nologin.so',
-  # Standard Un*x authorization.
+    # Standard Un*x authorization.
     '@include common-account',
-  # Standard Un*x session setup and teardown.
+    # Standard Un*x session setup and teardown.
     '@include common-session',
-  # Print the message of the day upon successful login.
+    # Print the message of the day upon successful login.
     'session optional pam_motd.so # [1]',
-  # Print the status of the user's mailbox upon successful login.
+    # Print the status of the user's mailbox upon successful login.
     'session optional pam_mail.so standard noenv # [1]',
-  # Set up user limits from /etc/security/limits.conf.
+    # Set up user limits from /etc/security/limits.conf.
     'session required pam_limits.so',
-  # Read environment variables from /etc/environment and
-  # /etc/security/pam_env.conf.
+    # Read environment variables from /etc/environment and
+    # /etc/security/pam_env.conf.
     'session required pam_env.so # [1]',
-  # In Debian 4.0 (etch), locale-related environment variables were moved to
-  # /etc/default/locale, so read that as well
+    # In Debian 4.0 (etch), locale-related environment variables were moved to
+    # /etc/default/locale, so read that as well
     'session required pam_env.so user_readenv=1 envfile=/etc/default/locale',
-  # Standard Un*x password updating.
+    # Standard Un*x password updating.
     '@include common-password'
   ]
   default['nmdbase']['common_auth'] = '/etc/pam.d/common-auth'
