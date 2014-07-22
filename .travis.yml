@@ -3,7 +3,6 @@ rvm:
 - 1.9.3
 - 2.0.0
 - 2.1.1
-bundler_args: --without integration
 before_install: 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
 script: bundle exec rake travis
 branches:
@@ -13,7 +12,7 @@ notifications:
   hipchat:
     rooms:
       secure: bVhXUZh/7CwFdGNKorB6xNteNujxo4Jdbcy9cs/PhIdLd30dKupiXcqK4TuLw2JID7rcUTybqnHVIBG9GvIxvT1Eh+dMGZe++O49T+/IUb5w8TqO2gjlMf6RTcQGmC5X00zmfJj6P2ZvzgJd3hWrEYTlvbcsujXd/Ucm6W3dcOg=
-install: '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && script/cached-bundle install || bundle install'
+install: '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && script/cached-bundle install --without integration --deployment || bundle install --without integration --deployment'
 
 env:
   global:
