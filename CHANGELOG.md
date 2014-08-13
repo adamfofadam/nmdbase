@@ -4,6 +4,9 @@ nmdbase CHANGELOG
 This file is used to list changes made in each version of the nmdbase
 cookbook.
 
+1.0.10 13-August-2014
+-----
+- [David Arnold] - Set iptables to reload vs restart.
 1.0.9 14-July-2014
 -----
 - [David Arnold] - Added logwatch & postfix recipe to default and updated berksfile GEM version.

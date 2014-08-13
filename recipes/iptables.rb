@@ -47,7 +47,7 @@ end
 case node['platform_family']
 when 'rhel'
   service 'iptables' do
-    action :restart
+    action :reload
     notifies :restart, 'service[fail2ban]', :delayed
   end
 when 'debian'
