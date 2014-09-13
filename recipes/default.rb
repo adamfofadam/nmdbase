@@ -40,3 +40,6 @@ end
 package "vim-minimal" do
   action :install
 end
+package "nc" do
+  action :install
+end
