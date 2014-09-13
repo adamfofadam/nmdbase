@@ -19,6 +19,7 @@
 # limitations under the License.
 #
 
+include_recipe 'vim'
 include_recipe 'fail2ban'
 include_recipe 'nmdbase::iptables'
 include_recipe 'nmdbase::ldap'
