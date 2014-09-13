@@ -19,7 +19,6 @@
 # limitations under the License.
 #
 
-include_recipe 'vim'
 include_recipe 'fail2ban'
 include_recipe 'nmdbase::iptables'
 include_recipe 'nmdbase::ldap'
@@ -28,3 +27,16 @@ include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
 include_recipe 'logwatch'
 include_recipe 'postfix'
+
+package "vim-X11" do
+  action :install
+end
+package "vim-common" do
+  action :install
+end
+package "vim-enhanced" do
+  action :install
+end
+package "vim-minimal" do
+  action :install
+end
