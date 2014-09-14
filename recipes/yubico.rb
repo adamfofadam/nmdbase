@@ -19,13 +19,7 @@
 # limitations under the License.
 #
 include_recipe 'openssh'
-if node['nmdbase']['use_encrypted_databags'] == 'yes'
-  # rubocop:disable LineLength
-  yubico_data = Chef::EncryptedDataBagItem.load('nmdbase', 'yubico')[node.chef_environment]
-# rubocop:enable LineLength
-else
-  yubico_data = data_bag_item('nmdbase', 'yubico')[node.chef_environment]
-end
+yubico_data = Chef::EncryptedDataBagItem.load('nmdbase', 'yubico')[node.chef_environment]
 
 attributes = node['nmdbase']['pam']['sshd']['conf']
 
