@@ -4,7 +4,7 @@ maintainer 'NewMedia! Denver'
 maintainer_email 'support@newmediadenver.com'
 license 'Apache 2.0'
 
-version '1.0.11'
+version '1.0.12'
 supports 'ubuntu', '>= 14.04'
 supports 'centos', '>= 6.0'
 
