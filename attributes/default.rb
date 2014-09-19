@@ -22,6 +22,7 @@
 # No attributes. Everything that is unique is configured through databags.
 # Define if encrypted databags are used.  Options are 'yes' or 'no'.
 default['nmdbase']['use_encrypted_databags'] = 'no'
+default['nmdbase']['include_iptables'] = true
 
 ### nmdbase::ldap
 

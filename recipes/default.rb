@@ -20,7 +20,9 @@
 #
 
 include_recipe 'fail2ban'
-include_recipe 'nmdbase::iptables'
+if node['nmdbase']['include_iptables']
+  include_recipe 'nmdbase::iptables'
+end
 include_recipe 'nmdbase::ldap'
 include_recipe 'nmdbase::yubico'
 include_recipe 'chef-client::config'
