@@ -18,6 +18,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+if platform_family?('rhel')
+  execute 'yum update' do
+    command 'yum update -y'
+  end
+end
+
 include_recipe 'fail2ban' if node['nmdbase']['include_fail2ban'] == 'yes'
 include_recipe 'nmdbase::iptables' if node['nmdbase']['include_iptables'] == 'yes'
 include_recipe 'nmdbase::ldap'
