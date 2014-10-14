@@ -1,42 +1,17 @@
 ---
 driver:
   name: vagrant
-
+  forward_agent: yes
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
-  - name: ubuntu-14.04-vmware
-    driver_config:
-      box: ubuntu-14.04
-      box_url: https://nmd-vmware.s3-us-west-2.amazonaws.com/nmd-ubunutu-14.04-x86_64-base.box
-  - name: ubuntu-14.04-virtualbox
-    driver_config:
-      box: ubuntu-14.04
-      box_url: https://nmd-virtualbox.s3-us-west-2.amazonaws.com/nmd-ubunutu-14.04-x86_64-base.box
-  - name: centos-6.5-vmware
-    driver_config:
-      box: centos-6.5
-      box_url: https://nmd-vmware.s3-us-west-2.amazonaws.com/nmd-centos-6.5-x86_64-base.box
-  - name: centos-6.5-virtualbox
-    driver_config:
-      box: centos-6.5
-      box_url: https://nmd-virtualbox.s3-us-west-2.amazonaws.com/nmd-centos-6.5-x86_64-base.box
+- name: centos-6.5
+
 suites:
   - name: default
     run_list:
-      - recipe[nmdbase::default]
-    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
-  - name: ldap
-    run_list:
-      - recipe[nmdbase::ldap]
-    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
-  - name: yubico
-    run_list:
-      - recipe[nmdbase::yubico]
-    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
-  - name: yubico-ldap
-    run_list:
-      - recipe[nmdbase::ldap]
-      - recipe[nmdbase::yubico]
-    data_bags_path: "<%= ENV['DATA_BAGS_PATH'] %>"
+      - role[nmdbase]
+    data_bags_path: "<%= ENV['NMDCHEF_DATA_BAGS_PATH'] %>"
+    encrypted_data_bag_secret_key_path: "<%= ENV['NMDCHEF_SECRET_FILE'] %>"
+    roles_path:  "<%= ENV['NMDCHEF_ROLES_PATH'] %>"

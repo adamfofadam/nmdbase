@@ -24,8 +24,8 @@ if platform_family?('rhel')
   end
 end
 
-include_recipe 'fail2ban' if node['nmdbase']['include_fail2ban'] == 'yes'
-include_recipe 'nmdbase::iptables' if node['nmdbase']['include_iptables'] == 'yes'
+include_recipe 'fail2ban'
+# include_recipe 'nmdbase::iptables' if node['nmdbase']['include_iptables'] == 'yes'
 include_recipe 'nmdbase::ldap'
 include_recipe 'nmdbase::yubico'
 include_recipe 'chef-client::config'
@@ -43,6 +43,9 @@ package 'vim-enhanced' do
   action :install
 end
 package 'vim-minimal' do
+  action :install
+end
+package 'nano' do
   action :install
 end
 package 'nc' do
