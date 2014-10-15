@@ -24,7 +24,7 @@ if platform_family?('rhel')
   end
 end
 
-include_recipe 'fail2ban'
+# include_recipe 'fail2ban'
 # include_recipe 'nmdbase::iptables' if node['nmdbase']['include_iptables'] == 'yes'
 include_recipe 'nmdbase::ldap'
 include_recipe 'nmdbase::yubico'
