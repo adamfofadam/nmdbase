@@ -25,7 +25,6 @@ if platform_family?('rhel')
 end
 
 # include_recipe 'fail2ban'
-# include_recipe 'nmdbase::iptables' if node['nmdbase']['include_iptables'] == 'yes'
 include_recipe 'nmdbase::ldap'
 include_recipe 'nmdbase::yubico'
 include_recipe 'chef-client::config'
@@ -53,4 +52,9 @@ package 'nc' do
 end
 package 'telnet' do
   action :install
+end
+
+execute 'Disable iptables and use security groups' do
+  command '/sbin/service iptables stop'
+  action :run
 end
