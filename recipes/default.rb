@@ -54,7 +54,3 @@ package 'telnet' do
   action :install
 end
 
-execute 'Disable iptables and use security groups' do
-  command '/sbin/service iptables stop'
-  action :run
-end
