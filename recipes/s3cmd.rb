@@ -21,6 +21,9 @@
 package "python-dateutil" do
   action :upgrade
 end
+package "python-magic" do
+  action :upgrade
+end
 
 s3cmd_installed = 's3cmd --version | grep -q \'^s3cmd version 1.5.0-rc1\''
 cookbook_file "#{Chef::Config[:file_cache_path]}/s3cmd-1.5.0-rc1.tar.gz" do

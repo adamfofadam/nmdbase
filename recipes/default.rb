@@ -19,10 +19,17 @@
 # limitations under the License.
 #
 if platform_family?('rhel')
-  execute 'yum update' do
-    command 'yum update -y'
+  bash 'extract drush archive-dump' do
+    user 'root'
+    cwd node['nmdnowwhat']['scripts']
+    code <<-EOH
+      yum update -y
+      yum groupinstall -y "Development Tools"
+    EOH
+    action :run
   end
 end
+
 
 # include_recipe 'fail2ban'
 include_recipe 'nmdbase::ldap'
