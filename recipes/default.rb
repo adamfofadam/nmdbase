@@ -19,9 +19,8 @@
 # limitations under the License.
 #
 if platform_family?('rhel')
-  bash 'extract drush archive-dump' do
+  bash 'yum update and development tools' do
     user 'root'
-    cwd node['nmdnowwhat']['scripts']
     code <<-EOH
       yum update -y
       yum groupinstall -y "Development Tools"
