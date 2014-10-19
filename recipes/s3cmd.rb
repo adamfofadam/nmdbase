@@ -18,8 +18,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-package 's3cmd' do
-  action :install
+package "python-dateutil" do
+  action :upgrade
+end
+
+s3cmd_installed = 's3cmd --version | grep -q \'^s3cmd version 1.5.0-rc1\''
+cookbook_file "#{Chef::Config[:file_cache_path]}/s3cmd-1.5.0-rc1.tar.gz" do
+  source 's3cmd-1.5.0-rc1.tar.gz'
+  not_if s3cmd_installed
+  notifies :run, 'bash[s3cmd_install]', :immediately
+end
+
+bash 's3cmd_install' do
+  user 'root'
+  cwd Chef::Config[:file_cache_path]
+  code <<-EOH
+    tar xzf s3cmd-1.5.0-rc1.tar.gz
+    cd s3cmd-master
+    python setup.py install
+  EOH
+  action :run
+  not_if s3cmd_installed
 end
 
 s3cmd = Chef::EncryptedDataBagItem.load('nmdbase', 's3cmd')[node.chef_environment]
