@@ -19,16 +19,15 @@
 # limitations under the License.
 #
 if platform_family?('rhel')
-  bash 'yum update and development tools' do
-    user 'root'
-    code <<-EOH
-      yum update -y
-      yum groupinstall -y "Development Tools"
-    EOH
+  execute 'yum-update' do
+    command 'yum update -y'
+    action :run
+  end
+  execute 'yum-development-tools' do
+    command 'yum groupinstall -y Development\ Tools'
     action :run
   end
 end
-
 
 # include_recipe 'fail2ban'
 include_recipe 'nmdbase::ldap'
