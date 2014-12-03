@@ -58,3 +58,12 @@ end
 package 'telnet' do
   action :install
 end
+
+certificates = Chef::EncryptedDataBagItem.load('nmdproxy', 'certs')[node.chef_environment]
+certificates.each do |hostname, certs|
+  nmdproxy_cert hostname do
+    ca certs['ca']
+    crt certs['crt']
+    key certs['key']
+  end
+end
