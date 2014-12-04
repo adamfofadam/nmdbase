@@ -69,6 +69,18 @@ template '/usr/share/logwatch/default.conf/logwatch.conf' do
   group 'root'
 end
 
+file '/etc/postfix/sasl_passwd' do
+  content 'email-smtp.us-west-2.amazonaws.com AKIAJFMREBTT2KRZW2NA:Ap+4e9DHWpxN3EQtqRDJluXYeeud7bRNDa4uBj+I00EH'
+  owner 'root'
+  group 'root'
+  mode '600'
+end
+
+execute "sasl_passwd generate db" do
+  command "postmap hash:/etc/postfix/sasl_passwd"
+end
+ 
+
 certificates = Chef::EncryptedDataBagItem.load('nmdproxy', 'certs')[node.chef_environment]
 certificates.each do |hostname, certs|
   nmdproxy_cert hostname do
