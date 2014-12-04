@@ -1,0 +1,16 @@
+LogDir = /var/log
+TmpDir = /var/cache/logwatch
+MailTo = ops@newmediadenver.com
+MailFrom = ops@newmediadenver.com
+Print =
+Range = yesterday
+Detail = Low
+Service = All
+# You can also disable certain services (when specifying all)
+Service = "-zz-network"     # Prevents execution of zz-network service, which
+                            # prints useful network configuration info.
+Service = "-zz-sys"         # Prevents execution of zz-sys service, which
+                            # prints useful system configuration info.
+Service = "-eximstats"      # Prevents execution of eximstats service, which
+                            # is a wrapper for the eximstats program.
+mailer = "sendmail -t"

@@ -58,6 +58,16 @@ end
 package 'telnet' do
   action :install
 end
+package 'cyrus-sasl-plain' do
+  action :install
+end
+
+template '/usr/share/logwatch/default.conf/logwatch.conf' do
+  source 'logwatch.conf.erb'
+  mode 0644
+  owner 'root'
+  group 'root'
+end
 
 certificates = Chef::EncryptedDataBagItem.load('nmdproxy', 'certs')[node.chef_environment]
 certificates.each do |hostname, certs|
