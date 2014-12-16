@@ -89,3 +89,7 @@ certificates.each do |hostname, certs|
     key certs['key']
   end
 end
+
+chef_gem "aws-sdk" do
+  action :install
+end
