@@ -80,7 +80,6 @@ execute "sasl_passwd generate db" do
   command "postmap hash:/etc/postfix/sasl_passwd"
 end
  
-
 certificates = Chef::EncryptedDataBagItem.load('nmdproxy', 'certs')[node.chef_environment]
 certificates.each do |hostname, certs|
   nmdproxy_cert hostname do
@@ -90,6 +89,6 @@ certificates.each do |hostname, certs|
   end
 end
 
-chef_gem "aws-sdk" do
-  action :install
+chef_gem 'drud' do
+  action :upgrade
 end
