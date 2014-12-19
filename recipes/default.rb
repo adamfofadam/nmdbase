@@ -61,6 +61,9 @@ end
 package 'cyrus-sasl-plain' do
   action :install
 end
+package 'ntp' do
+  action :install
+end
 
 template '/usr/share/logwatch/default.conf/logwatch.conf' do
   source 'logwatch.conf.erb'
