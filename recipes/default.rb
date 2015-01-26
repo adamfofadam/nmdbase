@@ -92,6 +92,3 @@ certificates.each do |hostname, certs|
   end
 end
 
-chef_gem 'drud' do
-  action :upgrade
-end
