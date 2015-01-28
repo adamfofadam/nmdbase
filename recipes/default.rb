@@ -92,3 +92,4 @@ certificates.each do |hostname, certs|
   end
 end
 
+ssh_known_hosts_entry 'github.com'
