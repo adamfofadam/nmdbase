@@ -31,6 +31,7 @@ end
 
 # include_recipe 'fail2ban'
 include_recipe 'nmdbase::ldap'
+include_recipe 'nmdbase::yubico'
 include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
 include_recipe 'logwatch'
