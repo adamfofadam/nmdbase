@@ -29,6 +29,7 @@ if platform_family?('rhel')
   end
 end
 
+include_recipe 'nmdbase::ldap'
 include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
 include_recipe 'logwatch'
