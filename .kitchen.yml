@@ -11,7 +11,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - role[nmdbase]
+      - recipe[nmdbase]
     data_bags_path: "<%= ENV['NMDCHEF_DATA_BAGS_PATH'] %>"
     encrypted_data_bag_secret_key_path: "<%= ENV['NMDCHEF_SECRET_FILE'] %>"
     roles_path:  "<%= ENV['NMDCHEF_ROLES_PATH'] %>"

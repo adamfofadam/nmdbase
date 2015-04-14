@@ -18,49 +18,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-if platform_family?('rhel')
-  execute 'yum-update' do
-    command 'yum update -y'
-    action :run
-  end
-  execute 'yum-development-tools' do
-    command 'yum groupinstall -y Development\ Tools'
-    action :run
-  end
+execute 'yum-update' do
+  command 'yum update -y'
+  action :run
+end
+execute 'yum-development-tools' do
+  command 'yum groupinstall -y Development\ Tools'
+  action :run
 end
 
-include_recipe 'nmdbase::ldap'
 include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
 include_recipe 'logwatch'
 include_recipe 'postfix'
+%w(ntp vim-X11 vim-common vim-enhanced vim-minimal nano nc telnet cyrus-sasl-plain ).each do |pkg|
+  package pkg do
+    action :upgrade
+  end
+end
 
-package 'vim-X11' do
-  action :install
-end
-package 'vim-common' do
-  action :install
-end
-package 'vim-enhanced' do
-  action :install
-end
-package 'vim-minimal' do
-  action :install
-end
-package 'nano' do
-  action :install
-end
-package 'nc' do
-  action :install
-end
-package 'telnet' do
-  action :install
-end
-package 'cyrus-sasl-plain' do
-  action :install
-end
-package 'ntp' do
-  action :install
+execute 'agent_install' do
+  command "curl --silent --show-error --header 'x-connect-key: 0412e27b045b0a34cc525f3d20207c9370810a68' 'https://kickstart.jumpcloud.com/Kickstart' | sudo bash"
+  path [ '/sbin', '/bin', '/usr/sbin', '/usr/bin' ]
+  timeout 600
+  creates '/opt/jc'
 end
 
 template '/usr/share/logwatch/default.conf/logwatch.conf' do
@@ -80,7 +61,7 @@ end
 execute "sasl_passwd generate db" do
   command "postmap hash:/etc/postfix/sasl_passwd"
 end
- 
+
 certificates = Chef::EncryptedDataBagItem.load('nmdproxy', 'certs')[node.chef_environment]
 certificates.each do |hostname, certs|
   nmdproxy_cert hostname do
