@@ -38,7 +38,7 @@ include_recipe 'postfix'
 end
 
 execute 'agent_install' do
-  command "curl --silent --show-error --header 'x-connect-key: 0412e27b045b0a34cc525f3d20207c9370810a68' 'https://kickstart.jumpcloud.com/Kickstart' | sudo bash"
+  command "curl --silent --show-error --header 'x-connect-key: 0412e27b045b0a34cc525f3d20207c9370810a68' 'https://kickstart.jumpcloud.com/Kickstart' | bash"
   path [ '/sbin', '/bin', '/usr/sbin', '/usr/bin' ]
   timeout 600
   creates '/opt/jc'
