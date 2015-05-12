@@ -31,7 +31,7 @@ include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
 include_recipe 'logwatch'
 include_recipe 'postfix'
-%w(ntp vim-X11 vim-common vim-enhanced vim-minimal nano nc telnet cyrus-sasl-plain ).each do |pkg|
+%w(ntp vim-X11 vim-common vim-enhanced vim-minimal nano nc telnet cyrus-sasl-plain wget ).each do |pkg|
   package pkg do
     action :upgrade
   end
