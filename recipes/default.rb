@@ -72,3 +72,10 @@ certificates.each do |hostname, certs|
 end
 
 ssh_known_hosts_entry 'github.com'
+
+cookbook_file "/bin/s3upload" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
