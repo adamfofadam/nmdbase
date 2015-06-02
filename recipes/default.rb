@@ -30,11 +30,12 @@ execute 'yum-development-tools' do
   action :run
 end
 
+
 include_recipe 'chef-client::config'
 include_recipe 'chef-client::service'
 include_recipe 'logwatch'
 include_recipe 'postfix'
-%w(ntp vim-X11 vim-common vim-enhanced vim-minimal nano nc telnet cyrus-sasl-plain wget ).each do |pkg|
+%w(ntp vim-X11 vim-common vim-enhanced vim-minimal nano nc telnet cyrus-sasl-plain wget pip-python).each do |pkg|
   package pkg do
     action :upgrade
   end
@@ -75,6 +76,12 @@ certificates.each do |hostname, certs|
 end
 
 ssh_known_hosts_entry 'github.com'
+
+bash 'install boto' do
+  code <<-EOH
+    pip install boto
+    EOH
+end
 
 cookbook_file "/bin/s3upload" do
   owner 'root'
