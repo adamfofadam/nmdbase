@@ -18,6 +18,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License. test
 #
+file "/etc/yum.repos.d/glusterfs-epel.repo" do
+  action :delete
+end
 execute 'yum-update' do
   command 'yum update -y'
   action :run
@@ -72,10 +75,6 @@ certificates.each do |hostname, certs|
 end
 
 ssh_known_hosts_entry 'github.com'
-
-file "/etc/yum.repos.d/glusterfs-epel.repo" do
-  action :delete
-end
 
 cookbook_file "/bin/s3upload" do
   owner 'root'
