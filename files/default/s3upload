@@ -134,7 +134,7 @@ def do_part_upload(args):
   """
   bucket_name, mpu_id, fname, i, start, size, secure, max_tries, current_tries = args
   logging.debug("do_part_upload got args: %s" % (args,))
-  print args
+
   s3 = S3Connection(aws_key, aws_secret)
   bucket = s3.get_bucket('nmdarchive')
   mpu = None
