@@ -73,6 +73,10 @@ end
 
 ssh_known_hosts_entry 'github.com'
 
+file "/etc/yum.repos.d/glusterfs-epel.repo" do
+  action :delete
+end
+
 cookbook_file "/bin/s3upload" do
   owner 'root'
   group 'root'
