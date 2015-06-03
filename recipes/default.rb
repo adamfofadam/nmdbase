@@ -21,6 +21,10 @@
 file "/etc/yum.repos.d/glusterfs-epel.repo" do
   action :delete
 end
+package 'epel-release' do
+  action :upgrade
+end
+
 execute 'yum-update' do
   command 'yum update -y'
   action :run
