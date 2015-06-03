@@ -110,3 +110,10 @@ cookbook_file "/bin/s3copy" do
   mode '0755'
   action :create
 end
+
+cookbook_file "/bin/s3latest" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
