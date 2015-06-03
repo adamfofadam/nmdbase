@@ -77,9 +77,16 @@ end
 
 ssh_known_hosts_entry 'github.com'
 
+cookbook_file "/tmp/requirements.txt" do
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
 bash 'install boto' do
   code <<-EOH
-    pip install boto
+    pip install -r /tmp/requirements.txt
     EOH
 end
 
